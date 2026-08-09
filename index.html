@@ -605,7 +605,7 @@
             width: 100%;
             border-collapse: collapse;
             font-size: 0.78rem;
-            min-width: 700px;
+            min-width: 750px;
         }
 
         th {
@@ -707,6 +707,140 @@
 
         .download-btn:hover {
             background: #e2e8f0;
+        }
+
+        .compare-btn {
+            background: #4299e1;
+            border: 1px solid #3182ce;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.55rem;
+            cursor: pointer;
+            color: white;
+            transition: all 0.2s;
+            font-weight: 600;
+        }
+
+        .compare-btn:hover {
+            background: #3182ce;
+        }
+
+        /* ============================================================
+           COMPARATEUR
+           ============================================================ */
+        .diff-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .diff-modal.open {
+            display: flex;
+        }
+
+        .diff-modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 24px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .diff-modal-content .close-btn {
+            position: absolute;
+            top: 12px;
+            right: 16px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #a0aec0;
+        }
+
+        .diff-modal-content .close-btn:hover {
+            color: #1a202c;
+        }
+
+        .diff-modal-content h3 {
+            font-size: 1rem;
+            margin-bottom: 12px;
+            color: #2d3748;
+        }
+
+        .diff-summary {
+            background: #f7fafc;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+            font-size: 0.85rem;
+        }
+
+        .diff-summary .highlight {
+            background: #fefcbf;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .diff-hex {
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            line-height: 1.6;
+            background: #1a202c;
+            color: #a0aec0;
+            padding: 12px;
+            border-radius: 8px;
+            overflow-x: auto;
+            white-space: pre;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .diff-hex .diff-change {
+            color: #fc8181;
+            background: rgba(252, 129, 129, 0.15);
+        }
+
+        .diff-hex .diff-add {
+            color: #9ae6b4;
+            background: rgba(154, 230, 180, 0.15);
+        }
+
+        .diff-hex .offset {
+            color: #718096;
+        }
+
+        .diff-details {
+            margin-top: 12px;
+            padding: 12px;
+            background: #edf2f7;
+            border-radius: 8px;
+            font-size: 0.8rem;
+        }
+
+        .diff-details ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .diff-details li {
+            padding: 4px 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .diff-details li:last-child {
+            border-bottom: none;
         }
 
         /* ============================================================
@@ -880,6 +1014,10 @@
             .file-zone {
                 padding: 20px 16px;
             }
+
+            .diff-modal-content {
+                padding: 16px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -920,7 +1058,7 @@
                 <span class="badge badge-live">● Live</span>
                 <span class="badge badge-multi">EXE + APK</span>
                 <span class="badge badge-jotti">🔍 Jotti</span>
-                <span class="badge badge-beta">v3.0</span>
+                <span class="badge badge-beta">v3.1</span>
             </div>
         </header>
 
@@ -1097,7 +1235,7 @@
                             <th>Taille</th>
                             <th>Valide</th>
                             <th>Détections</th>
-                            <th></th>
+                            <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody id="resultsBody">
@@ -1128,9 +1266,28 @@
         FOOTER
         ============================================================ -->
         <div style="text-align:center;font-size:0.7rem;color:#a0aec0;padding:12px 0 4px;">
-            🔒 Usage éducatif et de recherche · VirusTotal + Jotti
+            🔒 Usage éducatif et de recherche · VirusTotal + Jotti + Comparateur
         </div>
 
+    </div>
+
+    <!-- ============================================================
+    MODALE DE COMPARAISON
+    ============================================================ -->
+    <div class="diff-modal" id="diffModal">
+        <div class="diff-modal-content">
+            <button class="close-btn" id="diffModalClose">✕</button>
+            <h3>🔍 Comparaison : <span id="diffTitle">Original vs Modifié</span></h3>
+            <div class="diff-summary" id="diffSummary">
+                <span>SHA-256 original: <span class="highlight" id="diffOriginalHash">—</span></span><br>
+                <span>SHA-256 modifié: <span class="highlight" id="diffModifiedHash">—</span></span>
+            </div>
+            <div class="diff-hex" id="diffContent">Chargement...</div>
+            <div class="diff-details" id="diffDetails">
+                <strong>📝 Modifications détectées :</strong>
+                <ul id="diffModsList"></ul>
+            </div>
+        </div>
     </div>
 
     <!-- ============================================================
@@ -1148,7 +1305,9 @@
             // ============================================================
             // TOAST
             // ============================================================
-            function showToast(message, type = 'info', duration = 3500) {
+            function showToast(message, type, duration) {
+                if (type === undefined) type = 'info';
+                if (duration === undefined) duration = 3500;
                 var toast = document.getElementById('toast');
                 toast.textContent = message;
                 toast.className = 'toast';
@@ -1229,6 +1388,15 @@
             var modRichHeader = document.getElementById('modRichHeader');
             var modStrings = document.getElementById('modStrings');
 
+            // Comparateur
+            var diffModal = document.getElementById('diffModal');
+            var diffModalClose = document.getElementById('diffModalClose');
+            var diffTitle = document.getElementById('diffTitle');
+            var diffOriginalHash = document.getElementById('diffOriginalHash');
+            var diffModifiedHash = document.getElementById('diffModifiedHash');
+            var diffContent = document.getElementById('diffContent');
+            var diffModsList = document.getElementById('diffModsList');
+
             // ============================================================
             // STATE
             // ============================================================
@@ -1240,6 +1408,7 @@
             var isApkFile = false;
             var timerInterval = null;
             var startTime = null;
+            var originalBuffer = null;
 
             // ============================================================
             // HELPERS
@@ -1338,6 +1507,7 @@
                     '<span class="hash">SHA-256: Calcul en cours...</span>';
 
                 file.arrayBuffer().then(function(buf) {
+                    originalBuffer = buf;
                     computeSHA256(buf).then(function(hash) {
                         var short = hash.substring(0, 16) + '…';
                         fileInfo.innerHTML =
@@ -1381,6 +1551,107 @@
             }
 
             // ============================================================
+            // COMPARATEUR DE FICHIERS
+            // ============================================================
+            function openComparer(index) {
+                var r = results[index];
+                if (!r || !r.buffer) {
+                    showToast('Fichier non disponible pour la comparaison.', 'error');
+                    return;
+                }
+
+                if (!originalBuffer) {
+                    showToast('Fichier original non disponible.', 'error');
+                    return;
+                }
+
+                diffTitle.textContent = 'Original vs ' + r.version;
+
+                // Afficher les hashs
+                computeSHA256(originalBuffer).then(function(origHash) {
+                    diffOriginalHash.textContent = origHash;
+                });
+                diffModifiedHash.textContent = r.sha256;
+
+                // Comparer les fichiers
+                var origBytes = new Uint8Array(originalBuffer);
+                var modBytes = new Uint8Array(r.buffer);
+                var maxLen = Math.max(origBytes.length, modBytes.length);
+                var minLen = Math.min(origBytes.length, modBytes.length);
+
+                var diffLines = [];
+                var modsList = [];
+
+                // Afficher les premières 256 lignes de différences
+                var diffCount = 0;
+                var maxDiffs = 200;
+
+                for (var i = 0; i < maxLen && diffCount < maxDiffs; i += 16) {
+                    var origChunk = '';
+                    var modChunk = '';
+                    var hasDiff = false;
+                    var chunkDiff = '';
+
+                    for (var j = 0; j < 16; j++) {
+                        var idx = i + j;
+                        var origByte = (idx < origBytes.length) ? origBytes[idx] : null;
+                        var modByte = (idx < modBytes.length) ? modBytes[idx] : null;
+
+                        if (origByte !== null && modByte !== null && origByte !== modByte) {
+                            hasDiff = true;
+                            chunkDiff += '<span class="diff-change">' +
+                                String(origByte).padStart(2, '0') + '→' + String(modByte).padStart(2, '0') + '</span> ';
+                            modsList.push('Octet ' + idx + ': 0x' + String(origByte).padStart(2, '0') + ' → 0x' + String(
+                                modByte).padStart(2, '0'));
+                        } else if (origByte !== null && modByte === null) {
+                            hasDiff = true;
+                            chunkDiff += '<span class="diff-change">' + String(origByte).padStart(2, '0') + '→--</span> ';
+                        } else if (origByte === null && modByte !== null) {
+                            hasDiff = true;
+                            chunkDiff += '<span class="diff-add">--→' + String(modByte).padStart(2, '0') + '</span> ';
+                        } else {
+                            chunkDiff += String(origByte).padStart(2, '0') + '   ';
+                        }
+                    }
+
+                    if (hasDiff) {
+                        diffCount++;
+                        var offsetStr = String(i).padStart(8, '0');
+                        diffLines.push('<span class="offset">' + offsetStr + '</span>  ' + chunkDiff);
+                    }
+                }
+
+                // Limiter l'affichage
+                if (diffLines.length === 0) {
+                    diffContent.innerHTML = '✅ Les deux fichiers sont identiques.';
+                } else {
+                    diffContent.innerHTML = diffLines.join('\n');
+                    if (diffCount >= maxDiffs) {
+                        diffContent.innerHTML += '\n\n... (différences limitées à ' + maxDiffs + ' affichées)';
+                    }
+                }
+
+                // Afficher les modifications dans la liste
+                var modsHtml = '';
+                var uniqueMods = [];
+                for (var m = 0; m < modsList.length && m < 50; m++) {
+                    if (uniqueMods.indexOf(modsList[m]) === -1) {
+                        uniqueMods.push(modsList[m]);
+                    }
+                }
+                for (var u = 0; u < uniqueMods.length; u++) {
+                    modsHtml += '<li>' + uniqueMods[u] + '</li>';
+                }
+                if (uniqueMods.length === 0) {
+                    modsHtml = '<li>Aucune modification détectée</li>';
+                }
+                diffModsList.innerHTML = modsHtml;
+
+                // Ouvrir la modale
+                diffModal.classList.add('open');
+            }
+
+            // ============================================================
             // RENDER TABLE
             // ============================================================
             function renderResults() {
@@ -1402,6 +1673,13 @@
                     var sizeStr = r.size < 1024 ? r.size + ' B' : (r.size / 1024).toFixed(1) + ' KB';
                     var rowClass = r.isZero ? 'highlight-row' : '';
 
+                    var actionsHtml = '';
+                    // Si ce n'est pas le premier résultat (Original), on peut le comparer avec l'original
+                    if (i > 0 && originalBuffer) {
+                        actionsHtml += '<button class="compare-btn" data-idx="' + i + '">🔍 Comparer</button> ';
+                    }
+                    actionsHtml += '<button class="download-btn" data-idx="' + i + '">💾</button>';
+
                     html += '<tr class="' + rowClass + '">' +
                         '<td><span class="iteration-badge">#' + r.iteration + '</span></td>' +
                         '<td><strong>' + r.version + '</strong> ' + zeroBadge + ' ' + typeBadge + '</td>' +
@@ -1410,11 +1688,12 @@
                         '<td>' + sizeStr + '</td>' +
                         '<td>' + validBadge + '</td>' +
                         '<td class="detection-cell">' + detStr + '</td>' +
-                        '<td><button class="download-btn" data-idx="' + i + '">💾</button></td>' +
+                        '<td>' + actionsHtml + '</td>' +
                         '</tr>';
                 }
                 resultsBody.innerHTML = html;
 
+                // Boutons de téléchargement
                 var btns = document.querySelectorAll('.download-btn');
                 for (var b = 0; b < btns.length; b++) {
                     btns[b].addEventListener('click', function() {
@@ -1434,7 +1713,16 @@
                     });
                 }
 
-                // Activer le bouton Jotti si des résultats existent
+                // Boutons de comparaison
+                var cmpBtns = document.querySelectorAll('.compare-btn');
+                for (var c = 0; c < cmpBtns.length; c++) {
+                    cmpBtns[c].addEventListener('click', function() {
+                        var idx = parseInt(this.getAttribute('data-idx'));
+                        openComparer(idx);
+                    });
+                }
+
+                // Activer Jotti si des résultats existent
                 jottiBtn.disabled = false;
             }
 
@@ -1623,7 +1911,7 @@
             }
 
             // ============================================================
-            // JOTTI - Ouvrir dans le navigateur
+            // JOTTI
             // ============================================================
             function openJotti() {
                 if (results.length === 0) {
@@ -1637,14 +1925,11 @@
                     return;
                 }
 
-                // Créer un blob et un lien de téléchargement
                 var blob = new Blob([last.buffer], { type: 'application/octet-stream' });
                 var url = URL.createObjectURL(blob);
 
-                // Ouvrir Jotti dans un nouvel onglet
                 window.open('https://virusscan.jotti.org/', '_blank');
 
-                // Télécharger le fichier pour le soumettre manuellement
                 var a = document.createElement('a');
                 a.href = url;
                 a.download = last.filename || 'fichier_a_analyser.exe';
@@ -1653,7 +1938,6 @@
                 addLog('📤 Jotti ouvert. Soumettez le fichier téléchargé sur le site.', 'info');
                 showToast('📤 Jotti ouvert ! Soumettez le fichier sur le site.', 'success');
 
-                // Nettoyer l'URL après un délai
                 setTimeout(function() {
                     URL.revokeObjectURL(url);
                 }, 10000);
@@ -1697,16 +1981,15 @@
                 var bufferPromise = currentFile.arrayBuffer();
 
                 bufferPromise.then(function(buffer) {
+                    originalBuffer = buffer;
                     var ext = currentFile.name.split('.').pop().toLowerCase();
                     isApkFile = (ext === 'apk');
 
                     var currentBuffer = buffer;
-                    var campaignResults = [];
                     var zeroReachedFlag = false;
 
                     function runIteration(i) {
                         if (i >= numIterations) {
-                            // Terminé
                             updateStatus('✅ Terminé (' + numIterations + ' itérations)', 'ready', 100);
                             iterationDisplay.textContent = numIterations + ' / ' + numIterations;
                             addLog('🏁 Campagne terminée — ' + numIterations + ' analyses', 'success');
@@ -1896,6 +2179,7 @@
                     isRunning = false;
                 }
                 results = [];
+                originalBuffer = null;
                 renderResults();
                 updateSummary();
                 updateStatus('Prêt', 'ready', 0);
@@ -1935,6 +2219,7 @@
                 isApkFile = (ext === 'apk');
                 updateFileInfo(file);
                 results = [];
+                originalBuffer = null;
                 renderResults();
                 updateSummary();
                 updateStatus('Fichier chargé', 'ready', 0);
@@ -1969,6 +2254,7 @@
                 if (results.length === 0) return;
                 if (confirm('Effacer tous les résultats ?')) {
                     results = [];
+                    originalBuffer = null;
                     renderResults();
                     updateSummary();
                     showToast('Historique effacé', 'info');
@@ -1993,10 +2279,20 @@
                 }
             });
 
-            // ============================================================
-            // JOTTI - Événement du bouton
-            // ============================================================
             jottiBtn.addEventListener('click', openJotti);
+
+            // ============================================================
+            // MODALE COMPARATEUR - Fermeture
+            // ============================================================
+            diffModalClose.addEventListener('click', function() {
+                diffModal.classList.remove('open');
+            });
+
+            diffModal.addEventListener('click', function(e) {
+                if (e.target === diffModal) {
+                    diffModal.classList.remove('open');
+                }
+            });
 
             // ============================================================
             // INIT
@@ -2005,6 +2301,7 @@
             addLog('📦 Support: EXE + APK (max 2 MB)', 'info');
             addLog('🔑 Entrez votre clé API pour commencer', 'info');
             addLog('🔍 Utilisez Jotti pour un second avis manuel', 'info');
+            addLog('🔬 Bouton "Comparer" pour voir les modifications', 'info');
 
             if (localStorage.getItem('vt_key')) {
                 vtApiKeyInput.value = localStorage.getItem('vt_key');
