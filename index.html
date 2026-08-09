@@ -101,6 +101,11 @@
             color: white;
         }
 
+        .badge-jotti {
+            background: #ed8936;
+            color: white;
+        }
+
         /* ============================================================
            CARTE PRINCIPALE
            ============================================================ */
@@ -369,6 +374,15 @@
             background: #f56565;
         }
 
+        .btn-warning {
+            background: #ed8936;
+            color: white;
+        }
+
+        .btn-warning:hover {
+            background: #dd6b20;
+        }
+
         .btn-sm {
             padding: 4px 12px;
             font-size: 0.7rem;
@@ -549,6 +563,32 @@
             color: #a0aec0;
             cursor: not-allowed;
             text-decoration: none;
+        }
+
+        .result-actions .btn-jotti {
+            background: #ed8936;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 14px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .result-actions .btn-jotti:hover {
+            background: #dd6b20;
+            transform: translateY(-1px);
+        }
+
+        .result-actions .btn-jotti:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
         }
 
         /* ============================================================
@@ -879,6 +919,7 @@
             <div class="header-badges">
                 <span class="badge badge-live">● Live</span>
                 <span class="badge badge-multi">EXE + APK</span>
+                <span class="badge badge-jotti">🔍 Jotti</span>
                 <span class="badge badge-beta">v3.0</span>
             </div>
         </header>
@@ -1021,6 +1062,7 @@
                     <div class="result-actions">
                         <button class="btn-link" id="viewDetailsBtn" disabled>📋 Voir les détails</button>
                         <button class="btn-link" id="openBrowserBtn" disabled>🌐 Ouvrir sur VirusTotal</button>
+                        <button class="btn-jotti" id="jottiBtn" disabled>🔍 Ouvrir sur Jotti</button>
                     </div>
                 </div>
             </div>
@@ -1086,7 +1128,7 @@
         FOOTER
         ============================================================ -->
         <div style="text-align:center;font-size:0.7rem;color:#a0aec0;padding:12px 0 4px;">
-            🔒 Usage éducatif et de recherche · Les fichiers sont soumis à VirusTotal
+            🔒 Usage éducatif et de recherche · VirusTotal + Jotti
         </div>
 
     </div>
@@ -1097,7 +1139,7 @@
     <div id="toast" class="toast"></div>
 
     <!-- ============================================================
-    JAVASCRIPT CORRIGÉ
+    JAVASCRIPT COMPLET
     ============================================================ -->
     <script>
         (function() {
@@ -1107,7 +1149,7 @@
             // TOAST
             // ============================================================
             function showToast(message, type = 'info', duration = 3500) {
-                const toast = document.getElementById('toast');
+                var toast = document.getElementById('toast');
                 toast.textContent = message;
                 toast.className = 'toast';
                 if (type === 'error') toast.classList.add('error');
@@ -1116,25 +1158,27 @@
                 if (type === 'warning') toast.classList.add('warning');
                 toast.classList.add('show');
                 clearTimeout(toast._timer);
-                toast._timer = setTimeout(() => toast.classList.remove('show'), duration);
+                toast._timer = setTimeout(function() { toast.classList.remove('show'); }, duration);
             }
 
             // ============================================================
             // LOG
             // ============================================================
-            function addLog(message, type = 'info') {
-                const log = document.getElementById('logContainer');
-                const time = new Date();
-                const t = String(time.getHours()).padStart(2, '0') + ':' +
+            function addLog(message, type) {
+                if (type === undefined) type = 'info';
+                var log = document.getElementById('logContainer');
+                var time = new Date();
+                var t = String(time.getHours()).padStart(2, '0') + ':' +
                     String(time.getMinutes()).padStart(2, '0') + ':' +
                     String(time.getSeconds()).padStart(2, '0');
-                const div = document.createElement('div');
+                var div = document.createElement('div');
                 div.className = 'entry';
-                const msgClass = type === 'info' ? 'msg-info' :
+                var msgClass = type === 'info' ? 'msg-info' :
                     type === 'success' ? 'msg-success' :
                     type === 'error' ? 'msg-error' :
                     type === 'warning' ? 'msg-warning' : 'msg-info';
-                div.innerHTML = `<span class="time">[${t}]</span> <span class="${msgClass}">${message}</span>`;
+                div.innerHTML = '<span class="time">[' + t + ']</span> <span class="' + msgClass + '">' + message +
+                    '</span>';
                 log.appendChild(div);
                 log.scrollTop = log.scrollHeight;
                 if (log.children.length > 100) log.removeChild(log.firstChild);
@@ -1143,66 +1187,67 @@
             // ============================================================
             // DOM REFS
             // ============================================================
-            const fileInput = document.getElementById('fileInput');
-            const dropZone = document.getElementById('dropZone');
-            const fileInfo = document.getElementById('fileInfo');
-            const vtApiKeyInput = document.getElementById('vtApiKey');
-            const iterationsInput = document.getElementById('iterations');
-            const startBtn = document.getElementById('startBtn');
-            const resetBtn = document.getElementById('resetBtn');
-            const statusDot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
-            const iterationDisplay = document.getElementById('iterationDisplay');
-            const elapsedTimeDisplay = document.getElementById('elapsedTimeDisplay');
-            const progressFill = document.getElementById('progressFill');
-            const progressLabel = document.getElementById('progressLabel');
-            const detectionDisplay = document.getElementById('detectionDisplay');
-            const resultStatus = document.getElementById('resultStatus');
-            const resultDate = document.getElementById('resultDate');
-            const resultId = document.getElementById('resultId');
-            const viewDetailsBtn = document.getElementById('viewDetailsBtn');
-            const openBrowserBtn = document.getElementById('openBrowserBtn');
-            const summaryBox = document.getElementById('summaryBox');
-            const totalAnalyses = document.getElementById('totalAnalyses');
-            const minDetections = document.getElementById('minDetections');
-            const maxDetections = document.getElementById('maxDetections');
-            const avgDetections = document.getElementById('avgDetections');
-            const zeroReached = document.getElementById('zeroReached');
-            const resultsBody = document.getElementById('resultsBody');
-            const exportCsvBtn = document.getElementById('exportCsvBtn');
-            const exportJsonBtn = document.getElementById('exportJsonBtn');
-            const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+            var fileInput = document.getElementById('fileInput');
+            var dropZone = document.getElementById('dropZone');
+            var fileInfo = document.getElementById('fileInfo');
+            var vtApiKeyInput = document.getElementById('vtApiKey');
+            var iterationsInput = document.getElementById('iterations');
+            var startBtn = document.getElementById('startBtn');
+            var resetBtn = document.getElementById('resetBtn');
+            var statusDot = document.getElementById('statusDot');
+            var statusText = document.getElementById('statusText');
+            var iterationDisplay = document.getElementById('iterationDisplay');
+            var elapsedTimeDisplay = document.getElementById('elapsedTimeDisplay');
+            var progressFill = document.getElementById('progressFill');
+            var progressLabel = document.getElementById('progressLabel');
+            var detectionDisplay = document.getElementById('detectionDisplay');
+            var resultStatus = document.getElementById('resultStatus');
+            var resultDate = document.getElementById('resultDate');
+            var resultId = document.getElementById('resultId');
+            var viewDetailsBtn = document.getElementById('viewDetailsBtn');
+            var openBrowserBtn = document.getElementById('openBrowserBtn');
+            var jottiBtn = document.getElementById('jottiBtn');
+            var summaryBox = document.getElementById('summaryBox');
+            var totalAnalyses = document.getElementById('totalAnalyses');
+            var minDetections = document.getElementById('minDetections');
+            var maxDetections = document.getElementById('maxDetections');
+            var avgDetections = document.getElementById('avgDetections');
+            var zeroReached = document.getElementById('zeroReached');
+            var resultsBody = document.getElementById('resultsBody');
+            var exportCsvBtn = document.getElementById('exportCsvBtn');
+            var exportJsonBtn = document.getElementById('exportJsonBtn');
+            var clearHistoryBtn = document.getElementById('clearHistoryBtn');
 
             // Modifications
-            const modTimestamp = document.getElementById('modTimestamp');
-            const modLinkerVersion = document.getElementById('modLinkerVersion');
-            const modOSVersion = document.getElementById('modOSVersion');
-            const modImageVersion = document.getElementById('modImageVersion');
-            const modDllFlags = document.getElementById('modDllFlags');
-            const modSectionNames = document.getElementById('modSectionNames');
-            const modChecksum = document.getElementById('modChecksum');
-            const modRichHeader = document.getElementById('modRichHeader');
-            const modStrings = document.getElementById('modStrings');
+            var modTimestamp = document.getElementById('modTimestamp');
+            var modLinkerVersion = document.getElementById('modLinkerVersion');
+            var modOSVersion = document.getElementById('modOSVersion');
+            var modImageVersion = document.getElementById('modImageVersion');
+            var modDllFlags = document.getElementById('modDllFlags');
+            var modSectionNames = document.getElementById('modSectionNames');
+            var modChecksum = document.getElementById('modChecksum');
+            var modRichHeader = document.getElementById('modRichHeader');
+            var modStrings = document.getElementById('modStrings');
 
             // ============================================================
             // STATE
             // ============================================================
-            let currentFile = null;
-            let results = [];
-            let isRunning = false;
-            let campaignId = 0;
-            let currentAnalysisId = null;
-            let isApkFile = false;
-            let timerInterval = null;
-            let startTime = null;
+            var currentFile = null;
+            var results = [];
+            var isRunning = false;
+            var campaignId = 0;
+            var currentAnalysisId = null;
+            var isApkFile = false;
+            var timerInterval = null;
+            var startTime = null;
 
             // ============================================================
             // HELPERS
             // ============================================================
             function formatElapsed(ms) {
-                const s = Math.floor(ms / 1000);
-                const m = Math.floor(s / 60);
-                const h = Math.floor(m / 60);
+                var s = Math.floor(ms / 1000);
+                var m = Math.floor(s / 60);
+                var h = Math.floor(m / 60);
                 return String(h).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0') + ':' + String(s % 60).padStart(2,
                     '0');
             }
@@ -1213,18 +1258,19 @@
                 }
             }
 
-            async function computeSHA256(buffer) {
-                const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
-                const hashArray = Array.from(new Uint8Array(hashBuffer));
-                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            function computeSHA256(buffer) {
+                return crypto.subtle.digest('SHA-256', buffer).then(function(hashBuffer) {
+                    var hashArray = Array.from(new Uint8Array(hashBuffer));
+                    return hashArray.map(function(b) { return b.toString(16).padStart(2, '0'); }).join('');
+                });
             }
 
             function validatePE(buffer) {
                 try {
-                    const v = new Uint8Array(buffer);
+                    var v = new Uint8Array(buffer);
                     if (v.length < 64) return false;
                     if (v[0] !== 0x4D || v[1] !== 0x5A) return false;
-                    const e = v[0x3C] | (v[0x3D] << 8);
+                    var e = v[0x3C] | (v[0x3D] << 8);
                     if (e + 4 > v.length) return false;
                     if (v[e] !== 0x50 || v[e + 1] !== 0x45 || v[e + 2] !== 0x00 || v[e + 3] !== 0x00) return false;
                     return true;
@@ -1233,7 +1279,7 @@
 
             function validateAPK(buffer) {
                 try {
-                    const v = new Uint8Array(buffer);
+                    var v = new Uint8Array(buffer);
                     if (v.length < 4) return false;
                     return (v[0] === 0x50 && v[1] === 0x4B && v[2] === 0x03 && v[3] === 0x04);
                 } catch (e) { return false; }
@@ -1242,7 +1288,8 @@
             // ============================================================
             // UPDATE UI
             // ============================================================
-            function updateStatus(text, state = 'ready', progress = null) {
+            function updateStatus(text, state, progress) {
+                if (state === undefined) state = 'ready';
                 statusText.textContent = text;
                 resultStatus.textContent = text;
                 statusDot.className = 'status-dot';
@@ -1250,15 +1297,16 @@
                 else if (state === 'running') statusDot.classList.add('running');
                 else if (state === 'error') statusDot.classList.add('error');
 
-                if (progress !== null) {
-                    const pct = Math.min(100, Math.max(0, progress));
+                if (progress !== null && progress !== undefined) {
+                    var pct = Math.min(100, Math.max(0, progress));
                     progressFill.style.width = pct + '%';
                     progressLabel.textContent = Math.round(pct) + '%';
                 }
             }
 
-            function updateDetections(detections, total = 70) {
-                const el = detectionDisplay;
+            function updateDetections(detections, total) {
+                if (total === undefined) total = 70;
+                var el = detectionDisplay;
                 el.className = 'value detections';
                 if (detections === null || detections === undefined) {
                     el.textContent = '⏳ En attente';
@@ -1278,9 +1326,9 @@
                         '<span class="name">Aucun fichier</span><span class="size">—</span><span class="hash">SHA-256: —</span>';
                     return;
                 }
-                const ext = file.name.split('.').pop().toLowerCase();
-                const typeLabel = ext === 'apk' ? '📱 APK' : '🖥️ EXE';
-                const size = file.size > 1024 * 1024 ?
+                var ext = file.name.split('.').pop().toLowerCase();
+                var typeLabel = ext === 'apk' ? '📱 APK' : '🖥️ EXE';
+                var size = file.size > 1024 * 1024 ?
                     (file.size / 1024 / 1024).toFixed(2) + ' MB' :
                     (file.size / 1024).toFixed(1) + ' KB';
 
@@ -1289,9 +1337,9 @@
                     '<span class="size">' + size + '</span>' +
                     '<span class="hash">SHA-256: Calcul en cours...</span>';
 
-                file.arrayBuffer().then(buf => {
-                    computeSHA256(buf).then(hash => {
-                        const short = hash.substring(0, 16) + '…';
+                file.arrayBuffer().then(function(buf) {
+                    computeSHA256(buf).then(function(hash) {
+                        var short = hash.substring(0, 16) + '…';
                         fileInfo.innerHTML =
                             '<span class="name">' + typeLabel + ' ' + file.name + '</span>' +
                             '<span class="size">' + size + '</span>' +
@@ -1307,17 +1355,26 @@
                 }
                 summaryBox.style.display = 'flex';
                 totalAnalyses.textContent = results.length;
-                const dets = results.map(r => r.detections).filter(v => typeof v === 'number');
+                var dets = [];
+                for (var i = 0; i < results.length; i++) {
+                    if (typeof results[i].detections === 'number') dets.push(results[i].detections);
+                }
                 if (dets.length > 0) {
-                    minDetections.textContent = Math.min.apply(null, dets);
-                    maxDetections.textContent = Math.max.apply(null, dets);
+                    var min = dets[0];
+                    var max = dets[0];
                     var sum = 0;
-                    for (var i = 0; i < dets.length; i++) sum += dets[i];
+                    for (var j = 0; j < dets.length; j++) {
+                        if (dets[j] < min) min = dets[j];
+                        if (dets[j] > max) max = dets[j];
+                        sum += dets[j];
+                    }
+                    minDetections.textContent = min;
+                    maxDetections.textContent = max;
                     avgDetections.textContent = (sum / dets.length).toFixed(1);
                 }
                 var hasZero = false;
-                for (var j = 0; j < results.length; j++) {
-                    if (results[j].isZero === true) { hasZero = true; break; }
+                for (var k = 0; k < results.length; k++) {
+                    if (results[k].isZero === true) { hasZero = true; break; }
                 }
                 zeroReached.textContent = hasZero ? '✅ Oui' : '❌ Non';
                 zeroReached.style.color = hasZero ? '#48bb78' : '#fc8181';
@@ -1359,8 +1416,8 @@
                 resultsBody.innerHTML = html;
 
                 var btns = document.querySelectorAll('.download-btn');
-                for (var k = 0; k < btns.length; k++) {
-                    btns[k].addEventListener('click', function() {
+                for (var b = 0; b < btns.length; b++) {
+                    btns[b].addEventListener('click', function() {
                         var idx = parseInt(this.getAttribute('data-idx'));
                         var r = results[idx];
                         if (r && r.buffer) {
@@ -1376,6 +1433,9 @@
                         }
                     });
                 }
+
+                // Activer le bouton Jotti si des résultats existent
+                jottiBtn.disabled = false;
             }
 
             // ============================================================
@@ -1499,67 +1559,110 @@
             // ============================================================
             // VIRUSTOTAL API
             // ============================================================
-            async function submitToVT(apiKey, buffer, fileName) {
+            function submitToVT(apiKey, buffer, fileName) {
                 var formData = new FormData();
                 var blob = new Blob([buffer], { type: 'application/octet-stream' });
                 formData.append('file', blob, fileName);
 
-                var uploadRes = await fetch('https://www.virustotal.com/api/v3/files', {
+                return fetch('https://www.virustotal.com/api/v3/files', {
                     method: 'POST',
                     headers: { 'x-apikey': apiKey },
                     body: formData
+                }).then(function(uploadRes) {
+                    if (!uploadRes.ok) {
+                        return uploadRes.text().then(function(text) {
+                            var errorMsg = 'Erreur ' + uploadRes.status;
+                            try {
+                                var errJson = JSON.parse(text);
+                                if (errJson.error && errJson.error.message) {
+                                    errorMsg = errJson.error.message;
+                                }
+                            } catch (e) {
+                                if (text.indexOf('Load failed') !== -1) {
+                                    errorMsg = 'Load failed — Vérifiez votre clé API ou la taille du fichier';
+                                } else {
+                                    errorMsg = text.substring(0, 100);
+                                }
+                            }
+                            throw new Error(errorMsg);
+                        });
+                    }
+                    return uploadRes.json();
+                }).then(function(uploadJson) {
+                    var analysisId = uploadJson.data.id;
+                    var attempts = 0;
+
+                    function poll() {
+                        return fetch('https://www.virustotal.com/api/v3/analyses/' + analysisId, {
+                            headers: { 'x-apikey': apiKey }
+                        }).then(function(res) {
+                            if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+                            return res.json();
+                        }).then(function(json) {
+                            if (json.data.attributes.status === 'completed') {
+                                var stats = json.data.attributes.stats;
+                                var malicious = stats.malicious || 0;
+                                var total = (stats.malicious || 0) + (stats.undetected || 0) +
+                                    (stats.suspicious || 0) + (stats.harmless || 0) + (stats.timeout ||
+                                    0);
+                                return {
+                                    malicious: malicious,
+                                    total: total,
+                                    analysisId: analysisId,
+                                    link: 'https://www.virustotal.com/gui/file/' + uploadJson.data
+                                        .attributes.sha256
+                                };
+                            }
+                            attempts++;
+                            if (attempts >= 35) throw new Error('Analysis timeout');
+                            return new Promise(function(r) { setTimeout(r, 2500); }).then(poll);
+                        });
+                    }
+                    return poll();
                 });
+            }
 
-                if (!uploadRes.ok) {
-                    var errorMsg = 'Erreur ' + uploadRes.status;
-                    try {
-                        var errJson = await uploadRes.json();
-                        if (errJson.error && errJson.error.message) {
-                            errorMsg = errJson.error.message;
-                        }
-                    } catch (e) {
-                        var text = await uploadRes.text();
-                        if (text.indexOf('Load failed') !== -1) {
-                            errorMsg = 'Load failed — Vérifiez votre clé API ou la taille du fichier';
-                        } else {
-                            errorMsg = text.substring(0, 100);
-                        }
-                    }
-                    throw new Error(errorMsg);
+            // ============================================================
+            // JOTTI - Ouvrir dans le navigateur
+            // ============================================================
+            function openJotti() {
+                if (results.length === 0) {
+                    showToast('Aucun fichier à soumettre à Jotti.', 'warning');
+                    return;
                 }
 
-                var uploadJson = await uploadRes.json();
-                var analysisId = uploadJson.data.id;
-
-                var attempts = 0;
-                while (attempts < 35) {
-                    await new Promise(function(r) { setTimeout(r, 2500); });
-                    var res = await fetch('https://www.virustotal.com/api/v3/analyses/' + analysisId, {
-                        headers: { 'x-apikey': apiKey }
-                    });
-                    if (!res.ok) throw new Error('Fetch failed: ' + res.status);
-                    var json = await res.json();
-                    if (json.data.attributes.status === 'completed') {
-                        var stats = json.data.attributes.stats;
-                        var malicious = stats.malicious || 0;
-                        var total = (stats.malicious || 0) + (stats.undetected || 0) +
-                            (stats.suspicious || 0) + (stats.harmless || 0) + (stats.timeout || 0);
-                        return {
-                            malicious: malicious,
-                            total: total,
-                            analysisId: analysisId,
-                            link: 'https://www.virustotal.com/gui/file/' + uploadJson.data.attributes.sha256
-                        };
-                    }
-                    attempts++;
+                var last = results[results.length - 1];
+                if (!last || !last.buffer) {
+                    showToast('Fichier non disponible.', 'error');
+                    return;
                 }
-                throw new Error('Analysis timeout');
+
+                // Créer un blob et un lien de téléchargement
+                var blob = new Blob([last.buffer], { type: 'application/octet-stream' });
+                var url = URL.createObjectURL(blob);
+
+                // Ouvrir Jotti dans un nouvel onglet
+                window.open('https://virusscan.jotti.org/', '_blank');
+
+                // Télécharger le fichier pour le soumettre manuellement
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = last.filename || 'fichier_a_analyser.exe';
+                a.click();
+
+                addLog('📤 Jotti ouvert. Soumettez le fichier téléchargé sur le site.', 'info');
+                showToast('📤 Jotti ouvert ! Soumettez le fichier sur le site.', 'success');
+
+                // Nettoyer l'URL après un délai
+                setTimeout(function() {
+                    URL.revokeObjectURL(url);
+                }, 10000);
             }
 
             // ============================================================
             // RUN CAMPAIGN
             // ============================================================
-            async function runCampaign() {
+            function runCampaign() {
                 if (isRunning) return;
                 if (!currentFile) {
                     showToast('Veuillez sélectionner un fichier.', 'error');
@@ -1591,14 +1694,33 @@
                 iterationDisplay.textContent = '0 / ' + numIterations;
                 addLog('🚀 Campagne démarrée — ' + numIterations + ' itérations', 'info');
 
-                try {
-                    var buffer = await currentFile.arrayBuffer();
+                var bufferPromise = currentFile.arrayBuffer();
+
+                bufferPromise.then(function(buffer) {
                     var ext = currentFile.name.split('.').pop().toLowerCase();
                     isApkFile = (ext === 'apk');
 
                     var currentBuffer = buffer;
+                    var campaignResults = [];
+                    var zeroReachedFlag = false;
 
-                    for (var i = 0; i < numIterations; i++) {
+                    function runIteration(i) {
+                        if (i >= numIterations) {
+                            // Terminé
+                            updateStatus('✅ Terminé (' + numIterations + ' itérations)', 'ready', 100);
+                            iterationDisplay.textContent = numIterations + ' / ' + numIterations;
+                            addLog('🏁 Campagne terminée — ' + numIterations + ' analyses', 'success');
+                            viewDetailsBtn.disabled = false;
+                            openBrowserBtn.disabled = false;
+                            jottiBtn.disabled = false;
+                            showToast('Analyse terminée. ' + numIterations + ' itérations.', 'success');
+                            isRunning = false;
+                            startBtn.disabled = false;
+                            if (timerInterval) { clearInterval(timerInterval);
+                                timerInterval = null; }
+                            return;
+                        }
+
                         var seed = i + 1;
                         var progress = ((i + 1) / numIterations) * 100;
                         updateStatus('Itération ' + (i + 1) + '/' + numIterations + '...', 'running', progress);
@@ -1610,74 +1732,108 @@
                         currentBuffer = modResult.buffer;
 
                         var isValid = isApkFile ? validateAPK(currentBuffer) : validatePE(currentBuffer);
-                        var hash = await computeSHA256(currentBuffer);
-                        var size = currentBuffer.byteLength;
 
-                        addLog('📤 Envoi à VirusTotal...', 'info');
+                        var hashPromise = computeSHA256(currentBuffer);
+                        hashPromise.then(function(hash) {
+                            var size = currentBuffer.byteLength;
+                            addLog('📤 Envoi à VirusTotal...', 'info');
 
-                        var vtResult;
-                        try {
                             var fname = 'iter_' + (i + 1) + '_' + currentFile.name;
-                            vtResult = await submitToVT(apiKey, currentBuffer, fname);
-                            currentAnalysisId = vtResult.analysisId;
-                            addLog('✅ ' + vtResult.malicious + '/' + vtResult.total + ' détections', vtResult
-                                .malicious === 0 ? 'success' : 'warning');
-                        } catch (e) {
-                            vtResult = { malicious: 'Erreur', total: 'Erreur' };
-                            addLog('❌ Erreur: ' + e.message, 'error');
-                            showToast('Erreur itération ' + (i + 1) + ': ' + e.message, 'error');
-                        }
+                            submitToVT(apiKey, currentBuffer, fname).then(function(vtResult) {
+                                currentAnalysisId = vtResult.analysisId;
+                                addLog('✅ ' + vtResult.malicious + '/' + vtResult.total +
+                                    ' détections', vtResult.malicious === 0 ? 'success' :
+                                    'warning');
 
-                        results.push({
-                            iteration: i + 1,
-                            version: 'Itération ' + (i + 1),
-                            modifications: modResult.modifications,
-                            sha256: hash,
-                            size: size,
-                            peValid: isValid,
-                            detections: vtResult.malicious,
-                            total: vtResult.total,
-                            buffer: currentBuffer,
-                            filename: 'iter_' + (i + 1) + '_' + currentFile.name,
-                            isZero: (typeof vtResult.malicious === 'number' && vtResult.malicious === 0),
-                            fileType: isApkFile ? 'APK' : 'EXE',
-                            link: vtResult.link || null
+                                results.push({
+                                    iteration: i + 1,
+                                    version: 'Itération ' + (i + 1),
+                                    modifications: modResult.modifications,
+                                    sha256: hash,
+                                    size: size,
+                                    peValid: isValid,
+                                    detections: vtResult.malicious,
+                                    total: vtResult.total,
+                                    buffer: currentBuffer,
+                                    filename: 'iter_' + (i + 1) + '_' + currentFile.name,
+                                    isZero: (typeof vtResult.malicious === 'number' &&
+                                        vtResult.malicious === 0),
+                                    fileType: isApkFile ? 'APK' : 'EXE',
+                                    link: vtResult.link || null
+                                });
+
+                                if (typeof vtResult.malicious === 'number' && vtResult.malicious ===
+                                    0) {
+                                    zeroReachedFlag = true;
+                                    addLog('⭐ 0 détection atteint !', 'success');
+                                }
+
+                                renderResults();
+                                updateSummary();
+
+                                if (typeof vtResult.malicious === 'number') {
+                                    updateDetections(vtResult.malicious, vtResult.total);
+                                }
+                                resultDate.textContent = new Date().toLocaleString();
+                                resultId.textContent = currentAnalysisId || '—';
+
+                                if (i < numIterations - 1) {
+                                    addLog('⏳ Pause 3s...', 'info');
+                                    setTimeout(function() {
+                                        runIteration(i + 1);
+                                    }, 3000);
+                                } else {
+                                    runIteration(i + 1);
+                                }
+
+                            }).catch(function(err) {
+                                addLog('❌ Erreur: ' + err.message, 'error');
+                                showToast('Erreur itération ' + (i + 1) + ': ' + err.message,
+                                'error');
+
+                                results.push({
+                                    iteration: i + 1,
+                                    version: 'Itération ' + (i + 1),
+                                    modifications: modResult.modifications,
+                                    sha256: hash,
+                                    size: size,
+                                    peValid: isValid,
+                                    detections: 'Erreur',
+                                    total: 'Erreur',
+                                    buffer: currentBuffer,
+                                    filename: 'iter_' + (i + 1) + '_' + currentFile.name,
+                                    isZero: false,
+                                    fileType: isApkFile ? 'APK' : 'EXE',
+                                    link: null
+                                });
+
+                                renderResults();
+                                updateSummary();
+                                resultDate.textContent = new Date().toLocaleString();
+
+                                if (i < numIterations - 1) {
+                                    addLog('⏳ Pause 3s...', 'info');
+                                    setTimeout(function() {
+                                        runIteration(i + 1);
+                                    }, 3000);
+                                } else {
+                                    runIteration(i + 1);
+                                }
+                            });
                         });
-
-                        renderResults();
-                        updateSummary();
-
-                        if (typeof vtResult.malicious === 'number') {
-                            updateDetections(vtResult.malicious, vtResult.total);
-                        }
-                        resultDate.textContent = new Date().toLocaleString();
-                        resultId.textContent = currentAnalysisId || '—';
-
-                        if (i < numIterations - 1) {
-                            addLog('⏳ Pause 3s...', 'info');
-                            await new Promise(function(r) { setTimeout(r, 3000); });
-                        }
                     }
 
-                    updateStatus('✅ Terminé (' + numIterations + ' itérations)', 'ready', 100);
-                    iterationDisplay.textContent = numIterations + ' / ' + numIterations;
-                    addLog('🏁 Campagne terminée — ' + numIterations + ' analyses', 'success');
-                    viewDetailsBtn.disabled = false;
-                    openBrowserBtn.disabled = false;
-                    showToast('Analyse terminée. ' + numIterations + ' itérations.', 'success');
+                    runIteration(0);
 
-                } catch (err) {
+                }).catch(function(err) {
                     updateStatus('Erreur: ' + err.message, 'error');
                     addLog('❌ ' + err.message, 'error');
                     showToast('Erreur: ' + err.message, 'error');
-                } finally {
                     isRunning = false;
                     startBtn.disabled = false;
-                    if (timerInterval) {
-                        clearInterval(timerInterval);
-                        timerInterval = null;
-                    }
-                }
+                    if (timerInterval) { clearInterval(timerInterval);
+                        timerInterval = null; }
+                });
             }
 
             // ============================================================
@@ -1750,6 +1906,7 @@
                 elapsedTimeDisplay.textContent = '00:00:00';
                 viewDetailsBtn.disabled = true;
                 openBrowserBtn.disabled = true;
+                jottiBtn.disabled = true;
                 currentFile = null;
                 fileInput.value = '';
                 updateFileInfo(null);
@@ -1837,11 +1994,17 @@
             });
 
             // ============================================================
+            // JOTTI - Événement du bouton
+            // ============================================================
+            jottiBtn.addEventListener('click', openJotti);
+
+            // ============================================================
             // INIT
             // ============================================================
             addLog('🛡️ Security Lab Scanner prêt', 'info');
             addLog('📦 Support: EXE + APK (max 2 MB)', 'info');
             addLog('🔑 Entrez votre clé API pour commencer', 'info');
+            addLog('🔍 Utilisez Jotti pour un second avis manuel', 'info');
 
             if (localStorage.getItem('vt_key')) {
                 vtApiKeyInput.value = localStorage.getItem('vt_key');
