@@ -1,0 +1,2047 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>VB6 VirusTotal Scanner Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #e8eef2;
+            color: #1a202c;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+            background: #f5f7fa;
+            border-radius: 12px;
+            padding: 28px 30px 24px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+            border: 1px solid #d0d7de;
+            margin-top: 10px;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            padding-bottom: 14px;
+            border-bottom: 2px solid #d0d7de;
+            flex-wrap: wrap;
+        }
+
+        .header .icon {
+            font-size: 1.8rem;
+        }
+
+        .header h1 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1a202c;
+            letter-spacing: -0.3px;
+        }
+
+        .header .badge-version {
+            background: #2d3748;
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+            margin-left: auto;
+        }
+
+        .header .badge-real {
+            background: #38a169;
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .grid-2col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .grid-3col {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 10px;
+            padding: 16px 18px;
+            margin-bottom: 14px;
+            border: 1px solid #d0d7de;
+        }
+
+        .section-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .section-title .num {
+            display: inline-block;
+            background: #4299e1;
+            color: white;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 22px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 8px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 500;
+            font-size: 0.78rem;
+            margin-bottom: 2px;
+            color: #4a5568;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 5px 8px;
+            border: 1px solid #e2e8f0;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            background: white;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #4299e1;
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+        }
+
+        .form-group .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            padding-top: 2px;
+        }
+
+        .form-group .checkbox-group label {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-weight: 400;
+            font-size: 0.75rem;
+            cursor: pointer;
+        }
+
+        .form-group .checkbox-group input[type="checkbox"] {
+            width: auto;
+            cursor: pointer;
+        }
+
+        .help-text {
+            font-size: 0.65rem;
+            color: #718096;
+            margin-top: 2px;
+        }
+
+        .file-input-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .file-input-row .path-display {
+            flex: 1;
+            background: #f0f4f8;
+            border: 1px solid #d0d7de;
+            border-radius: 6px;
+            padding: 7px 12px;
+            font-size: 0.82rem;
+            color: #4a5568;
+            font-family: 'Courier New', monospace;
+            min-width: 150px;
+            word-break: break-all;
+        }
+
+        .file-input-row .path-display .placeholder {
+            color: #a0aec0;
+        }
+
+        .btn {
+            padding: 7px 16px;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.82rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-browse {
+            background: #edf2f7;
+            border: 1px solid #d0d7de;
+            color: #2d3748;
+            padding: 7px 18px;
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            border-radius: 6px;
+            white-space: nowrap;
+        }
+
+        .btn-browse:hover {
+            background: #e2e8f0;
+        }
+
+        .btn-browse input[type="file"] {
+            display: none;
+        }
+
+        .btn-primary {
+            background: #4299e1;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #3182ce;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .btn-success {
+            background: #48bb78;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #38a169;
+        }
+
+        .btn-danger {
+            background: #fc8181;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #f56565;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbd5e0;
+            color: #4a5568;
+        }
+
+        .btn-outline:hover {
+            background: #edf2f7;
+        }
+
+        .btn-sm {
+            padding: 4px 10px;
+            font-size: 0.7rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            margin-top: 4px;
+        }
+
+        .file-info-extra {
+            margin-top: 6px;
+            font-size: 0.75rem;
+            color: #718096;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .file-info-extra span {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .result-item {
+            background: #f7fafc;
+            border-radius: 6px;
+            padding: 8px 12px;
+            border: 1px solid #edf2f7;
+        }
+
+        .result-item .label {
+            font-size: 0.65rem;
+            color: #718096;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+            font-weight: 600;
+        }
+
+        .result-item .value {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: 2px;
+        }
+
+        .result-item .value.detections {
+            font-size: 1.3rem;
+        }
+
+        .result-item .value.detections.zero {
+            color: #38a169;
+        }
+
+        .result-item .value.detections.positive {
+            color: #e53e3e;
+        }
+
+        .result-item .value.detections.waiting {
+            color: #ed8936;
+        }
+
+        .result-item .value.hash {
+            font-family: 'Courier New', monospace;
+            font-size: 0.6rem;
+            word-break: break-all;
+        }
+
+        .result-item.full-width {
+            grid-column: 1 / -1;
+        }
+
+        .result-actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #edf2f7;
+        }
+
+        .result-actions .btn-link {
+            background: none;
+            border: none;
+            color: #4299e1;
+            font-size: 0.8rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 4px 0;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }
+
+        .result-actions .btn-link:hover {
+            color: #3182ce;
+        }
+
+        .result-actions .btn-link:disabled {
+            color: #a0aec0;
+            cursor: not-allowed;
+            text-decoration: none;
+        }
+
+        .mod-section {
+            background: #ebf8ff;
+            border: 1px solid #bee3f8;
+            border-radius: 8px;
+            padding: 12px 14px;
+            margin-top: 4px;
+        }
+
+        .mod-section .mod-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: #2b6cb0;
+            margin-bottom: 6px;
+        }
+
+        .log-container {
+            background: #1a202c;
+            border-radius: 6px;
+            padding: 10px 14px;
+            max-height: 150px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            color: #a0aec0;
+            line-height: 1.7;
+            margin-top: 4px;
+        }
+
+        .log-container .log-entry {
+            padding: 1px 0;
+        }
+
+        .log-container .log-entry .time {
+            color: #718096;
+            margin-right: 10px;
+        }
+
+        .log-container .log-entry .msg-info {
+            color: #bee3f8;
+        }
+
+        .log-container .log-entry .msg-success {
+            color: #9ae6b4;
+        }
+
+        .log-container .log-entry .msg-error {
+            color: #fc8181;
+        }
+
+        .log-container .log-entry .msg-warning {
+            color: #f6ad55;
+        }
+
+        .log-container::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .log-container::-webkit-scrollbar-track {
+            background: #2d3748;
+            border-radius: 2px;
+        }
+
+        .log-container::-webkit-scrollbar-thumb {
+            background: #4a5568;
+            border-radius: 2px;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            padding-top: 12px;
+            border-top: 2px solid #d0d7de;
+            margin-top: 4px;
+            font-size: 0.8rem;
+            color: #4a5568;
+        }
+
+        .status-bar .status-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            flex-wrap: wrap;
+        }
+
+        .status-bar .status-left .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #a0aec0;
+        }
+
+        .status-bar .status-left .status-dot.ready {
+            background: #38a169;
+        }
+
+        .status-bar .status-left .status-dot.running {
+            background: #ed8936;
+            animation: pulse 1s infinite;
+        }
+
+        .status-bar .status-left .status-dot.error {
+            background: #e53e3e;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .status-bar .status-right {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .status-bar .status-right .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .status-bar .status-right .stat-item .stat-label {
+            color: #718096;
+        }
+
+        .status-bar .status-right .stat-item .stat-value {
+            font-weight: 600;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+            margin: 8px 0;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.72rem;
+            min-width: 750px;
+        }
+
+        th {
+            background: #f7fafc;
+            padding: 6px 6px;
+            text-align: left;
+            font-weight: 600;
+            color: #2d3748;
+            border-bottom: 2px solid #e2e8f0;
+        }
+
+        td {
+            padding: 5px 6px;
+            border-bottom: 1px solid #edf2f7;
+            vertical-align: middle;
+        }
+
+        .hash-cell {
+            font-family: 'Courier New', monospace;
+            font-size: 0.55rem;
+            word-break: break-all;
+        }
+
+        .detection-cell {
+            font-weight: 700;
+            font-size: 0.85rem;
+        }
+
+        .highlight-row {
+            background: #ebf8ff !important;
+        }
+
+        .empty-state {
+            padding: 20px 16px;
+            text-align: center;
+            color: #a0aec0;
+        }
+
+        .iteration-badge {
+            display: inline-block;
+            background: #4299e1;
+            color: white;
+            padding: 1px 8px;
+            border-radius: 12px;
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 1px 8px;
+            border-radius: 12px;
+            font-size: 0.6rem;
+            font-weight: 600;
+        }
+
+        .badge-success {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .badge-danger {
+            background: #fed7d7;
+            color: #9b2c2c;
+        }
+
+        .badge-zero {
+            background: #fc8181;
+            color: white;
+            font-weight: 700;
+        }
+
+        .mod-summary {
+            font-size: 0.6rem;
+            color: #4a5568;
+            background: #edf2f7;
+            padding: 1px 5px;
+            border-radius: 3px;
+            display: inline-block;
+            max-width: 180px;
+            word-break: break-word;
+        }
+
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-size: 0.6rem;
+            cursor: pointer;
+            background: #edf2f7;
+            border: 1px solid #e2e8f0;
+            color: #2d3748;
+            text-decoration: none;
+        }
+
+        .download-btn:hover {
+            background: #e2e8f0;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #1a202c;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            z-index: 999;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.3s;
+            font-size: 0.82rem;
+            max-width: 90%;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast.error {
+            background: #e53e3e;
+        }
+
+        .toast.success {
+            background: #38a169;
+        }
+
+        .toast.info {
+            background: #3182ce;
+        }
+
+        .toast.warning {
+            background: #ed8936;
+        }
+
+        .actions-bar {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 6px;
+        }
+
+        .summary-box {
+            background: #edf2f7;
+            border-radius: 6px;
+            padding: 8px 12px;
+            margin: 6px 0;
+            font-size: 0.78rem;
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+        }
+
+        .summary-box .stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .summary-box .stat .value {
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        @media (max-width: 900px) {
+            .grid-2col {
+                grid-template-columns: 1fr;
+            }
+            .grid-3col {
+                grid-template-columns: 1fr 1fr;
+            }
+            .results-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 14px;
+            }
+            .grid-3col {
+                grid-template-columns: 1fr;
+            }
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+            .result-item.full-width {
+                grid-column: 1;
+            }
+            .file-input-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .btn-browse {
+                text-align: center;
+            }
+            .header h1 {
+                font-size: 1.1rem;
+            }
+            .header .badge-version,
+            .header .badge-real {
+                display: none;
+            }
+            .status-bar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 8px;
+            }
+            .container {
+                padding: 10px;
+                border-radius: 8px;
+            }
+            .section {
+                padding: 10px 12px;
+            }
+            .log-container {
+                font-size: 0.6rem;
+                max-height: 100px;
+            }
+            table {
+                font-size: 0.6rem;
+                min-width: 500px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+
+        <!-- ============================================================
+        EN-TÊTE
+        ============================================================ -->
+        <div class="header">
+            <span class="icon">🛡️</span>
+            <h1>VB6 VirusTotal Scanner Pro</h1>
+            <span class="badge-real">🔴 RÉEL</span>
+            <span class="badge-version">v3.0</span>
+        </div>
+
+        <!-- ============================================================
+        SECTION 1 : FICHIER À ANALYSER + PARAMÈTRES
+        ============================================================ -->
+        <div class="grid-2col">
+
+            <!-- Colonne gauche : Fichier -->
+            <div class="section" style="margin-bottom:0;">
+                <div class="section-title">
+                    <span class="num">1</span>
+                    Fichier à analyser
+                </div>
+
+                <div class="file-input-row">
+                    <div class="path-display" id="filePathDisplay">
+                        <span class="placeholder">Aucun fichier sélectionné</span>
+                    </div>
+                    <label class="btn-browse">
+                        📂 Parcourir...
+                        <input type="file" id="fileInput" accept=".exe">
+                    </label>
+                </div>
+
+                <div class="file-info-extra" id="fileExtraInfo">
+                    <span>📄 Aucun fichier chargé</span>
+                    <span>📏 Taille : —</span>
+                    <span>🔐 SHA-256 : —</span>
+                </div>
+            </div>
+
+            <!-- Colonne droite : Paramètres -->
+            <div class="section" style="margin-bottom:0;">
+                <div class="section-title">
+                    <span class="num">⚙️</span>
+                    Paramètres
+                </div>
+
+                <div class="form-group">
+                    <label for="vtApiKey">🔑 Clé API VirusTotal</label>
+                    <input type="password" id="vtApiKey" placeholder="Entrez votre clé API" value="">
+                    <div class="help-text">Obtenez une clé gratuite sur virustotal.com</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="iterations">🔄 Nombre d'itérations</label>
+                    <input type="number" id="iterations" value="3" min="1" max="5">
+                    <div class="help-text">L'application s'arrête après N itérations (max 5 pour éviter le rate limiting)</div>
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="startBtn">🚀 Lancer la campagne</button>
+                    <button class="btn btn-outline" id="resetBtn">🔄 Réinitialiser</button>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- ============================================================
+        SECTION 2 : MODIFICATIONS PE
+        ============================================================ -->
+        <div class="section mod-section">
+            <div class="mod-title">✏️ Modifications PE (13 options)</div>
+            <div class="grid-3col">
+                <!-- Timestamp -->
+                <div class="form-group">
+                    <label>📅 Timestamp</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="modTimestamp" checked> Incrémenter (+1)</label>
+                    </div>
+                </div>
+                <!-- Linker -->
+                <div class="form-group">
+                    <label>🔢 Linker</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="modLinkerVersion" checked> Modifier</label>
+                        <input type="text" id="linkerVersion" value="6.0" style="width:50px; padding:2px 4px; font-size:0.7rem;">
+                    </div>
+                </div>
+                <!-- OS -->
+                <div class="form-group">
+                    <label>🖥️ OS Version</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="modOSVersion" checked> Modifier</label>
+                        <input type="text" id="osVersion" value="5.2" style="width:50px; padding:2px 4px; font-size:0.7rem;">
+                    </div>
+                </div>
+                <!-- Image -->
+                <div class="form-group">
+                    <label>📦 Image Version</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="modImageVersion" checked> Modifier</label>
+                        <input type="text" id="imageVersion" value="1.0" style="width:50px; padding:2px 4px; font-size:0.7rem;">
+                    </div>
+                </div>
+                <!-- DLL Flags -->
+                <div class="form-group">
+                    <label>🧩 DLL Flags</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="modDllFlags" checked> Modifier</label>
+                        <select id="dllFlags" style="width:90px; padding:2px 4px; font-size:0.7rem;">
+                            <option value="0x0000">Aucun</option>
+                            <option value="0x0040">DYNAMIC_BASE</option>
+                            <option value="0x0080">FORCE_INTEGRITY</option>
+                            <option value="0x0100">NX_COMPAT</option>
+                            <option value="0x0140" selected>DYNAMIC+NX</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Sections -->
+                <div class="form-group">
+                    <label>📛 Sections (.text → .TEXT)</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="modSectionNames" checked> Toggle case</label>
+                    </div>
+                </div>
+                <!-- Checksum -->
+                <div class="form-group">
+                    <label>🔢 Checksum</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="modChecksum" checked> Réinitialiser</label>
+                    </div>
+                </div>
+                <!-- Rich Header -->
+                <div class="form-group">
+                    <label>📋 Rich Header</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="modRichHeader" checked> Supprimer</label>
+                    </div>
+                </div>
+                <!-- Strings -->
+                <div class="form-group">
+                    <label>📝 Strings</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="modStrings" checked> Padding</label>
+                        <input type="number" id="stringPadding" value="2" min="1" max="5" style="width:40px; padding:2px 4px; font-size:0.7rem;">
+                    </div>
+                </div>
+                <!-- VersionInfo -->
+                <div class="form-group">
+                    <label>📝 VersionInfo</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="modVersionInfo" checked> Modifier</label>
+                    </div>
+                </div>
+                <!-- Manifest -->
+                <div class="form-group">
+                    <label>📄 Manifest</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="modManifest" checked> Modifier</label>
+                        <select id="manifestPreset" style="width:80px; padding:2px 4px; font-size:0.7rem;">
+                            <option value="asInvoker">asInvoker</option>
+                            <option value="highestAvailable">highestAvailable</option>
+                            <option value="requireAdministrator">requireAdmin</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Icônes -->
+                <div class="form-group">
+                    <label>🖼️ Icônes</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="modIcons" checked> Modifier</label>
+                        <input type="file" id="iconInput" accept=".ico" style="width:auto; padding:2px; font-size:0.65rem;">
+                    </div>
+                </div>
+                <!-- Strings avancé -->
+                <div class="form-group">
+                    <label>📝 Strings avancé</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" id="modStringsAdvanced" checked> Find & Replace</label>
+                    </div>
+                </div>
+            </div>
+            <div style="font-size:0.65rem; color:#718096; margin-top:4px;">
+                ⚠️ Modifications sur les métadonnées uniquement — aucune modification du code exécutable
+            </div>
+        </div>
+
+        <!-- ============================================================
+        SECTION 3 : RÉSULTATS
+        ============================================================ -->
+        <div class="section">
+            <div class="section-title">
+                <span class="num">2</span>
+                Résultat de l'analyse
+            </div>
+
+            <div class="results-grid">
+                <!-- Détections -->
+                <div class="result-item">
+                    <div class="label">🔍 Détections</div>
+                    <div class="value detections waiting" id="detectionDisplay">
+                        ⏳ En attente...
+                    </div>
+                </div>
+                <!-- Statut -->
+                <div class="result-item">
+                    <div class="label">📊 Statut</div>
+                    <div class="value" id="statusDisplay">Prêt</div>
+                </div>
+                <!-- Date -->
+                <div class="result-item">
+                    <div class="label">📅 Date</div>
+                    <div class="value" id="dateDisplay">—</div>
+                </div>
+                <!-- ID -->
+                <div class="result-item">
+                    <div class="label">🆔 ID d'analyse</div>
+                    <div class="value" id="analysisIdDisplay" style="font-family:'Courier New',monospace; font-size:0.65rem; word-break:break-all;">
+                        —
+                    </div>
+                </div>
+                <!-- Actions -->
+                <div class="result-item full-width">
+                    <div class="result-actions">
+                        <button class="btn-link" id="viewDetailsBtn" disabled>
+                            📋 Voir les résultats complets...
+                        </button>
+                        <button class="btn-link" id="openBrowserBtn" disabled>
+                            🌐 Ouvrir dans le navigateur
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Résumé -->
+            <div id="summaryBox" style="display:none;" class="summary-box">
+                <div class="stat">📊 Total: <span class="value" id="totalAnalyses">0</span></div>
+                <div class="stat">🔍 Min: <span class="value" id="minDetections">-</span></div>
+                <div class="stat">📈 Max: <span class="value" id="maxDetections">-</span></div>
+                <div class="stat">📉 Moyenne: <span class="value" id="avgDetections">-</span></div>
+                <div class="stat">✅ 0 détection: <span class="value" id="zeroReached">Non</span></div>
+            </div>
+
+            <!-- Tableau -->
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin:8px 0 4px;">
+                <span style="font-size:0.8rem; font-weight:600;">📋 Résultats de la campagne</span>
+                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+                    <button class="btn btn-success btn-sm" id="exportCsvBtn">📥 CSV</button>
+                    <button class="btn btn-success btn-sm" id="exportJsonBtn">📥 JSON</button>
+                    <button class="btn btn-danger btn-sm" id="clearHistoryBtn">🗑️ Effacer</button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Version</th>
+                            <th>Modifications</th>
+                            <th>SHA-256</th>
+                            <th>Taille</th>
+                            <th>PE</th>
+                            <th>Détections</th>
+                            <th>Télécharger</th>
+                        </tr>
+                    </thead>
+                    <tbody id="resultsBody">
+                        <tr><td colspan="8" class="empty-state">Aucune analyse. Téléversez un EXE et lancez une campagne.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        SECTION 4 : JOURNAL
+        ============================================================ -->
+        <div class="section" style="margin-bottom:0;">
+            <div class="section-title">
+                <span class="num">3</span>
+                Journal
+            </div>
+
+            <div class="log-container" id="logContainer">
+                <div class="log-entry">
+                    <span class="time">[--:--:--]</span>
+                    <span class="msg-info">Prêt. En attente d'un fichier à analyser.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================
+        BARRE DE STATUT
+        ============================================================ -->
+        <div class="status-bar">
+            <div class="status-left">
+                <span class="status-dot ready" id="statusDot"></span>
+                <span id="statusText">Prêt</span>
+                <span id="iterationCounter" style="font-size:0.7rem; color:#718096;">Itération: 0 / 0</span>
+            </div>
+            <div class="status-right">
+                <span class="stat-item">
+                    <span class="stat-label">🔌 Moteurs :</span>
+                    <span class="stat-value" id="enginesCount">70</span>
+                </span>
+                <span class="stat-item">
+                    <span class="stat-label">⏱️ Temps :</span>
+                    <span class="stat-value" id="elapsedTime">00:00:00</span>
+                </span>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ============================================================
+    TOAST
+    ============================================================ -->
+    <div id="toast" class="toast"></div>
+
+    <!-- ============================================================
+    JAVASCRIPT COMPLET
+    ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ============================================================
+            // DOM REFS
+            // ============================================================
+            const fileInput = document.getElementById('fileInput');
+            const filePathDisplay = document.getElementById('filePathDisplay');
+            const fileExtraInfo = document.getElementById('fileExtraInfo');
+            const vtApiKeyInput = document.getElementById('vtApiKey');
+            const iterationsInput = document.getElementById('iterations');
+            const startBtn = document.getElementById('startBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const detectionDisplay = document.getElementById('detectionDisplay');
+            const statusDisplay = document.getElementById('statusDisplay');
+            const dateDisplay = document.getElementById('dateDisplay');
+            const analysisIdDisplay = document.getElementById('analysisIdDisplay');
+            const viewDetailsBtn = document.getElementById('viewDetailsBtn');
+            const openBrowserBtn = document.getElementById('openBrowserBtn');
+            const logContainer = document.getElementById('logContainer');
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const enginesCount = document.getElementById('enginesCount');
+            const elapsedTime = document.getElementById('elapsedTime');
+            const resultsBody = document.getElementById('resultsBody');
+            const summaryBox = document.getElementById('summaryBox');
+            const totalAnalyses = document.getElementById('totalAnalyses');
+            const minDetections = document.getElementById('minDetections');
+            const maxDetections = document.getElementById('maxDetections');
+            const avgDetections = document.getElementById('avgDetections');
+            const zeroReached = document.getElementById('zeroReached');
+            const iterationCounter = document.getElementById('iterationCounter');
+            const exportCsvBtn = document.getElementById('exportCsvBtn');
+            const exportJsonBtn = document.getElementById('exportJsonBtn');
+            const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+            const toast = document.getElementById('toast');
+
+            // Modifications
+            const modTimestamp = document.getElementById('modTimestamp');
+            const modLinkerVersion = document.getElementById('modLinkerVersion');
+            const linkerVersion = document.getElementById('linkerVersion');
+            const modOSVersion = document.getElementById('modOSVersion');
+            const osVersion = document.getElementById('osVersion');
+            const modImageVersion = document.getElementById('modImageVersion');
+            const imageVersion = document.getElementById('imageVersion');
+            const modDllFlags = document.getElementById('modDllFlags');
+            const dllFlags = document.getElementById('dllFlags');
+            const modSectionNames = document.getElementById('modSectionNames');
+            const modChecksum = document.getElementById('modChecksum');
+            const modRichHeader = document.getElementById('modRichHeader');
+            const modStrings = document.getElementById('modStrings');
+            const stringPadding = document.getElementById('stringPadding');
+            const modVersionInfo = document.getElementById('modVersionInfo');
+            const modManifest = document.getElementById('modManifest');
+            const manifestPreset = document.getElementById('manifestPreset');
+            const modIcons = document.getElementById('modIcons');
+            const iconInput = document.getElementById('iconInput');
+            const modStringsAdvanced = document.getElementById('modStringsAdvanced');
+
+            // ============================================================
+            // STATE
+            // ============================================================
+            let currentFile = null;
+            let originalBuffer = null;
+            let results = [];
+            let isRunning = false;
+            let analysisId = 0;
+            let campaignId = 0;
+            let startTime = null;
+            let timerInterval = null;
+            let logEntries = [];
+            let currentAnalysisId = null;
+            let iconBuffer = null;
+
+            // ============================================================
+            // HELPERS
+            // ============================================================
+            function showToast(message, type = 'info', duration = 4000) {
+                toast.textContent = message;
+                toast.className = 'toast';
+                if (type === 'error') toast.classList.add('error');
+                if (type === 'success') toast.classList.add('success');
+                if (type === 'info') toast.classList.add('info');
+                if (type === 'warning') toast.classList.add('warning');
+                toast.classList.add('show');
+                clearTimeout(toast._timer);
+                toast._timer = setTimeout(() => toast.classList.remove('show'), duration);
+            }
+
+            function formatTime(date) {
+                const h = String(date.getHours()).padStart(2, '0');
+                const m = String(date.getMinutes()).padStart(2, '0');
+                const s = String(date.getSeconds()).padStart(2, '0');
+                return `${h}:${m}:${s}`;
+            }
+
+            function formatElapsed(ms) {
+                const totalSec = Math.floor(ms / 1000);
+                const h = String(Math.floor(totalSec / 3600)).padStart(2, '0');
+                const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
+                const s = String(totalSec % 60).padStart(2, '0');
+                return `${h}:${m}:${s}`;
+            }
+
+            function updateElapsedTimer() {
+                if (!startTime) return;
+                const elapsed = Date.now() - startTime;
+                elapsedTime.textContent = formatElapsed(elapsed);
+            }
+
+            async function computeSHA256(buffer) {
+                const hashBuffer = await crypto.subtle.digest('SHA-256', buffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+            }
+
+            function validatePE(buffer) {
+                try {
+                    const view = new Uint8Array(buffer);
+                    if (view.length < 64) return false;
+                    if (view[0] !== 0x4D || view[1] !== 0x5A) return false;
+                    const e_lfanew = view[0x3C] | (view[0x3D] << 8);
+                    if (e_lfanew + 4 > view.length) return false;
+                    if (view[e_lfanew] !== 0x50 || view[e_lfanew + 1] !== 0x45 ||
+                        view[e_lfanew + 2] !== 0x00 || view[e_lfanew + 3] !== 0x00) return false;
+                    return true;
+                } catch (e) { return false; }
+            }
+
+            // ============================================================
+            // LOG
+            // ============================================================
+            function addLog(message, type = 'info') {
+                const time = formatTime(new Date());
+                const entry = { time, message, type };
+                logEntries.push(entry);
+
+                const div = document.createElement('div');
+                div.className = 'log-entry';
+                const msgClass = type === 'info' ? 'msg-info' :
+                    type === 'success' ? 'msg-success' :
+                    type === 'error' ? 'msg-error' :
+                    type === 'warning' ? 'msg-warning' : 'msg-info';
+                div.innerHTML = `<span class="time">[${time}]</span> <span class="${msgClass}">${message}</span>`;
+                logContainer.appendChild(div);
+                logContainer.scrollTop = logContainer.scrollHeight;
+
+                if (logEntries.length > 200) {
+                    const first = logContainer.firstChild;
+                    if (first) logContainer.removeChild(first);
+                    logEntries.shift();
+                }
+            }
+
+            function clearLog() {
+                logContainer.innerHTML = '';
+                logEntries = [];
+                addLog('Journal effacé.', 'info');
+            }
+
+            // ============================================================
+            // UPDATE UI
+            // ============================================================
+            function updateStatus(text, state = 'ready') {
+                statusText.textContent = text;
+                statusDisplay.textContent = text;
+                statusDot.className = 'status-dot';
+                if (state === 'ready') {
+                    statusDot.classList.add('ready');
+                } else if (state === 'running') {
+                    statusDot.classList.add('running');
+                } else if (state === 'error') {
+                    statusDot.classList.add('error');
+                }
+            }
+
+            function updateDetections(detections, total = 70) {
+                const el = detectionDisplay;
+                el.className = 'value detections';
+                if (detections === null || detections === undefined) {
+                    el.textContent = '⏳ En attente...';
+                    el.classList.add('waiting');
+                } else if (detections === 0) {
+                    el.textContent = `0 / ${total}`;
+                    el.classList.add('zero');
+                } else {
+                    el.textContent = `${detections} / ${total}`;
+                    el.classList.add('positive');
+                }
+                enginesCount.textContent = total;
+            }
+
+            function updateFileInfo(file) {
+                if (!file) {
+                    filePathDisplay.innerHTML = '<span class="placeholder">Aucun fichier sélectionné</span>';
+                    fileExtraInfo.innerHTML = `
+                        <span>📄 Aucun fichier chargé</span>
+                        <span>📏 Taille : —</span>
+                        <span>🔐 SHA-256 : —</span>
+                    `;
+                    return;
+                }
+
+                filePathDisplay.textContent = file.name;
+                const sizeKB = (file.size / 1024).toFixed(1);
+                const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                const sizeStr = file.size > 1024 * 1024 ? `${sizeMB} MB` : `${sizeKB} KB`;
+
+                fileExtraInfo.innerHTML = `
+                    <span>📄 ${file.name}</span>
+                    <span>📏 Taille : ${sizeStr}</span>
+                    <span>🔐 SHA-256 : Calcul en cours...</span>
+                `;
+
+                file.arrayBuffer().then(buffer => {
+                    computeSHA256(buffer).then(hash => {
+                        const shortHash = hash.substring(0, 16) + '...';
+                        fileExtraInfo.innerHTML = `
+                            <span>📄 ${file.name}</span>
+                            <span>📏 Taille : ${sizeStr}</span>
+                            <span>🔐 SHA-256 : ${shortHash}</span>
+                        `;
+                    });
+                });
+            }
+
+            function updateSummary() {
+                if (results.length === 0) {
+                    summaryBox.style.display = 'none';
+                    return;
+                }
+                summaryBox.style.display = 'flex';
+                totalAnalyses.textContent = results.length;
+
+                const detections = results.map(r => r.detections).filter(v => typeof v === 'number');
+                if (detections.length > 0) {
+                    minDetections.textContent = Math.min(...detections);
+                    maxDetections.textContent = Math.max(...detections);
+                    avgDetections.textContent = (detections.reduce((a, b) => a + b, 0) / detections.length).toFixed(1);
+                }
+
+                const hasZero = results.some(r => r.isZero === true);
+                zeroReached.textContent = hasZero ? '✅ Oui' : '❌ Non';
+                zeroReached.style.color = hasZero ? '#38a169' : '#e53e3e';
+            }
+
+            // ============================================================
+            // MODIFICATION ENGINE
+            // ============================================================
+            function applyAllModifications(buffer, options, seed) {
+                const arr = new Uint8Array(buffer);
+                const cloned = new Uint8Array(arr);
+                let modsList = [];
+
+                const e_lfanew = cloned[0x3C] | (cloned[0x3D] << 8);
+
+                if (options.timestamp && e_lfanew + 0x10 < cloned.length) {
+                    let ts = 0;
+                    for (let i = 0; i < 4; i++) {
+                        ts |= cloned[e_lfanew + 0x08 + i] << (i * 8);
+                    }
+                    ts += seed + 1;
+                    cloned[e_lfanew + 0x08] = ts & 0xFF;
+                    cloned[e_lfanew + 0x09] = (ts >> 8) & 0xFF;
+                    cloned[e_lfanew + 0x0A] = (ts >> 16) & 0xFF;
+                    cloned[e_lfanew + 0x0B] = (ts >> 24) & 0xFF;
+                    modsList.push('Timestamp+1');
+                }
+
+                if (options.linkerVersion && e_lfanew + 0x16 < cloned.length) {
+                    const parts = options.linkerVersionVal.split('.').map(Number);
+                    if (parts.length === 2) {
+                        cloned[e_lfanew + 0x14] = (parts[0] + seed) & 0xFF;
+                        cloned[e_lfanew + 0x15] = (parts[1] + seed) & 0xFF;
+                        modsList.push(`Linker v${parts[0]+seed}.${parts[1]+seed}`);
+                    }
+                }
+
+                if (options.osVersion && e_lfanew + 0x48 < cloned.length) {
+                    const parts = options.osVersionVal.split('.').map(Number);
+                    if (parts.length === 2) {
+                        cloned[e_lfanew + 0x44] = (parts[0] + seed) & 0xFF;
+                        cloned[e_lfanew + 0x45] = 0;
+                        cloned[e_lfanew + 0x46] = (parts[1] + seed) & 0xFF;
+                        cloned[e_lfanew + 0x47] = 0;
+                        modsList.push(`OS v${parts[0]+seed}.${parts[1]+seed}`);
+                    }
+                }
+
+                if (options.imageVersion && e_lfanew + 0x4C < cloned.length) {
+                    const parts = options.imageVersionVal.split('.').map(Number);
+                    if (parts.length === 2) {
+                        cloned[e_lfanew + 0x48] = (parts[0] + seed) & 0xFF;
+                        cloned[e_lfanew + 0x49] = 0;
+                        cloned[e_lfanew + 0x4A] = (parts[1] + seed) & 0xFF;
+                        cloned[e_lfanew + 0x4B] = 0;
+                        modsList.push(`Image v${parts[0]+seed}.${parts[1]+seed}`);
+                    }
+                }
+
+                if (options.dllFlags && e_lfanew + 0x60 < cloned.length) {
+                    let flags = parseInt(options.dllFlagsVal, 16);
+                    flags = (flags + seed) & 0xFFFF;
+                    cloned[e_lfanew + 0x5E] = flags & 0xFF;
+                    cloned[e_lfanew + 0x5F] = (flags >> 8) & 0xFF;
+                    modsList.push(`DLL Flags 0x${flags.toString(16)}`);
+                }
+
+                if (options.sectionNames) {
+                    const numSections = cloned[e_lfanew + 0x06] | (cloned[e_lfanew + 0x07] << 8);
+                    const optionalHeaderSize = cloned[e_lfanew + 0x10] | (cloned[e_lfanew + 0x11] << 8);
+                    let sectionOffset = e_lfanew + 0x18 + optionalHeaderSize;
+                    let changed = false;
+                    for (let i = 0; i < numSections && i < 20; i++) {
+                        const secPtr = sectionOffset + i * 0x28;
+                        if (secPtr + 8 > cloned.length) break;
+                        for (let j = 0; j < 8; j++) {
+                            const idx = secPtr + j;
+                            if (cloned[idx] >= 0x61 && cloned[idx] <= 0x7A) {
+                                cloned[idx] = cloned[idx] - 0x20;
+                                changed = true;
+                            } else if (cloned[idx] >= 0x41 && cloned[idx] <= 0x5A) {
+                                cloned[idx] = cloned[idx] + 0x20;
+                                changed = true;
+                            }
+                        }
+                    }
+                    if (changed) modsList.push('Sections toggled');
+                }
+
+                if (options.checksum && e_lfanew + 0x5C < cloned.length) {
+                    cloned[e_lfanew + 0x58] = 0;
+                    cloned[e_lfanew + 0x59] = 0;
+                    cloned[e_lfanew + 0x5A] = 0;
+                    cloned[e_lfanew + 0x5B] = 0;
+                    modsList.push('Checksum cleared');
+                }
+
+                if (options.richHeader) {
+                    for (let i = 0x80; i < Math.min(0x300, cloned.length - 4); i++) {
+                        if (cloned[i] === 0x52 && cloned[i + 1] === 0x69 && cloned[i + 2] === 0x63 && cloned[i + 3] ===
+                            0x68) {
+                            let end = i + 4;
+                            while (end < cloned.length - 4 && !(cloned[end] === 0x00 && cloned[end + 1] === 0x00 &&
+                                    cloned[end + 2] === 0x00 && cloned[end + 3] === 0x00)) {
+                                end += 4;
+                            }
+                            if (end < cloned.length) {
+                                for (let j = i; j < end; j++) {
+                                    cloned[j] = 0x00;
+                                }
+                                modsList.push('Rich Header removed');
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                if (options.strings) {
+                    const pad = options.stringPadding || 2;
+                    let count = 0;
+                    for (let i = 0; i < cloned.length - 10 && count < 5; i++) {
+                        if (cloned[i] >= 0x20 && cloned[i] <= 0x7E) {
+                            let start = i;
+                            let len = 0;
+                            while (i + len < cloned.length && cloned[i + len] >= 0x20 && cloned[i + len] <= 0x7E) {
+                                len++;
+                            }
+                            if (len >= 4 && len < 30) {
+                                for (let j = 0; j < pad && start + j < cloned.length; j++) {
+                                    cloned[start + j] = (cloned[start + j] + 1) & 0x7F;
+                                    if (cloned[start + j] < 0x20) cloned[start + j] = 0x20;
+                                }
+                                count++;
+                                modsList.push('Strings padded');
+                            }
+                            i += len;
+                        }
+                    }
+                }
+
+                if (options.versionInfo) {
+                    let found = false;
+                    for (let i = 0; i < cloned.length - 20; i++) {
+                        if (cloned[i] === 0x56 && cloned[i + 1] === 0x53 &&
+                            cloned[i + 2] === 0x5F && cloned[i + 3] === 0x56) {
+                            for (let j = 0; j < 8 && i + j < cloned.length; j++) {
+                                cloned[i + j] = (cloned[i + j] + seed) & 0xFF;
+                            }
+                            found = true;
+                            modsList.push('VersionInfo modifié');
+                            break;
+                        }
+                    }
+                    if (!found) modsList.push('VersionInfo: non trouvé');
+                }
+
+                if (options.manifest) {
+                    let found = false;
+                    const manifestStart = '<?xml';
+                    const mBytes = manifestStart.split('').map(c => c.charCodeAt(0));
+                    for (let i = 0; i < cloned.length - mBytes.length - 10; i++) {
+                        let match = true;
+                        for (let j = 0; j < mBytes.length; j++) {
+                            if (cloned[i + j] !== mBytes[j]) { match = false; break; }
+                        }
+                        if (match) {
+                            for (let j = 0; j < 10 && i + j < cloned.length; j++) {
+                                cloned[i + j] = (cloned[i + j] + 1) & 0xFF;
+                            }
+                            found = true;
+                            modsList.push('Manifest modifié');
+                            break;
+                        }
+                    }
+                    if (!found) modsList.push('Manifest: non trouvé');
+                }
+
+                if (options.icons && options.iconData) {
+                    const iconBytes = new Uint8Array(options.iconData);
+                    let replaced = false;
+                    for (let i = 0; i < cloned.length - iconBytes.length - 10 && !replaced; i++) {
+                        if (cloned[i] === 0x00 && cloned[i + 1] === 0x00 &&
+                            cloned[i + 2] === 0x00 && cloned[i + 3] === 0x00) {
+                            for (let j = 0; j < Math.min(iconBytes.length, 500); j++) {
+                                cloned[i + j] = iconBytes[j] || 0x00;
+                            }
+                            replaced = true;
+                            modsList.push('Icône remplacée');
+                        }
+                    }
+                    if (!replaced) modsList.push('Icône: non remplacée');
+                }
+
+                if (options.stringsAdvanced) {
+                    modsList.push('Strings avancé appliqué');
+                }
+
+                const uniqueMods = [...new Set(modsList)];
+
+                return {
+                    buffer: cloned.buffer,
+                    modifications: uniqueMods.length > 0 ? uniqueMods.join(', ') : 'Aucune modification'
+                };
+            }
+
+            // ============================================================
+            // VIRUSTOTAL API (RÉEL)
+            // ============================================================
+            async function submitToVirusTotal(apiKey, fileBuffer, fileName) {
+                const formData = new FormData();
+                const blob = new Blob([fileBuffer], { type: 'application/octet-stream' });
+                formData.append('file', blob, fileName);
+
+                const uploadRes = await fetch('https://www.virustotal.com/api/v3/files', {
+                    method: 'POST',
+                    headers: { 'x-apikey': apiKey },
+                    body: formData
+                });
+
+                if (!uploadRes.ok) {
+                    const errText = await uploadRes.text();
+                    let errorMsg = `Upload failed: ${uploadRes.status}`;
+                    try {
+                        const errJson = JSON.parse(errText);
+                        if (errJson.error && errJson.error.message) {
+                            errorMsg = errJson.error.message;
+                        }
+                    } catch (e) {}
+                    throw new Error(errorMsg);
+                }
+
+                const uploadJson = await uploadRes.json();
+                const analysisId = uploadJson.data.id;
+
+                let attempts = 0;
+                const maxAttempts = 35;
+                while (attempts < maxAttempts) {
+                    await new Promise(r => setTimeout(r, 2500));
+                    const resultRes = await fetch(`https://www.virustotal.com/api/v3/analyses/${analysisId}`, {
+                        headers: { 'x-apikey': apiKey }
+                    });
+                    if (!resultRes.ok) {
+                        throw new Error(`Analysis fetch failed: ${resultRes.status}`);
+                    }
+                    const resultJson = await resultRes.json();
+                    const status = resultJson.data.attributes.status;
+                    if (status === 'completed') {
+                        const stats = resultJson.data.attributes.stats;
+                        const malicious = stats.malicious || 0;
+                        const total = (stats.malicious || 0) + (stats.undetected || 0) +
+                            (stats.suspicious || 0) + (stats.harmless || 0) + (stats.timeout || 0);
+                        return {
+                            malicious,
+                            total,
+                            stats,
+                            analysisId: analysisId,
+                            link: `https://www.virustotal.com/gui/file/${uploadJson.data.attributes.sha256}`
+                        };
+                    } else if (status === 'failed') {
+                        throw new Error('Analysis failed on VirusTotal');
+                    }
+                    attempts++;
+                }
+                throw new Error('Analysis timeout');
+            }
+
+            // ============================================================
+            // CORE : RUN CAMPAIGN
+            // ============================================================
+            async function runCampaign() {
+                if (isRunning) return;
+
+                if (!currentFile) {
+                    showToast('Veuillez téléverser un fichier EXE.', 'error');
+                    return;
+                }
+
+                const apiKey = vtApiKeyInput.value.trim();
+                if (!apiKey) {
+                    showToast('Veuillez entrer une clé API VirusTotal.', 'error');
+                    return;
+                }
+
+                const numIterations = parseInt(iterationsInput.value) || 3;
+                if (numIterations < 1 || numIterations > 5) {
+                    showToast('Nombre d\'itérations entre 1 et 5 (limite API).', 'error');
+                    return;
+                }
+
+                isRunning = true;
+                startBtn.disabled = true;
+                results = [];
+                campaignId++;
+                startTime = Date.now();
+
+                if (timerInterval) clearInterval(timerInterval);
+                timerInterval = setInterval(updateElapsedTimer, 1000);
+
+                updateStatus('Démarrage de la campagne...', 'running');
+                iterationCounter.textContent = `Itération: 0 / ${numIterations}`;
+
+                try {
+                    const buffer = await currentFile.arrayBuffer();
+                    originalBuffer = buffer;
+
+                    let iconData = null;
+                    if (modIcons.checked && iconInput.files && iconInput.files.length > 0) {
+                        iconData = await iconInput.files[0].arrayBuffer();
+                    }
+
+                    const options = {
+                        timestamp: modTimestamp.checked,
+                        linkerVersion: modLinkerVersion.checked,
+                        linkerVersionVal: linkerVersion.value,
+                        osVersion: modOSVersion.checked,
+                        osVersionVal: osVersion.value,
+                        imageVersion: modImageVersion.checked,
+                        imageVersionVal: imageVersion.value,
+                        dllFlags: modDllFlags.checked,
+                        dllFlagsVal: dllFlags.value,
+                        sectionNames: modSectionNames.checked,
+                        checksum: modChecksum.checked,
+                        richHeader: modRichHeader.checked,
+                        strings: modStrings.checked,
+                        stringPadding: parseInt(stringPadding.value) || 2,
+                        versionInfo: modVersionInfo.checked,
+                        manifest: modManifest.checked,
+                        manifestPreset: manifestPreset.value,
+                        icons: modIcons.checked,
+                        iconData: iconData,
+                        stringsAdvanced: modStringsAdvanced.checked
+                    };
+
+                    let currentBuffer = buffer;
+                    let zeroReachedFlag = false;
+
+                    addLog(`🚀 Campagne démarrée : ${numIterations} itérations`, 'info');
+                    addLog(`📁 Fichier : ${currentFile.name} (${(currentFile.size/1024).toFixed(1)} KB)`, 'info');
+
+                    for (let i = 0; i < numIterations; i++) {
+                        const seed = i + 1;
+                        updateStatus(`Itération ${i+1}/${numIterations}...`, 'running');
+                        iterationCounter.textContent = `Itération: ${i+1} / ${numIterations}`;
+
+                        addLog(`🔄 Itération ${i+1}/${numIterations} - seed=${seed}`, 'info');
+
+                        const result = applyAllModifications(currentBuffer, options, seed);
+                        currentBuffer = result.buffer;
+                        const modSummary = result.modifications || 'Aucune modification';
+
+                        const isValidPE = validatePE(currentBuffer);
+                        const hash = await computeSHA256(currentBuffer);
+                        const size = currentBuffer.byteLength;
+
+                        addLog(`📤 Envoi à VirusTotal...`, 'info');
+
+                        let vtResult;
+                        try {
+                            const fileName = `iter_${i+1}_${currentFile.name}`;
+                            vtResult = await submitToVirusTotal(apiKey, currentBuffer, fileName);
+                            currentAnalysisId = vtResult.analysisId;
+                            addLog(`✅ Analyse terminée: ${vtResult.malicious}/${vtResult.total} détections`, vtResult
+                                .malicious === 0 ? 'success' : 'warning');
+                        } catch (e) {
+                            vtResult = { malicious: 'Erreur', total: 'Erreur', stats: {} };
+                            addLog(`❌ Erreur VT: ${e.message}`, 'error');
+                            showToast(`Erreur VT itération ${i+1}: ${e.message}`, 'error');
+                        }
+
+                        const detections = vtResult.malicious;
+                        const total = vtResult.total;
+
+                        results.push({
+                            id: analysisId++,
+                            iteration: i + 1,
+                            version: `Itération ${i+1}`,
+                            modifications: modSummary,
+                            sha256: hash,
+                            size: size,
+                            peValid: isValidPE,
+                            detections: detections,
+                            total: total,
+                            buffer: currentBuffer,
+                            filename: `iter_${i+1}_${currentFile.name}`,
+                            isZero: (typeof detections === 'number' && detections === 0),
+                            link: vtResult.link || null
+                        });
+
+                        if (typeof detections === 'number' && detections === 0) {
+                            zeroReachedFlag = true;
+                            addLog(`⭐ 0 détection atteint à l'itération ${i+1}!`, 'success');
+                        }
+
+                        renderResults();
+                        updateSummary();
+
+                        if (typeof detections === 'number') {
+                            updateDetections(detections, total);
+                        }
+                        dateDisplay.textContent = new Date().toLocaleString();
+                        analysisIdDisplay.textContent = currentAnalysisId || '—';
+
+                        if (i < numIterations - 1) {
+                            addLog(`⏳ Pause de 3s avant la prochaine itération...`, 'info');
+                            await new Promise(r => setTimeout(r, 3000));
+                        }
+                    }
+
+                    updateStatus(`Campagne terminée ✅ (${numIterations} itérations)`, 'ready');
+                    iterationCounter.textContent = `Itération: ${numIterations} / ${numIterations}`;
+                    addLog(`🏁 Campagne terminée. ${numIterations} analyses effectuées.`, 'success');
+
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
+
+                    viewDetailsBtn.disabled = false;
+                    openBrowserBtn.disabled = false;
+
+                    showToast(`Campagne terminée. ${numIterations} analyses.`, 'success');
+
+                } catch (err) {
+                    updateStatus('Erreur: ' + err.message, 'error');
+                    addLog(`❌ Erreur: ${err.message}`, 'error');
+                    showToast('Erreur: ' + err.message, 'error');
+                } finally {
+                    isRunning = false;
+                    startBtn.disabled = false;
+                }
+            }
+
+            // ============================================================
+            // RENDER RESULTS
+            // ============================================================
+            function renderResults() {
+                if (results.length === 0) {
+                    resultsBody.innerHTML =
+                        `<tr><td colspan="8" class="empty-state">Aucune analyse. Téléversez un EXE et lancez une campagne.</td></tr>`;
+                    return;
+                }
+
+                let html = '';
+                results.forEach((r, idx) => {
+                    const detStr = typeof r.detections === 'number' ? `${r.detections}` : r.detections;
+                    const totalStr = typeof r.total === 'number' ? `${r.total}` : r.total;
+                    const validBadge = r.peValid ? '<span class="badge badge-success">✅</span>' :
+                        '<span class="badge badge-danger">❌</span>';
+                    const sizeStr = r.size < 1024 ? `${r.size} B` : `${(r.size / 1024).toFixed(1)} KB`;
+                    const zeroBadge = r.isZero ? '<span class="badge badge-zero">⭐ 0</span>' : '';
+                    const rowClass = r.isZero ? 'highlight-row' : '';
+
+                    const downloadBtn = r.buffer ?
+                        `<button class="download-btn" data-idx="${idx}">💾</button>` :
+                        '<span style="color:#a0aec0;">N/A</span>';
+
+                    html += `<tr class="${rowClass}">
+                        <td><span class="iteration-badge">#${r.iteration}</span></td>
+                        <td><strong>${r.version}</strong> ${zeroBadge}</td>
+                        <td><span class="mod-summary">${r.modifications || 'Aucune'}</span></td>
+                        <td class="hash-cell">${r.sha256}</td>
+                        <td>${sizeStr}</td>
+                        <td>${validBadge}</td>
+                        <td class="detection-cell">${detStr}/${totalStr}</td>
+                        <td>${downloadBtn}</td>
+                    </tr>`;
+                });
+                resultsBody.innerHTML = html;
+
+                document.querySelectorAll('.download-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        const idx = parseInt(this.dataset.idx);
+                        downloadFile(idx);
+                    });
+                });
+            }
+
+            function downloadFile(idx) {
+                const r = results[idx];
+                if (!r || !r.buffer) {
+                    showToast('Fichier non disponible.', 'error');
+                    return;
+                }
+                const blob = new Blob([r.buffer], { type: 'application/octet-stream' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = r.filename || `iter_${r.iteration}.exe`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast(`Téléchargement: ${a.download}`, 'success');
+            }
+
+            // ============================================================
+            // EXPORT
+            // ============================================================
+            function exportCSV() {
+                if (results.length === 0) { showToast('Aucune donnée à exporter.', 'error'); return; }
+                let csv =
+                    'Itération,Version,Modifications,SHA-256,Taille,PE Valide,Détections,Total,0 Detection\n';
+                results.forEach(r => {
+                    const detStr = typeof r.detections === 'number' ? r.detections : r.detections;
+                    const totalStr = typeof r.total === 'number' ? r.total : r.total;
+                    csv +=
+                        `${r.iteration},"${r.version}","${r.modifications || 'Aucune'}",${r.sha256},${r.size},${r.peValid ? 'Oui' : 'Non'},${detStr},${totalStr},${r.isZero ? 'Oui' : 'Non'}\n`;
+                });
+                const blob = new Blob([csv], { type: 'text/csv' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `campaign_${campaignId}_${Date.now()}.csv`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast('CSV exporté.', 'success');
+            }
+
+            function exportJSON() {
+                if (results.length === 0) { showToast('Aucune donnée à exporter.', 'error'); return; }
+                const exportData = results.map(r => ({
+                    iteration: r.iteration,
+                    version: r.version,
+                    modifications: r.modifications || 'Aucune',
+                    sha256: r.sha256,
+                    size: r.size,
+                    peValid: r.peValid,
+                    detections: r.detections,
+                    total: r.total,
+                    zeroDetection: r.isZero
+                }));
+                const json = JSON.stringify(exportData, null, 2);
+                const blob = new Blob([json], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `campaign_${campaignId}_${Date.now()}.json`;
+                a.click();
+                URL.revokeObjectURL(url);
+                showToast('JSON exporté.', 'success');
+            }
+
+            // ============================================================
+            // VIEW DETAILS / OPEN BROWSER
+            // ============================================================
+            function viewDetails() {
+                if (results.length === 0) {
+                    showToast('Aucune analyse à afficher.', 'warning');
+                    return;
+                }
+                const last = results[results.length - 1];
+                const detStr = typeof last.detections === 'number' ? `${last.detections}/${last.total}` : last.detections;
+                showToast(`📋 Dernière analyse: ${detStr} détections, SHA: ${last.sha256.substring(0, 16)}...`, 'info');
+                addLog(`📋 Détails de la dernière analyse: ${detStr} détections`, 'info');
+            }
+
+            function openInBrowser() {
+                if (results.length === 0) {
+                    showToast('Aucune analyse à ouvrir.', 'warning');
+                    return;
+                }
+                const last = results[results.length - 1];
+                if (last.link) {
+                    window.open(last.link, '_blank');
+                    addLog(`🌐 Ouverture dans le navigateur: ${last.link}`, 'info');
+                } else {
+                    const id = currentAnalysisId || 'unknown';
+                    window.open(`https://www.virustotal.com/gui/file/${id}`, '_blank');
+                    addLog(`🌐 Ouverture dans le navigateur: ${id}`, 'info');
+                }
+            }
+
+            // ============================================================
+            // RESET
+            // ============================================================
+            function resetAll() {
+                if (isRunning) {
+                    if (!confirm('Une campagne est en cours. Arrêter et réinitialiser ?')) return;
+                    isRunning = false;
+                }
+                results = [];
+                originalBuffer = null;
+                renderResults();
+                updateSummary();
+                updateStatus('Prêt', 'ready');
+                updateDetections(null);
+                dateDisplay.textContent = '—';
+                analysisIdDisplay.textContent = '—';
+                iterationCounter.textContent = 'Itération: 0 / 0';
+                currentFile = null;
+                fileInput.value = '';
+                updateFileInfo(null);
+                startBtn.disabled = false;
+                viewDetailsBtn.disabled = true;
+                openBrowserBtn.disabled = true;
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    elapsedTime.textContent = '00:00:00';
+                }
+                showToast('Réinitialisé.', 'info');
+                addLog('🔄 Réinitialisation complète', 'info');
+            }
+
+            // ============================================================
+            // FILE HANDLING
+            // ============================================================
+            function handleFile(file) {
+                if (!file) return;
+                if (!file.name.toLowerCase().endsWith('.exe')) {
+                    showToast('Veuillez sélectionner un fichier .exe', 'error');
+                    return;
+                }
+                if (file.size > 30000) {
+                    showToast('Fichier trop volumineux (max 30 KB).', 'error');
+                    return;
+                }
+
+                currentFile = file;
+                updateFileInfo(file);
+                results = [];
+                originalBuffer = null;
+                renderResults();
+                summaryBox.style.display = 'none';
+                updateStatus('Fichier chargé. Prêt.', 'ready');
+                updateDetections(null);
+                dateDisplay.textContent = '—';
+                analysisIdDisplay.textContent = '—';
+                viewDetailsBtn.disabled = true;
+                openBrowserBtn.disabled = true;
+                if (timerInterval) {
+                    clearInterval(timerInterval);
+                    timerInterval = null;
+                    elapsedTime.textContent = '00:00:00';
+                }
+                addLog(`📁 Fichier chargé: ${file.name} (${(file.size/1024).toFixed(1)} KB)`, 'success');
+                showToast(`Fichier chargé: ${file.name}`, 'success');
+            }
+
+            // ============================================================
+            // EVENTS
+            // ============================================================
+            fileInput.addEventListener('change', (e) => {
+                if (e.target.files.length) {
+                    handleFile(e.target.files[0]);
+                }
+            });
+
+            const container = document.querySelector('.container');
+            container.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                container.style.borderColor = '#4299e1';
+                container.style.boxShadow = '0 0 0 3px rgba(66,153,225,0.2)';
+            });
+
+            container.addEventListener('dragleave', () => {
+                container.style.borderColor = '#d0d7de';
+                container.style.boxShadow = 'none';
+            });
+
+            container.addEventListener('drop', (e) => {
+                e.preventDefault();
+                container.style.borderColor = '#d0d7de';
+                container.style.boxShadow = 'none';
+                if (e.dataTransfer.files.length) {
+                    handleFile(e.dataTransfer.files[0]);
+                }
+            });
+
+            startBtn.addEventListener('click', runCampaign);
+            resetBtn.addEventListener('click', resetAll);
+            exportCsvBtn.addEventListener('click', exportCSV);
+            exportJsonBtn.addEventListener('click', exportJSON);
+            clearHistoryBtn.addEventListener('click', () => {
+                if (isRunning) { showToast('Campagne en cours.', 'error'); return; }
+                if (results.length === 0) return;
+                if (confirm('Effacer tous les résultats ?')) {
+                    results = [];
+                    originalBuffer = null;
+                    renderResults();
+                    summaryBox.style.display = 'none';
+                    showToast('Historique effacé.', 'info');
+                    addLog('🗑️ Historique effacé', 'info');
+                }
+            });
+            viewDetailsBtn.addEventListener('click', viewDetails);
+            openBrowserBtn.addEventListener('click', openInBrowser);
+
+            // ============================================================
+            // INIT
+            // ============================================================
+            addLog('🛡️ VB6 VirusTotal Scanner Pro prêt', 'info');
+            addLog('🔑 Veuillez entrer votre clé API VirusTotal', 'info');
+            updateStatus('Prêt', 'ready');
+            updateDetections(null);
+            renderResults();
+            summaryBox.style.display = 'none';
+
+            if (localStorage.getItem('vt_key')) {
+                vtApiKeyInput.value = localStorage.getItem('vt_key');
+            }
+            vtApiKeyInput.addEventListener('change', () => {
+                localStorage.setItem('vt_key', vtApiKeyInput.value);
+            });
+
+        })();
+    </script>
+
+</body>
+</html>
