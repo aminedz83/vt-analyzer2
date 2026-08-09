@@ -3,10 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>VB6 VirusTotal Scanner Pro</title>
+    <title>VT Scanner — Security Lab</title>
     <style>
         /* ============================================================
-           STYLES - IDENTIQUES À AVANT
+           STYLES MODERNES ET PROFESSIONNELS
            ============================================================ */
         * {
             margin: 0;
@@ -15,108 +15,122 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #e8eef2;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+            background: #f0f4f8;
             color: #1a202c;
-            padding: 20px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
-            align-items: flex-start;
+            padding: 24px;
         }
 
-        .container {
+        .app {
             max-width: 1100px;
             width: 100%;
-            background: #f5f7fa;
-            border-radius: 12px;
-            padding: 28px 30px 24px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-            border: 1px solid #d0d7de;
-            margin-top: 10px;
         }
 
+        /* ============================================================
+           EN-TÊTE
+           ============================================================ */
         .header {
             display: flex;
             align-items: center;
-            gap: 12px;
-            margin-bottom: 18px;
-            padding-bottom: 14px;
-            border-bottom: 2px solid #d0d7de;
+            justify-content: space-between;
+            margin-bottom: 24px;
             flex-wrap: wrap;
+            gap: 12px;
         }
 
-        .header .icon {
-            font-size: 1.8rem;
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo {
+            background: #1a202c;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            font-weight: 700;
         }
 
         .header h1 {
-            font-size: 1.5rem;
+            font-size: 1.3rem;
             font-weight: 600;
             color: #1a202c;
-            letter-spacing: -0.3px;
         }
 
-        .header .badge-version {
-            background: #2d3748;
-            color: white;
-            font-size: 0.6rem;
-            padding: 2px 10px;
-            border-radius: 12px;
+        .header h1 span {
+            color: #718096;
+            font-weight: 400;
+        }
+
+        .header-badges {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.65rem;
             font-weight: 600;
-            margin-left: auto;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
         }
 
-        .header .badge-real {
-            background: #38a169;
+        .badge-live {
+            background: #48bb78;
             color: white;
-            font-size: 0.6rem;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-weight: 600;
         }
 
-        .header .badge-multi {
+        .badge-beta {
+            background: #edf2f7;
+            color: #4a5568;
+        }
+
+        .badge-multi {
             background: #9f7aea;
             color: white;
-            font-size: 0.6rem;
-            padding: 2px 10px;
-            border-radius: 12px;
-            font-weight: 600;
         }
 
-        .grid-2col {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-        }
-
-        .grid-3col {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 10px;
-        }
-
-        .section {
+        /* ============================================================
+           CARTE PRINCIPALE
+           ============================================================ */
+        .card {
             background: white;
-            border-radius: 10px;
-            padding: 16px 18px;
-            margin-bottom: 14px;
-            border: 1px solid #d0d7de;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 4px 12px rgba(0, 0, 0, 0.04);
+            padding: 24px;
+            margin-bottom: 16px;
+            border: 1px solid #e2e8f0;
         }
 
-        .section-title {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #2d3748;
-            margin-bottom: 10px;
+        .card-header {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
+            margin-bottom: 16px;
         }
 
-        .section-title .num {
-            display: inline-block;
+        .card-header .icon {
+            font-size: 1.2rem;
+        }
+
+        .card-header h2 {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .card-header .step {
             background: #4299e1;
             color: white;
             width: 22px;
@@ -124,53 +138,95 @@
             border-radius: 50%;
             text-align: center;
             line-height: 22px;
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 700;
         }
 
+        .card-sub {
+            font-size: 0.78rem;
+            color: #718096;
+            margin-top: -8px;
+            margin-bottom: 14px;
+        }
+
+        /* ============================================================
+           GRILLES
+           ============================================================ */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        .grid-4 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr 1fr;
+            gap: 12px;
+        }
+
+        /* ============================================================
+           FORMULAIRES
+           ============================================================ */
         .form-group {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         .form-group label {
             display: block;
             font-weight: 500;
             font-size: 0.78rem;
-            margin-bottom: 2px;
+            margin-bottom: 4px;
             color: #4a5568;
         }
 
         .form-group input,
         .form-group select {
             width: 100%;
-            padding: 5px 8px;
-            border: 1px solid #e2e8f0;
-            border-radius: 6px;
-            font-size: 0.8rem;
+            padding: 8px 12px;
+            border: 1.5px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 0.85rem;
             background: white;
+            transition: border-color 0.2s;
         }
 
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
             border-color: #4299e1;
-            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.15);
+            box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.12);
         }
 
         .form-group .checkbox-group {
             display: flex;
             flex-wrap: wrap;
-            gap: 6px;
-            padding-top: 2px;
+            gap: 10px;
+            padding-top: 4px;
         }
 
         .form-group .checkbox-group label {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             font-weight: 400;
-            font-size: 0.75rem;
+            font-size: 0.78rem;
             cursor: pointer;
+            color: #4a5568;
+            padding: 4px 10px;
+            background: #f7fafc;
+            border-radius: 6px;
+            border: 1px solid #edf2f7;
+            transition: all 0.2s;
+        }
+
+        .form-group .checkbox-group label:hover {
+            background: #edf2f7;
         }
 
         .form-group .checkbox-group input[type="checkbox"] {
@@ -179,63 +235,91 @@
         }
 
         .help-text {
-            font-size: 0.65rem;
-            color: #718096;
-            margin-top: 2px;
+            font-size: 0.7rem;
+            color: #a0aec0;
+            margin-top: 4px;
         }
 
-        .file-input-row {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
+        /* ============================================================
+           FICHIER
+           ============================================================ */
+        .file-zone {
+            border: 2px dashed #e2e8f0;
+            border-radius: 10px;
+            padding: 28px 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            background: #fafcff;
         }
 
-        .file-input-row .path-display {
-            flex: 1;
-            background: #f0f4f8;
-            border: 1px solid #d0d7de;
-            border-radius: 6px;
-            padding: 7px 12px;
-            font-size: 0.82rem;
+        .file-zone:hover {
+            border-color: #4299e1;
+            background: #ebf8ff;
+        }
+
+        .file-zone .icon-big {
+            font-size: 2.2rem;
+            display: block;
+            margin-bottom: 6px;
+        }
+
+        .file-zone p {
+            font-size: 0.9rem;
             color: #4a5568;
-            font-family: 'Courier New', monospace;
-            min-width: 150px;
-            word-break: break-all;
         }
 
-        .file-input-row .path-display .placeholder {
+        .file-zone .sub {
+            font-size: 0.75rem;
             color: #a0aec0;
         }
 
-        .btn {
-            padding: 7px 16px;
-            border: none;
-            border-radius: 6px;
-            font-weight: 600;
+        .file-zone input[type="file"] {
+            display: none;
+        }
+
+        .file-info {
+            margin-top: 12px;
+            padding: 10px 14px;
+            background: #f7fafc;
+            border-radius: 8px;
             font-size: 0.82rem;
+            color: #4a5568;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .file-info .name {
+            font-weight: 600;
+            color: #2d3748;
+        }
+
+        .file-info .size {
+            color: #718096;
+        }
+
+        .file-info .hash {
+            font-family: monospace;
+            font-size: 0.7rem;
+            color: #a0aec0;
+        }
+
+        /* ============================================================
+           BOUTONS
+           ============================================================ */
+        .btn {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.2s;
-        }
-
-        .btn-browse {
-            background: #edf2f7;
-            border: 1px solid #d0d7de;
-            color: #2d3748;
-            padding: 7px 18px;
-            font-size: 0.82rem;
-            font-weight: 500;
-            cursor: pointer;
-            border-radius: 6px;
-            white-space: nowrap;
-        }
-
-        .btn-browse:hover {
-            background: #e2e8f0;
-        }
-
-        .btn-browse input[type="file"] {
-            display: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
         }
 
         .btn-primary {
@@ -246,13 +330,25 @@
         .btn-primary:hover {
             background: #3182ce;
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
+            box-shadow: 0 4px 12px rgba(66, 153, 225, 0.25);
         }
 
         .btn-primary:disabled {
             opacity: 0.5;
             cursor: not-allowed;
             transform: none;
+            box-shadow: none;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 1.5px solid #e2e8f0;
+            color: #4a5568;
+        }
+
+        .btn-outline:hover {
+            background: #f7fafc;
+            border-color: #cbd5e0;
         }
 
         .btn-success {
@@ -273,69 +369,135 @@
             background: #f56565;
         }
 
-        .btn-outline {
-            background: transparent;
-            border: 1px solid #cbd5e0;
-            color: #4a5568;
-        }
-
-        .btn-outline:hover {
-            background: #edf2f7;
-        }
-
         .btn-sm {
-            padding: 4px 10px;
+            padding: 4px 12px;
             font-size: 0.7rem;
         }
 
         .btn-group {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             flex-wrap: wrap;
             margin-top: 4px;
         }
 
-        .file-info-extra {
-            margin-top: 6px;
-            font-size: 0.75rem;
-            color: #718096;
+        /* ============================================================
+           STATUT
+           ============================================================ */
+        .status-bar {
             display: flex;
+            align-items: center;
             gap: 16px;
+            padding: 10px 16px;
+            background: #f7fafc;
+            border-radius: 8px;
+            border: 1px solid #edf2f7;
             flex-wrap: wrap;
         }
 
-        .file-info-extra span {
-            display: flex;
-            align-items: center;
-            gap: 4px;
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #a0aec0;
+            flex-shrink: 0;
         }
 
+        .status-dot.ready {
+            background: #48bb78;
+        }
+
+        .status-dot.running {
+            background: #ed8936;
+            animation: pulse 1s infinite;
+        }
+
+        .status-dot.error {
+            background: #fc8181;
+        }
+
+        @keyframes pulse {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.3;
+            }
+        }
+
+        .status-text {
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: #2d3748;
+        }
+
+        .status-detail {
+            font-size: 0.78rem;
+            color: #718096;
+        }
+
+        .status-detail.timer {
+            font-family: monospace;
+            font-weight: 600;
+            color: #4a5568;
+            min-width: 70px;
+        }
+
+        .progress-wrap {
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .progress-bar {
+            height: 4px;
+            background: #e2e8f0;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .progress-bar .fill {
+            height: 100%;
+            background: #4299e1;
+            transition: width 0.4s;
+            border-radius: 2px;
+        }
+
+        .progress-label {
+            font-size: 0.7rem;
+            color: #a0aec0;
+            margin-top: 2px;
+        }
+
+        /* ============================================================
+           RÉSULTATS
+           ============================================================ */
         .results-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr 1fr;
-            gap: 10px;
-            margin-top: 4px;
+            gap: 12px;
         }
 
         .result-item {
             background: #f7fafc;
-            border-radius: 6px;
-            padding: 8px 12px;
+            border-radius: 8px;
+            padding: 10px 14px;
             border: 1px solid #edf2f7;
         }
 
         .result-item .label {
-            font-size: 0.65rem;
-            color: #718096;
+            font-size: 0.6rem;
             text-transform: uppercase;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.5px;
+            color: #a0aec0;
             font-weight: 600;
         }
 
         .result-item .value {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             font-weight: 600;
             margin-top: 2px;
+            color: #2d3748;
         }
 
         .result-item .value.detections {
@@ -343,24 +505,18 @@
         }
 
         .result-item .value.detections.zero {
-            color: #38a169;
+            color: #48bb78;
         }
 
         .result-item .value.detections.positive {
-            color: #e53e3e;
+            color: #fc8181;
         }
 
         .result-item .value.detections.waiting {
             color: #ed8936;
         }
 
-        .result-item .value.hash {
-            font-family: 'Courier New', monospace;
-            font-size: 0.6rem;
-            word-break: break-all;
-        }
-
-        .result-item.full-width {
+        .result-item.full {
             grid-column: 1 / -1;
         }
 
@@ -368,16 +524,16 @@
             display: flex;
             gap: 12px;
             flex-wrap: wrap;
-            margin-top: 8px;
-            padding-top: 8px;
+            padding-top: 10px;
             border-top: 1px solid #edf2f7;
+            margin-top: 6px;
         }
 
         .result-actions .btn-link {
             background: none;
             border: none;
             color: #4299e1;
-            font-size: 0.8rem;
+            font-size: 0.82rem;
             font-weight: 500;
             cursor: pointer;
             padding: 4px 0;
@@ -395,182 +551,49 @@
             text-decoration: none;
         }
 
-        .mod-section {
-            background: #ebf8ff;
-            border: 1px solid #bee3f8;
-            border-radius: 8px;
-            padding: 12px 14px;
-            margin-top: 4px;
-        }
-
-        .mod-section .mod-title {
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: #2b6cb0;
-            margin-bottom: 6px;
-        }
-
-        .log-container {
-            background: #1a202c;
-            border-radius: 6px;
-            padding: 10px 14px;
-            max-height: 150px;
-            overflow-y: auto;
-            font-family: 'Courier New', monospace;
-            font-size: 0.7rem;
-            color: #a0aec0;
-            line-height: 1.7;
-            margin-top: 4px;
-        }
-
-        .log-container .log-entry {
-            padding: 1px 0;
-        }
-
-        .log-container .log-entry .time {
-            color: #718096;
-            margin-right: 10px;
-        }
-
-        .log-container .log-entry .msg-info {
-            color: #bee3f8;
-        }
-
-        .log-container .log-entry .msg-success {
-            color: #9ae6b4;
-        }
-
-        .log-container .log-entry .msg-error {
-            color: #fc8181;
-        }
-
-        .log-container .log-entry .msg-warning {
-            color: #f6ad55;
-        }
-
-        .log-container::-webkit-scrollbar {
-            width: 4px;
-        }
-
-        .log-container::-webkit-scrollbar-track {
-            background: #2d3748;
-            border-radius: 2px;
-        }
-
-        .log-container::-webkit-scrollbar-thumb {
-            background: #4a5568;
-            border-radius: 2px;
-        }
-
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 10px;
-            padding-top: 12px;
-            border-top: 2px solid #d0d7de;
-            margin-top: 4px;
-            font-size: 0.8rem;
-            color: #4a5568;
-        }
-
-        .status-bar .status-left {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            flex-wrap: wrap;
-        }
-
-        .status-bar .status-left .status-dot {
-            display: inline-block;
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: #a0aec0;
-        }
-
-        .status-bar .status-left .status-dot.ready {
-            background: #38a169;
-        }
-
-        .status-bar .status-left .status-dot.running {
-            background: #ed8936;
-            animation: pulse 1s infinite;
-        }
-
-        .status-bar .status-left .status-dot.error {
-            background: #e53e3e;
-        }
-
-        @keyframes pulse {
-            0%,
-            100% {
-                opacity: 1;
-            }
-            50% {
-                opacity: 0.3;
-            }
-        }
-
-        .status-bar .status-right {
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .status-bar .status-right .stat-item {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .status-bar .status-right .stat-item .stat-label {
-            color: #718096;
-        }
-
-        .status-bar .status-right .stat-item .stat-value {
-            font-weight: 600;
-        }
-
-        .table-wrapper {
+        /* ============================================================
+           TABLEAU
+           ============================================================ */
+        .table-wrap {
             overflow-x: auto;
-            margin: 8px 0;
+            margin-top: 12px;
             border-radius: 8px;
-            border: 1px solid #e2e8f0;
+            border: 1px solid #edf2f7;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 0.72rem;
-            min-width: 750px;
+            font-size: 0.78rem;
+            min-width: 700px;
         }
 
         th {
             background: #f7fafc;
-            padding: 6px 6px;
+            padding: 10px 10px;
             text-align: left;
             font-weight: 600;
-            color: #2d3748;
-            border-bottom: 2px solid #e2e8f0;
+            color: #4a5568;
+            border-bottom: 1px solid #edf2f7;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
 
         td {
-            padding: 5px 6px;
+            padding: 8px 10px;
             border-bottom: 1px solid #edf2f7;
             vertical-align: middle;
         }
 
         .hash-cell {
-            font-family: 'Courier New', monospace;
-            font-size: 0.55rem;
+            font-family: monospace;
+            font-size: 0.6rem;
             word-break: break-all;
         }
 
         .detection-cell {
             font-weight: 700;
-            font-size: 0.85rem;
         }
 
         .highlight-row {
@@ -578,93 +601,168 @@
         }
 
         .empty-state {
-            padding: 20px 16px;
             text-align: center;
+            padding: 30px 16px;
             color: #a0aec0;
+            font-size: 0.85rem;
         }
 
-        .iteration-badge {
+        .mod-tag {
             display: inline-block;
-            background: #4299e1;
-            color: white;
-            padding: 1px 8px;
-            border-radius: 12px;
             font-size: 0.6rem;
-            font-weight: 600;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 1px 8px;
-            border-radius: 12px;
-            font-size: 0.6rem;
-            font-weight: 600;
-        }
-
-        .badge-success {
-            background: #c6f6d5;
-            color: #22543d;
-        }
-
-        .badge-danger {
-            background: #fed7d7;
-            color: #9b2c2c;
-        }
-
-        .badge-zero {
-            background: #fc8181;
-            color: white;
-            font-weight: 700;
-        }
-
-        .badge-apk {
-            background: #9f7aea;
-            color: white;
-        }
-
-        .mod-summary {
-            font-size: 0.6rem;
-            color: #4a5568;
             background: #edf2f7;
-            padding: 1px 5px;
-            border-radius: 3px;
-            display: inline-block;
+            color: #4a5568;
+            padding: 2px 8px;
+            border-radius: 4px;
             max-width: 180px;
             word-break: break-word;
         }
 
-        .download-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 3px;
-            padding: 2px 6px;
-            border-radius: 4px;
+        .badge-type {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.55rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .badge-exe {
+            background: #bee3f8;
+            color: #1a365d;
+        }
+
+        .badge-apk {
+            background: #e9d8fd;
+            color: #44337a;
+        }
+
+        .badge-zero-sm {
+            background: #fc8181;
+            color: white;
+            padding: 1px 8px;
+            border-radius: 10px;
+            font-size: 0.55rem;
+            font-weight: 700;
+        }
+
+        .iteration-badge {
+            background: #4299e1;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
             font-size: 0.6rem;
-            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .download-btn {
             background: #edf2f7;
             border: 1px solid #e2e8f0;
-            color: #2d3748;
-            text-decoration: none;
+            border-radius: 4px;
+            padding: 2px 8px;
+            font-size: 0.6rem;
+            cursor: pointer;
+            color: #4a5568;
+            transition: all 0.2s;
         }
 
         .download-btn:hover {
             background: #e2e8f0;
         }
 
+        /* ============================================================
+           RÉSUMÉ
+           ============================================================ */
+        .summary {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            padding: 10px 14px;
+            background: #f7fafc;
+            border-radius: 8px;
+            margin-top: 10px;
+            font-size: 0.82rem;
+        }
+
+        .summary .stat {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            color: #4a5568;
+        }
+
+        .summary .stat .value {
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        /* ============================================================
+           JOURNAL
+           ============================================================ */
+        .log {
+            background: #1a202c;
+            border-radius: 8px;
+            padding: 12px 16px;
+            max-height: 140px;
+            overflow-y: auto;
+            font-family: 'Courier New', monospace;
+            font-size: 0.7rem;
+            color: #a0aec0;
+            line-height: 1.8;
+            margin-top: 4px;
+        }
+
+        .log .entry .time {
+            color: #718096;
+            margin-right: 12px;
+        }
+
+        .log .entry .msg-info {
+            color: #bee3f8;
+        }
+
+        .log .entry .msg-success {
+            color: #9ae6b4;
+        }
+
+        .log .entry .msg-error {
+            color: #fc8181;
+        }
+
+        .log .entry .msg-warning {
+            color: #f6ad55;
+        }
+
+        .log::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .log::-webkit-scrollbar-track {
+            background: #2d3748;
+            border-radius: 2px;
+        }
+
+        .log::-webkit-scrollbar-thumb {
+            background: #4a5568;
+            border-radius: 2px;
+        }
+
+        /* ============================================================
+           TOAST
+           ============================================================ */
         .toast {
             position: fixed;
-            bottom: 20px;
-            right: 20px;
+            bottom: 24px;
+            right: 24px;
             background: #1a202c;
             color: white;
-            padding: 10px 20px;
+            padding: 12px 20px;
             border-radius: 8px;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
             z-index: 999;
             opacity: 0;
             transform: translateY(20px);
             transition: all 0.3s;
-            font-size: 0.82rem;
+            font-size: 0.85rem;
             max-width: 90%;
         }
 
@@ -689,42 +787,14 @@
             background: #ed8936;
         }
 
-        .actions-bar {
-            display: flex;
-            gap: 6px;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 6px;
-        }
-
-        .summary-box {
-            background: #edf2f7;
-            border-radius: 6px;
-            padding: 8px 12px;
-            margin: 6px 0;
-            font-size: 0.78rem;
-            display: flex;
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-
-        .summary-box .stat {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-
-        .summary-box .stat .value {
-            font-weight: 700;
-            font-size: 1rem;
-        }
-
+        /* ============================================================
+           RESPONSIVE
+           ============================================================ */
         @media (max-width: 900px) {
-            .grid-2col {
+            .grid-2 {
                 grid-template-columns: 1fr;
             }
-            .grid-3col {
+            .grid-3 {
                 grid-template-columns: 1fr 1fr;
             }
             .results-grid {
@@ -733,36 +803,42 @@
         }
 
         @media (max-width: 700px) {
-            .container {
-                padding: 14px;
+            body {
+                padding: 12px;
             }
-            .grid-3col {
+
+            .card {
+                padding: 16px;
+            }
+
+            .grid-3 {
                 grid-template-columns: 1fr;
             }
+
             .results-grid {
                 grid-template-columns: 1fr;
             }
-            .result-item.full-width {
+
+            .result-item.full {
                 grid-column: 1;
             }
-            .file-input-row {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .btn-browse {
-                text-align: center;
-            }
+
             .header h1 {
                 font-size: 1.1rem;
             }
-            .header .badge-version,
-            .header .badge-real,
-            .header .badge-multi {
-                display: none;
+
+            .header-badges .badge {
+                font-size: 0.55rem;
+                padding: 2px 8px;
             }
+
             .status-bar {
                 flex-direction: column;
                 align-items: flex-start;
+            }
+
+            .file-zone {
+                padding: 20px 16px;
             }
         }
 
@@ -770,287 +846,205 @@
             body {
                 padding: 8px;
             }
-            .container {
-                padding: 10px;
+
+            .card {
+                padding: 12px;
                 border-radius: 8px;
             }
-            .section {
-                padding: 10px 12px;
+
+            table {
+                font-size: 0.65rem;
+                min-width: 500px;
             }
-            .log-container {
+
+            .log {
                 font-size: 0.6rem;
                 max-height: 100px;
-            }
-            table {
-                font-size: 0.6rem;
-                min-width: 500px;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <div class="app">
 
         <!-- ============================================================
         EN-TÊTE
         ============================================================ -->
-        <div class="header">
-            <span class="icon">🛡️</span>
-            <h1>VB6 VirusTotal Scanner Pro</h1>
-            <span class="badge-real">🔴 RÉEL</span>
-            <span class="badge-multi">📦 EXE + APK</span>
-            <span class="badge-version">v3.0</span>
+        <header class="header">
+            <div class="header-left">
+                <div class="logo">VT</div>
+                <h1>Scanner <span>· Security Lab</span></h1>
+            </div>
+            <div class="header-badges">
+                <span class="badge badge-live">● Live</span>
+                <span class="badge badge-multi">EXE + APK</span>
+                <span class="badge badge-beta">v3.0</span>
+            </div>
+        </header>
+
+        <!-- ============================================================
+        CARTE 1 : FICHIER
+        ============================================================ -->
+        <div class="card">
+            <div class="card-header">
+                <span class="step">1</span>
+                <span class="icon">📁</span>
+                <h2>Fichier à analyser</h2>
+            </div>
+
+            <div class="file-zone" id="dropZone">
+                <span class="icon-big">📄</span>
+                <p><strong>Cliquez ou glissez</strong> un fichier</p>
+                <span class="sub">EXE (Windows) ou APK (Android) · max 2 MB</span>
+                <input type="file" id="fileInput" accept=".exe,.apk">
+            </div>
+
+            <div class="file-info" id="fileInfo">
+                <span class="name">Aucun fichier</span>
+                <span class="size">—</span>
+                <span class="hash">SHA-256: —</span>
+            </div>
         </div>
 
         <!-- ============================================================
-        SECTION 1 : FICHIER À ANALYSER + PARAMÈTRES
+        CARTE 2 : PARAMÈTRES
         ============================================================ -->
-        <div class="grid-2col">
-
-            <!-- Colonne gauche : Fichier -->
-            <div class="section" style="margin-bottom:0;">
-                <div class="section-title">
-                    <span class="num">1</span>
-                    Fichier à analyser
-                </div>
-
-                <div class="file-input-row">
-                    <div class="path-display" id="filePathDisplay">
-                        <span class="placeholder">Aucun fichier sélectionné</span>
-                    </div>
-                    <label class="btn-browse">
-                        📂 Parcourir...
-                        <!-- MODIFICATION: accepte .exe et .apk -->
-                        <input type="file" id="fileInput" accept=".exe,.apk">
-                    </label>
-                </div>
-
-                <div class="file-info-extra" id="fileExtraInfo">
-                    <span>📄 Aucun fichier chargé</span>
-                    <span>📏 Taille : —</span>
-                    <span>🔐 SHA-256 : —</span>
-                </div>
-                <!-- MODIFICATION: nouveau message d'aide -->
-                <div class="help-text" style="margin-top:6px; font-size:0.65rem; color:#718096;">
-                    Formats supportés : .exe (Windows) et .apk (Android) — Taille max : 2 MB
-                </div>
+        <div class="card">
+            <div class="card-header">
+                <span class="step">2</span>
+                <span class="icon">⚙️</span>
+                <h2>Paramètres</h2>
             </div>
 
-            <!-- Colonne droite : Paramètres -->
-            <div class="section" style="margin-bottom:0;">
-                <div class="section-title">
-                    <span class="num">⚙️</span>
-                    Paramètres
-                </div>
-
+            <div class="grid-2">
                 <div class="form-group">
                     <label for="vtApiKey">🔑 Clé API VirusTotal</label>
-                    <input type="password" id="vtApiKey" placeholder="Entrez votre clé API" value="">
-                    <div class="help-text">Obtenez une clé gratuite sur virustotal.com</div>
+                    <input type="password" id="vtApiKey" placeholder="Entrez votre clé API">
+                    <span class="help-text">Obtenez une clé gratuite sur virustotal.com</span>
                 </div>
 
                 <div class="form-group">
                     <label for="iterations">🔄 Nombre d'itérations</label>
                     <input type="number" id="iterations" value="3" min="1" max="5">
-                    <div class="help-text">L'application s'arrête après N itérations (max 5 pour éviter le rate limiting)</div>
-                </div>
-
-                <div class="btn-group">
-                    <button class="btn btn-primary" id="startBtn">🚀 Lancer la campagne</button>
-                    <button class="btn btn-outline" id="resetBtn">🔄 Réinitialiser</button>
+                    <span class="help-text">Max 5 pour éviter les limites de l'API</span>
                 </div>
             </div>
 
+            <div class="btn-group">
+                <button class="btn btn-primary" id="startBtn">🚀 Lancer l'analyse</button>
+                <button class="btn btn-outline" id="resetBtn">↻ Réinitialiser</button>
+            </div>
         </div>
 
         <!-- ============================================================
-        SECTION 2 : MODIFICATIONS PE (pour EXE)
+        CARTE 3 : MODIFICATIONS
         ============================================================ -->
-        <div class="section mod-section">
-            <div class="mod-title">✏️ Modifications PE (13 options — pour fichiers EXE uniquement)</div>
-            <div style="font-size:0.65rem; color:#718096; margin-bottom:8px;">
-                ⚠️ Pour les fichiers APK, les modifications PE ne sont pas appliquées (fichier Android)
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">✏️</span>
+                <h2>Modifications PE <span style="font-weight:400;font-size:0.7rem;color:#a0aec0;">(EXE uniquement)</span></h2>
             </div>
-            <div class="grid-3col">
-                <!-- Timestamp -->
+
+            <div class="grid-3">
                 <div class="form-group">
-                    <label>📅 Timestamp</label>
                     <div class="checkbox-group">
-                        <label><input type="checkbox" id="modTimestamp" checked> Incrémenter (+1)</label>
+                        <label><input type="checkbox" id="modTimestamp" checked> 📅 Timestamp +1</label>
+                        <label><input type="checkbox" id="modLinkerVersion" checked> 🔢 Linker</label>
+                        <label><input type="checkbox" id="modOSVersion" checked> 🖥️ OS</label>
                     </div>
                 </div>
-                <!-- Linker -->
                 <div class="form-group">
-                    <label>🔢 Linker</label>
                     <div class="checkbox-group">
-                        <label><input type="checkbox" id="modLinkerVersion" checked> Modifier</label>
-                        <input type="text" id="linkerVersion" value="6.0" style="width:50px; padding:2px 4px; font-size:0.7rem;">
+                        <label><input type="checkbox" id="modImageVersion" checked> 📦 Image</label>
+                        <label><input type="checkbox" id="modDllFlags" checked> 🧩 DLL Flags</label>
+                        <label><input type="checkbox" id="modSectionNames" checked> 📛 Sections</label>
                     </div>
                 </div>
-                <!-- OS -->
                 <div class="form-group">
-                    <label>🖥️ OS Version</label>
                     <div class="checkbox-group">
-                        <label><input type="checkbox" id="modOSVersion" checked> Modifier</label>
-                        <input type="text" id="osVersion" value="5.2" style="width:50px; padding:2px 4px; font-size:0.7rem;">
+                        <label><input type="checkbox" id="modChecksum" checked> 🔢 Checksum</label>
+                        <label><input type="checkbox" id="modRichHeader" checked> 📋 Rich Header</label>
+                        <label><input type="checkbox" id="modStrings" checked> 📝 Strings</label>
                     </div>
                 </div>
-                <!-- Image -->
-                <div class="form-group">
-                    <label>📦 Image Version</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="modImageVersion" checked> Modifier</label>
-                        <input type="text" id="imageVersion" value="1.0" style="width:50px; padding:2px 4px; font-size:0.7rem;">
+            </div>
+            <span class="help-text">⚠️ Modifications sur les métadonnées uniquement — code exécutable inchangé</span>
+        </div>
+
+        <!-- ============================================================
+        CARTE 4 : STATUT
+        ============================================================ -->
+        <div class="card">
+            <div class="status-bar">
+                <span class="status-dot ready" id="statusDot"></span>
+                <span class="status-text" id="statusText">Prêt</span>
+                <span class="status-detail" id="iterationDisplay">—</span>
+                <span class="status-detail timer" id="elapsedTimeDisplay">00:00:00</span>
+                <div class="progress-wrap">
+                    <div class="progress-bar">
+                        <div class="fill" id="progressFill" style="width:0%"></div>
                     </div>
-                </div>
-                <!-- DLL Flags -->
-                <div class="form-group">
-                    <label>🧩 DLL Flags</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="modDllFlags" checked> Modifier</label>
-                        <select id="dllFlags" style="width:90px; padding:2px 4px; font-size:0.7rem;">
-                            <option value="0x0000">Aucun</option>
-                            <option value="0x0040">DYNAMIC_BASE</option>
-                            <option value="0x0080">FORCE_INTEGRITY</option>
-                            <option value="0x0100">NX_COMPAT</option>
-                            <option value="0x0140" selected>DYNAMIC+NX</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- Sections -->
-                <div class="form-group">
-                    <label>📛 Sections (.text → .TEXT)</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="modSectionNames" checked> Toggle case</label>
-                    </div>
-                </div>
-                <!-- Checksum -->
-                <div class="form-group">
-                    <label>🔢 Checksum</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="modChecksum" checked> Réinitialiser</label>
-                    </div>
-                </div>
-                <!-- Rich Header -->
-                <div class="form-group">
-                    <label>📋 Rich Header</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="modRichHeader" checked> Supprimer</label>
-                    </div>
-                </div>
-                <!-- Strings -->
-                <div class="form-group">
-                    <label>📝 Strings</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="modStrings" checked> Padding</label>
-                        <input type="number" id="stringPadding" value="2" min="1" max="5" style="width:40px; padding:2px 4px; font-size:0.7rem;">
-                    </div>
-                </div>
-                <!-- VersionInfo -->
-                <div class="form-group">
-                    <label>📝 VersionInfo</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="modVersionInfo" checked> Modifier</label>
-                    </div>
-                </div>
-                <!-- Manifest -->
-                <div class="form-group">
-                    <label>📄 Manifest</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="modManifest" checked> Modifier</label>
-                        <select id="manifestPreset" style="width:80px; padding:2px 4px; font-size:0.7rem;">
-                            <option value="asInvoker">asInvoker</option>
-                            <option value="highestAvailable">highestAvailable</option>
-                            <option value="requireAdministrator">requireAdmin</option>
-                        </select>
-                    </div>
-                </div>
-                <!-- Icônes -->
-                <div class="form-group">
-                    <label>🖼️ Icônes</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="modIcons" checked> Modifier</label>
-                        <input type="file" id="iconInput" accept=".ico" style="width:auto; padding:2px; font-size:0.65rem;">
-                    </div>
-                </div>
-                <!-- Strings avancé -->
-                <div class="form-group">
-                    <label>📝 Strings avancé</label>
-                    <div class="checkbox-group">
-                        <label><input type="checkbox" id="modStringsAdvanced" checked> Find & Replace</label>
-                    </div>
+                    <div class="progress-label" id="progressLabel">0%</div>
                 </div>
             </div>
         </div>
 
         <!-- ============================================================
-        SECTION 3 : RÉSULTATS
+        CARTE 5 : RÉSULTATS
         ============================================================ -->
-        <div class="section">
-            <div class="section-title">
-                <span class="num">2</span>
-                Résultat de l'analyse
+        <div class="card">
+            <div class="card-header">
+                <span class="step">3</span>
+                <span class="icon">📊</span>
+                <h2>Résultats</h2>
             </div>
 
             <div class="results-grid">
-                <!-- Détections -->
                 <div class="result-item">
-                    <div class="label">🔍 Détections</div>
-                    <div class="value detections waiting" id="detectionDisplay">
-                        ⏳ En attente...
-                    </div>
+                    <div class="label">Détections</div>
+                    <div class="value detections waiting" id="detectionDisplay">⏳ En attente</div>
                 </div>
-                <!-- Statut -->
                 <div class="result-item">
-                    <div class="label">📊 Statut</div>
-                    <div class="value" id="statusDisplay">Prêt</div>
+                    <div class="label">Statut</div>
+                    <div class="value" id="resultStatus">—</div>
                 </div>
-                <!-- Date -->
                 <div class="result-item">
-                    <div class="label">📅 Date</div>
-                    <div class="value" id="dateDisplay">—</div>
+                    <div class="label">Date</div>
+                    <div class="value" id="resultDate">—</div>
                 </div>
-                <!-- ID -->
                 <div class="result-item">
-                    <div class="label">🆔 ID d'analyse</div>
-                    <div class="value" id="analysisIdDisplay" style="font-family:'Courier New',monospace; font-size:0.65rem; word-break:break-all;">
-                        —
-                    </div>
+                    <div class="label">ID Analyse</div>
+                    <div class="value" id="resultId" style="font-family:monospace;font-size:0.65rem;word-break:break-all;">—</div>
                 </div>
-                <!-- Actions -->
-                <div class="result-item full-width">
+                <div class="result-item full">
                     <div class="result-actions">
-                        <button class="btn-link" id="viewDetailsBtn" disabled>
-                            📋 Voir les résultats complets...
-                        </button>
-                        <button class="btn-link" id="openBrowserBtn" disabled>
-                            🌐 Ouvrir dans le navigateur
-                        </button>
+                        <button class="btn-link" id="viewDetailsBtn" disabled>📋 Voir les détails</button>
+                        <button class="btn-link" id="openBrowserBtn" disabled>🌐 Ouvrir sur VirusTotal</button>
                     </div>
                 </div>
             </div>
 
             <!-- Résumé -->
-            <div id="summaryBox" style="display:none;" class="summary-box">
-                <div class="stat">📊 Total: <span class="value" id="totalAnalyses">0</span></div>
-                <div class="stat">🔍 Min: <span class="value" id="minDetections">-</span></div>
-                <div class="stat">📈 Max: <span class="value" id="maxDetections">-</span></div>
-                <div class="stat">📉 Moyenne: <span class="value" id="avgDetections">-</span></div>
-                <div class="stat">✅ 0 détection: <span class="value" id="zeroReached">Non</span></div>
+            <div id="summaryBox" style="display:none;" class="summary">
+                <span class="stat">📊 Total: <span class="value" id="totalAnalyses">0</span></span>
+                <span class="stat">🔽 Min: <span class="value" id="minDetections">-</span></span>
+                <span class="stat">🔼 Max: <span class="value" id="maxDetections">-</span></span>
+                <span class="stat">📉 Moyenne: <span class="value" id="avgDetections">-</span></span>
+                <span class="stat">⭐ 0 détection: <span class="value" id="zeroReached">Non</span></span>
             </div>
 
             <!-- Tableau -->
-            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:6px; margin:8px 0 4px;">
-                <span style="font-size:0.8rem; font-weight:600;">📋 Résultats de la campagne</span>
-                <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-top:14px;">
+                <span style="font-size:0.78rem;font-weight:600;color:#4a5568;">Détail des itérations</span>
+                <div style="display:flex;gap:6px;">
                     <button class="btn btn-success btn-sm" id="exportCsvBtn">📥 CSV</button>
                     <button class="btn btn-success btn-sm" id="exportJsonBtn">📥 JSON</button>
                     <button class="btn btn-danger btn-sm" id="clearHistoryBtn">🗑️ Effacer</button>
                 </div>
             </div>
 
-            <div class="table-wrapper">
+            <div class="table-wrap">
                 <table>
                     <thead>
                         <tr>
@@ -1059,54 +1053,40 @@
                             <th>Modifications</th>
                             <th>SHA-256</th>
                             <th>Taille</th>
-                            <th>PE</th>
+                            <th>Valide</th>
                             <th>Détections</th>
-                            <th>Télécharger</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody id="resultsBody">
-                        <tr><td colspan="8" class="empty-state">Aucune analyse. Téléversez un EXE ou un APK et lancez une campagne.</td></tr>
+                        <tr><td colspan="8" class="empty-state">Aucune analyse effectuée</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
 
         <!-- ============================================================
-        SECTION 4 : JOURNAL
+        CARTE 6 : JOURNAL
         ============================================================ -->
-        <div class="section" style="margin-bottom:0;">
-            <div class="section-title">
-                <span class="num">3</span>
-                Journal
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">📋</span>
+                <h2>Journal</h2>
             </div>
 
-            <div class="log-container" id="logContainer">
-                <div class="log-entry">
+            <div class="log" id="logContainer">
+                <div class="entry">
                     <span class="time">[--:--:--]</span>
-                    <span class="msg-info">Prêt. En attente d'un fichier à analyser.</span>
+                    <span class="msg-info">Prêt. En attente d'un fichier.</span>
                 </div>
             </div>
         </div>
 
         <!-- ============================================================
-        BARRE DE STATUT
+        FOOTER
         ============================================================ -->
-        <div class="status-bar">
-            <div class="status-left">
-                <span class="status-dot ready" id="statusDot"></span>
-                <span id="statusText">Prêt</span>
-                <span id="iterationCounter" style="font-size:0.7rem; color:#718096;">Itération: 0 / 0</span>
-            </div>
-            <div class="status-right">
-                <span class="stat-item">
-                    <span class="stat-label">🔌 Moteurs :</span>
-                    <span class="stat-value" id="enginesCount">70</span>
-                </span>
-                <span class="stat-item">
-                    <span class="stat-label">⏱️ Temps :</span>
-                    <span class="stat-value" id="elapsedTime">00:00:00</span>
-                </span>
-            </div>
+        <div style="text-align:center;font-size:0.7rem;color:#a0aec0;padding:12px 0 4px;">
+            🔒 Usage éducatif et de recherche · Les fichiers sont soumis à VirusTotal
         </div>
 
     </div>
@@ -1117,88 +1097,17 @@
     <div id="toast" class="toast"></div>
 
     <!-- ============================================================
-    JAVASCRIPT COMPLET
+    JAVASCRIPT CORRIGÉ
     ============================================================ -->
     <script>
         (function() {
             'use strict';
 
             // ============================================================
-            // DOM REFS
+            // TOAST
             // ============================================================
-            const fileInput = document.getElementById('fileInput');
-            const filePathDisplay = document.getElementById('filePathDisplay');
-            const fileExtraInfo = document.getElementById('fileExtraInfo');
-            const vtApiKeyInput = document.getElementById('vtApiKey');
-            const iterationsInput = document.getElementById('iterations');
-            const startBtn = document.getElementById('startBtn');
-            const resetBtn = document.getElementById('resetBtn');
-            const detectionDisplay = document.getElementById('detectionDisplay');
-            const statusDisplay = document.getElementById('statusDisplay');
-            const dateDisplay = document.getElementById('dateDisplay');
-            const analysisIdDisplay = document.getElementById('analysisIdDisplay');
-            const viewDetailsBtn = document.getElementById('viewDetailsBtn');
-            const openBrowserBtn = document.getElementById('openBrowserBtn');
-            const logContainer = document.getElementById('logContainer');
-            const statusDot = document.getElementById('statusDot');
-            const statusText = document.getElementById('statusText');
-            const enginesCount = document.getElementById('enginesCount');
-            const elapsedTime = document.getElementById('elapsedTime');
-            const resultsBody = document.getElementById('resultsBody');
-            const summaryBox = document.getElementById('summaryBox');
-            const totalAnalyses = document.getElementById('totalAnalyses');
-            const minDetections = document.getElementById('minDetections');
-            const maxDetections = document.getElementById('maxDetections');
-            const avgDetections = document.getElementById('avgDetections');
-            const zeroReached = document.getElementById('zeroReached');
-            const iterationCounter = document.getElementById('iterationCounter');
-            const exportCsvBtn = document.getElementById('exportCsvBtn');
-            const exportJsonBtn = document.getElementById('exportJsonBtn');
-            const clearHistoryBtn = document.getElementById('clearHistoryBtn');
-            const toast = document.getElementById('toast');
-
-            // Modifications
-            const modTimestamp = document.getElementById('modTimestamp');
-            const modLinkerVersion = document.getElementById('modLinkerVersion');
-            const linkerVersion = document.getElementById('linkerVersion');
-            const modOSVersion = document.getElementById('modOSVersion');
-            const osVersion = document.getElementById('osVersion');
-            const modImageVersion = document.getElementById('modImageVersion');
-            const imageVersion = document.getElementById('imageVersion');
-            const modDllFlags = document.getElementById('modDllFlags');
-            const dllFlags = document.getElementById('dllFlags');
-            const modSectionNames = document.getElementById('modSectionNames');
-            const modChecksum = document.getElementById('modChecksum');
-            const modRichHeader = document.getElementById('modRichHeader');
-            const modStrings = document.getElementById('modStrings');
-            const stringPadding = document.getElementById('stringPadding');
-            const modVersionInfo = document.getElementById('modVersionInfo');
-            const modManifest = document.getElementById('modManifest');
-            const manifestPreset = document.getElementById('manifestPreset');
-            const modIcons = document.getElementById('modIcons');
-            const iconInput = document.getElementById('iconInput');
-            const modStringsAdvanced = document.getElementById('modStringsAdvanced');
-
-            // ============================================================
-            // STATE
-            // ============================================================
-            let currentFile = null;
-            let originalBuffer = null;
-            let results = [];
-            let isRunning = false;
-            let analysisId = 0;
-            let campaignId = 0;
-            let startTime = null;
-            let timerInterval = null;
-            let logEntries = [];
-            let currentAnalysisId = null;
-            let iconBuffer = null;
-            let isApkFile = false; // <-- NOUVEAU : détection du type de fichier
-
-            // ============================================================
-            // HELPERS
-            // ============================================================
-            function showToast(message, type = 'info', duration = 4000) {
+            function showToast(message, type = 'info', duration = 3500) {
+                const toast = document.getElementById('toast');
                 toast.textContent = message;
                 toast.className = 'toast';
                 if (type === 'error') toast.classList.add('error');
@@ -1210,25 +1119,98 @@
                 toast._timer = setTimeout(() => toast.classList.remove('show'), duration);
             }
 
-            function formatTime(date) {
-                const h = String(date.getHours()).padStart(2, '0');
-                const m = String(date.getMinutes()).padStart(2, '0');
-                const s = String(date.getSeconds()).padStart(2, '0');
-                return `${h}:${m}:${s}`;
+            // ============================================================
+            // LOG
+            // ============================================================
+            function addLog(message, type = 'info') {
+                const log = document.getElementById('logContainer');
+                const time = new Date();
+                const t = String(time.getHours()).padStart(2, '0') + ':' +
+                    String(time.getMinutes()).padStart(2, '0') + ':' +
+                    String(time.getSeconds()).padStart(2, '0');
+                const div = document.createElement('div');
+                div.className = 'entry';
+                const msgClass = type === 'info' ? 'msg-info' :
+                    type === 'success' ? 'msg-success' :
+                    type === 'error' ? 'msg-error' :
+                    type === 'warning' ? 'msg-warning' : 'msg-info';
+                div.innerHTML = `<span class="time">[${t}]</span> <span class="${msgClass}">${message}</span>`;
+                log.appendChild(div);
+                log.scrollTop = log.scrollHeight;
+                if (log.children.length > 100) log.removeChild(log.firstChild);
             }
 
+            // ============================================================
+            // DOM REFS
+            // ============================================================
+            const fileInput = document.getElementById('fileInput');
+            const dropZone = document.getElementById('dropZone');
+            const fileInfo = document.getElementById('fileInfo');
+            const vtApiKeyInput = document.getElementById('vtApiKey');
+            const iterationsInput = document.getElementById('iterations');
+            const startBtn = document.getElementById('startBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const statusDot = document.getElementById('statusDot');
+            const statusText = document.getElementById('statusText');
+            const iterationDisplay = document.getElementById('iterationDisplay');
+            const elapsedTimeDisplay = document.getElementById('elapsedTimeDisplay');
+            const progressFill = document.getElementById('progressFill');
+            const progressLabel = document.getElementById('progressLabel');
+            const detectionDisplay = document.getElementById('detectionDisplay');
+            const resultStatus = document.getElementById('resultStatus');
+            const resultDate = document.getElementById('resultDate');
+            const resultId = document.getElementById('resultId');
+            const viewDetailsBtn = document.getElementById('viewDetailsBtn');
+            const openBrowserBtn = document.getElementById('openBrowserBtn');
+            const summaryBox = document.getElementById('summaryBox');
+            const totalAnalyses = document.getElementById('totalAnalyses');
+            const minDetections = document.getElementById('minDetections');
+            const maxDetections = document.getElementById('maxDetections');
+            const avgDetections = document.getElementById('avgDetections');
+            const zeroReached = document.getElementById('zeroReached');
+            const resultsBody = document.getElementById('resultsBody');
+            const exportCsvBtn = document.getElementById('exportCsvBtn');
+            const exportJsonBtn = document.getElementById('exportJsonBtn');
+            const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+
+            // Modifications
+            const modTimestamp = document.getElementById('modTimestamp');
+            const modLinkerVersion = document.getElementById('modLinkerVersion');
+            const modOSVersion = document.getElementById('modOSVersion');
+            const modImageVersion = document.getElementById('modImageVersion');
+            const modDllFlags = document.getElementById('modDllFlags');
+            const modSectionNames = document.getElementById('modSectionNames');
+            const modChecksum = document.getElementById('modChecksum');
+            const modRichHeader = document.getElementById('modRichHeader');
+            const modStrings = document.getElementById('modStrings');
+
+            // ============================================================
+            // STATE
+            // ============================================================
+            let currentFile = null;
+            let results = [];
+            let isRunning = false;
+            let campaignId = 0;
+            let currentAnalysisId = null;
+            let isApkFile = false;
+            let timerInterval = null;
+            let startTime = null;
+
+            // ============================================================
+            // HELPERS
+            // ============================================================
             function formatElapsed(ms) {
-                const totalSec = Math.floor(ms / 1000);
-                const h = String(Math.floor(totalSec / 3600)).padStart(2, '0');
-                const m = String(Math.floor((totalSec % 3600) / 60)).padStart(2, '0');
-                const s = String(totalSec % 60).padStart(2, '0');
-                return `${h}:${m}:${s}`;
+                const s = Math.floor(ms / 1000);
+                const m = Math.floor(s / 60);
+                const h = Math.floor(m / 60);
+                return String(h).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0') + ':' + String(s % 60).padStart(2,
+                    '0');
             }
 
-            function updateElapsedTimer() {
-                if (!startTime) return;
-                const elapsed = Date.now() - startTime;
-                elapsedTime.textContent = formatElapsed(elapsed);
+            function updateElapsed() {
+                if (startTime && elapsedTimeDisplay) {
+                    elapsedTimeDisplay.textContent = formatElapsed(Date.now() - startTime);
+                }
             }
 
             async function computeSHA256(buffer) {
@@ -1237,77 +1219,41 @@
                 return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
             }
 
-            // Fonction de validation PE (uniquement pour EXE)
             function validatePE(buffer) {
                 try {
-                    const view = new Uint8Array(buffer);
-                    if (view.length < 64) return false;
-                    if (view[0] !== 0x4D || view[1] !== 0x5A) return false;
-                    const e_lfanew = view[0x3C] | (view[0x3D] << 8);
-                    if (e_lfanew + 4 > view.length) return false;
-                    if (view[e_lfanew] !== 0x50 || view[e_lfanew + 1] !== 0x45 ||
-                        view[e_lfanew + 2] !== 0x00 || view[e_lfanew + 3] !== 0x00) return false;
+                    const v = new Uint8Array(buffer);
+                    if (v.length < 64) return false;
+                    if (v[0] !== 0x4D || v[1] !== 0x5A) return false;
+                    const e = v[0x3C] | (v[0x3D] << 8);
+                    if (e + 4 > v.length) return false;
+                    if (v[e] !== 0x50 || v[e + 1] !== 0x45 || v[e + 2] !== 0x00 || v[e + 3] !== 0x00) return false;
                     return true;
                 } catch (e) { return false; }
             }
 
-            // Validation APK (vérification du magic number ZIP)
             function validateAPK(buffer) {
                 try {
-                    const view = new Uint8Array(buffer);
-                    if (view.length < 4) return false;
-                    // Un APK commence par un fichier ZIP (PK)
-                    if (view[0] === 0x50 && view[1] === 0x4B && view[2] === 0x03 && view[3] === 0x04) {
-                        return true;
-                    }
-                    return false;
+                    const v = new Uint8Array(buffer);
+                    if (v.length < 4) return false;
+                    return (v[0] === 0x50 && v[1] === 0x4B && v[2] === 0x03 && v[3] === 0x04);
                 } catch (e) { return false; }
-            }
-
-            // ============================================================
-            // LOG
-            // ============================================================
-            function addLog(message, type = 'info') {
-                const time = formatTime(new Date());
-                const entry = { time, message, type };
-                logEntries.push(entry);
-
-                const div = document.createElement('div');
-                div.className = 'log-entry';
-                const msgClass = type === 'info' ? 'msg-info' :
-                    type === 'success' ? 'msg-success' :
-                    type === 'error' ? 'msg-error' :
-                    type === 'warning' ? 'msg-warning' : 'msg-info';
-                div.innerHTML = `<span class="time">[${time}]</span> <span class="${msgClass}">${message}</span>`;
-                logContainer.appendChild(div);
-                logContainer.scrollTop = logContainer.scrollHeight;
-
-                if (logEntries.length > 200) {
-                    const first = logContainer.firstChild;
-                    if (first) logContainer.removeChild(first);
-                    logEntries.shift();
-                }
-            }
-
-            function clearLog() {
-                logContainer.innerHTML = '';
-                logEntries = [];
-                addLog('Journal effacé.', 'info');
             }
 
             // ============================================================
             // UPDATE UI
             // ============================================================
-            function updateStatus(text, state = 'ready') {
+            function updateStatus(text, state = 'ready', progress = null) {
                 statusText.textContent = text;
-                statusDisplay.textContent = text;
+                resultStatus.textContent = text;
                 statusDot.className = 'status-dot';
-                if (state === 'ready') {
-                    statusDot.classList.add('ready');
-                } else if (state === 'running') {
-                    statusDot.classList.add('running');
-                } else if (state === 'error') {
-                    statusDot.classList.add('error');
+                if (state === 'ready') statusDot.classList.add('ready');
+                else if (state === 'running') statusDot.classList.add('running');
+                else if (state === 'error') statusDot.classList.add('error');
+
+                if (progress !== null) {
+                    const pct = Math.min(100, Math.max(0, progress));
+                    progressFill.style.width = pct + '%';
+                    progressLabel.textContent = Math.round(pct) + '%';
                 }
             }
 
@@ -1315,55 +1261,41 @@
                 const el = detectionDisplay;
                 el.className = 'value detections';
                 if (detections === null || detections === undefined) {
-                    el.textContent = '⏳ En attente...';
+                    el.textContent = '⏳ En attente';
                     el.classList.add('waiting');
                 } else if (detections === 0) {
-                    el.textContent = `0 / ${total}`;
+                    el.textContent = '0 / ' + total;
                     el.classList.add('zero');
                 } else {
-                    el.textContent = `${detections} / ${total}`;
+                    el.textContent = detections + ' / ' + total;
                     el.classList.add('positive');
                 }
-                enginesCount.textContent = total;
             }
 
             function updateFileInfo(file) {
                 if (!file) {
-                    filePathDisplay.innerHTML = '<span class="placeholder">Aucun fichier sélectionné</span>';
-                    fileExtraInfo.innerHTML = `
-                        <span>📄 Aucun fichier chargé</span>
-                        <span>📏 Taille : —</span>
-                        <span>🔐 SHA-256 : —</span>
-                    `;
+                    fileInfo.innerHTML =
+                        '<span class="name">Aucun fichier</span><span class="size">—</span><span class="hash">SHA-256: —</span>';
                     return;
                 }
-
-                filePathDisplay.textContent = file.name;
-                const sizeKB = (file.size / 1024).toFixed(1);
-                const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
-                const sizeStr = file.size > 1024 * 1024 ? `${sizeMB} MB` : `${sizeKB} KB`;
-
-                // Détection du type
                 const ext = file.name.split('.').pop().toLowerCase();
-                const typeIcon = ext === 'apk' ? '📱' : '🖥️';
-                const typeName = ext === 'apk' ? 'APK (Android)' : 'EXE (Windows)';
+                const typeLabel = ext === 'apk' ? '📱 APK' : '🖥️ EXE';
+                const size = file.size > 1024 * 1024 ?
+                    (file.size / 1024 / 1024).toFixed(2) + ' MB' :
+                    (file.size / 1024).toFixed(1) + ' KB';
 
-                fileExtraInfo.innerHTML = `
-                    <span>${typeIcon} ${file.name}</span>
-                    <span>📏 Taille : ${sizeStr}</span>
-                    <span>🔐 SHA-256 : Calcul en cours...</span>
-                    <span>📦 Type : ${typeName}</span>
-                `;
+                fileInfo.innerHTML =
+                    '<span class="name">' + typeLabel + ' ' + file.name + '</span>' +
+                    '<span class="size">' + size + '</span>' +
+                    '<span class="hash">SHA-256: Calcul en cours...</span>';
 
-                file.arrayBuffer().then(buffer => {
-                    computeSHA256(buffer).then(hash => {
-                        const shortHash = hash.substring(0, 16) + '...';
-                        fileExtraInfo.innerHTML = `
-                            <span>${typeIcon} ${file.name}</span>
-                            <span>📏 Taille : ${sizeStr}</span>
-                            <span>🔐 SHA-256 : ${shortHash}</span>
-                            <span>📦 Type : ${typeName}</span>
-                        `;
+                file.arrayBuffer().then(buf => {
+                    computeSHA256(buf).then(hash => {
+                        const short = hash.substring(0, 16) + '…';
+                        fileInfo.innerHTML =
+                            '<span class="name">' + typeLabel + ' ' + file.name + '</span>' +
+                            '<span class="size">' + size + '</span>' +
+                            '<span class="hash">SHA-256: ' + short + '</span>';
                     });
                 });
             }
@@ -1375,282 +1307,249 @@
                 }
                 summaryBox.style.display = 'flex';
                 totalAnalyses.textContent = results.length;
-
-                const detections = results.map(r => r.detections).filter(v => typeof v === 'number');
-                if (detections.length > 0) {
-                    minDetections.textContent = Math.min(...detections);
-                    maxDetections.textContent = Math.max(...detections);
-                    avgDetections.textContent = (detections.reduce((a, b) => a + b, 0) / detections.length).toFixed(1);
+                const dets = results.map(r => r.detections).filter(v => typeof v === 'number');
+                if (dets.length > 0) {
+                    minDetections.textContent = Math.min.apply(null, dets);
+                    maxDetections.textContent = Math.max.apply(null, dets);
+                    var sum = 0;
+                    for (var i = 0; i < dets.length; i++) sum += dets[i];
+                    avgDetections.textContent = (sum / dets.length).toFixed(1);
                 }
-
-                const hasZero = results.some(r => r.isZero === true);
+                var hasZero = false;
+                for (var j = 0; j < results.length; j++) {
+                    if (results[j].isZero === true) { hasZero = true; break; }
+                }
                 zeroReached.textContent = hasZero ? '✅ Oui' : '❌ Non';
-                zeroReached.style.color = hasZero ? '#38a169' : '#e53e3e';
+                zeroReached.style.color = hasZero ? '#48bb78' : '#fc8181';
             }
 
             // ============================================================
-            // MODIFICATION ENGINE (uniquement pour EXE)
+            // RENDER TABLE
             // ============================================================
-            function applyAllModifications(buffer, options, seed) {
-                // Si c'est un APK, on ne modifie pas
+            function renderResults() {
+                if (results.length === 0) {
+                    resultsBody.innerHTML =
+                        '<tr><td colspan="8" class="empty-state">Aucune analyse effectuée</td></tr>';
+                    return;
+                }
+
+                var html = '';
+                for (var i = 0; i < results.length; i++) {
+                    var r = results[i];
+                    var detStr = typeof r.detections === 'number' ? r.detections + '/' + r.total : r.detections;
+                    var typeBadge = r.fileType === 'APK' ?
+                        '<span class="badge-type badge-apk">📱 APK</span>' :
+                        '<span class="badge-type badge-exe">🖥️ EXE</span>';
+                    var zeroBadge = r.isZero ? '<span class="badge-zero-sm">⭐0</span>' : '';
+                    var validBadge = r.peValid ? '✅' : '❌';
+                    var sizeStr = r.size < 1024 ? r.size + ' B' : (r.size / 1024).toFixed(1) + ' KB';
+                    var rowClass = r.isZero ? 'highlight-row' : '';
+
+                    html += '<tr class="' + rowClass + '">' +
+                        '<td><span class="iteration-badge">#' + r.iteration + '</span></td>' +
+                        '<td><strong>' + r.version + '</strong> ' + zeroBadge + ' ' + typeBadge + '</td>' +
+                        '<td><span class="mod-tag">' + (r.modifications || 'Aucune') + '</span></td>' +
+                        '<td class="hash-cell">' + r.sha256 + '</td>' +
+                        '<td>' + sizeStr + '</td>' +
+                        '<td>' + validBadge + '</td>' +
+                        '<td class="detection-cell">' + detStr + '</td>' +
+                        '<td><button class="download-btn" data-idx="' + i + '">💾</button></td>' +
+                        '</tr>';
+                }
+                resultsBody.innerHTML = html;
+
+                var btns = document.querySelectorAll('.download-btn');
+                for (var k = 0; k < btns.length; k++) {
+                    btns[k].addEventListener('click', function() {
+                        var idx = parseInt(this.getAttribute('data-idx'));
+                        var r = results[idx];
+                        if (r && r.buffer) {
+                            var blob = new Blob([r.buffer], { type: 'application/octet-stream' });
+                            var url = URL.createObjectURL(blob);
+                            var a = document.createElement('a');
+                            a.href = url;
+                            a.download = r.filename || 'iter_' + r.iteration + '.' + (r.fileType === 'APK' ?
+                                'apk' : 'exe');
+                            a.click();
+                            URL.revokeObjectURL(url);
+                            showToast('Téléchargé: ' + a.download, 'success');
+                        }
+                    });
+                }
+            }
+
+            // ============================================================
+            // MODIFICATION ENGINE
+            // ============================================================
+            function applyModifications(buffer, seed) {
                 if (isApkFile) {
-                    return {
-                        buffer: buffer,
-                        modifications: 'APK - aucune modification PE'
-                    };
+                    return { buffer: buffer, modifications: 'APK — aucune modification' };
                 }
 
-                const arr = new Uint8Array(buffer);
-                const cloned = new Uint8Array(arr);
-                let modsList = [];
+                var arr = new Uint8Array(buffer);
+                var cloned = new Uint8Array(arr);
+                var mods = [];
 
-                const e_lfanew = cloned[0x3C] | (cloned[0x3D] << 8);
+                var e = cloned[0x3C] | (cloned[0x3D] << 8);
 
-                if (options.timestamp && e_lfanew + 0x10 < cloned.length) {
-                    let ts = 0;
-                    for (let i = 0; i < 4; i++) {
-                        ts |= cloned[e_lfanew + 0x08 + i] << (i * 8);
-                    }
+                if (modTimestamp.checked && e + 0x10 < cloned.length) {
+                    var ts = 0;
+                    for (var t = 0; t < 4; t++) ts |= cloned[e + 0x08 + t] << (t * 8);
                     ts += seed + 1;
-                    cloned[e_lfanew + 0x08] = ts & 0xFF;
-                    cloned[e_lfanew + 0x09] = (ts >> 8) & 0xFF;
-                    cloned[e_lfanew + 0x0A] = (ts >> 16) & 0xFF;
-                    cloned[e_lfanew + 0x0B] = (ts >> 24) & 0xFF;
-                    modsList.push('Timestamp+1');
+                    cloned[e + 0x08] = ts & 0xFF;
+                    cloned[e + 0x09] = (ts >> 8) & 0xFF;
+                    cloned[e + 0x0A] = (ts >> 16) & 0xFF;
+                    cloned[e + 0x0B] = (ts >> 24) & 0xFF;
+                    mods.push('Timestamp+1');
                 }
 
-                if (options.linkerVersion && e_lfanew + 0x16 < cloned.length) {
-                    const parts = options.linkerVersionVal.split('.').map(Number);
-                    if (parts.length === 2) {
-                        cloned[e_lfanew + 0x14] = (parts[0] + seed) & 0xFF;
-                        cloned[e_lfanew + 0x15] = (parts[1] + seed) & 0xFF;
-                        modsList.push(`Linker v${parts[0]+seed}.${parts[1]+seed}`);
-                    }
+                if (modLinkerVersion.checked && e + 0x16 < cloned.length) {
+                    cloned[e + 0x14] = (6 + seed) & 0xFF;
+                    cloned[e + 0x15] = (0 + seed) & 0xFF;
+                    mods.push('Linker');
                 }
 
-                if (options.osVersion && e_lfanew + 0x48 < cloned.length) {
-                    const parts = options.osVersionVal.split('.').map(Number);
-                    if (parts.length === 2) {
-                        cloned[e_lfanew + 0x44] = (parts[0] + seed) & 0xFF;
-                        cloned[e_lfanew + 0x45] = 0;
-                        cloned[e_lfanew + 0x46] = (parts[1] + seed) & 0xFF;
-                        cloned[e_lfanew + 0x47] = 0;
-                        modsList.push(`OS v${parts[0]+seed}.${parts[1]+seed}`);
-                    }
+                if (modOSVersion.checked && e + 0x48 < cloned.length) {
+                    cloned[e + 0x44] = (5 + seed) & 0xFF;
+                    cloned[e + 0x46] = (2 + seed) & 0xFF;
+                    mods.push('OS');
                 }
 
-                if (options.imageVersion && e_lfanew + 0x4C < cloned.length) {
-                    const parts = options.imageVersionVal.split('.').map(Number);
-                    if (parts.length === 2) {
-                        cloned[e_lfanew + 0x48] = (parts[0] + seed) & 0xFF;
-                        cloned[e_lfanew + 0x49] = 0;
-                        cloned[e_lfanew + 0x4A] = (parts[1] + seed) & 0xFF;
-                        cloned[e_lfanew + 0x4B] = 0;
-                        modsList.push(`Image v${parts[0]+seed}.${parts[1]+seed}`);
-                    }
+                if (modImageVersion.checked && e + 0x4C < cloned.length) {
+                    cloned[e + 0x48] = (1 + seed) & 0xFF;
+                    cloned[e + 0x4A] = (0 + seed) & 0xFF;
+                    mods.push('Image');
                 }
 
-                if (options.dllFlags && e_lfanew + 0x60 < cloned.length) {
-                    let flags = parseInt(options.dllFlagsVal, 16);
-                    flags = (flags + seed) & 0xFFFF;
-                    cloned[e_lfanew + 0x5E] = flags & 0xFF;
-                    cloned[e_lfanew + 0x5F] = (flags >> 8) & 0xFF;
-                    modsList.push(`DLL Flags 0x${flags.toString(16)}`);
+                if (modDllFlags.checked && e + 0x60 < cloned.length) {
+                    var flags = 0x0140 + seed;
+                    cloned[e + 0x5E] = flags & 0xFF;
+                    cloned[e + 0x5F] = (flags >> 8) & 0xFF;
+                    mods.push('DLL Flags');
                 }
 
-                if (options.sectionNames) {
-                    const numSections = cloned[e_lfanew + 0x06] | (cloned[e_lfanew + 0x07] << 8);
-                    const optionalHeaderSize = cloned[e_lfanew + 0x10] | (cloned[e_lfanew + 0x11] << 8);
-                    let sectionOffset = e_lfanew + 0x18 + optionalHeaderSize;
-                    let changed = false;
-                    for (let i = 0; i < numSections && i < 20; i++) {
-                        const secPtr = sectionOffset + i * 0x28;
-                        if (secPtr + 8 > cloned.length) break;
-                        for (let j = 0; j < 8; j++) {
-                            const idx = secPtr + j;
-                            if (cloned[idx] >= 0x61 && cloned[idx] <= 0x7A) {
-                                cloned[idx] = cloned[idx] - 0x20;
-                                changed = true;
-                            } else if (cloned[idx] >= 0x41 && cloned[idx] <= 0x5A) {
-                                cloned[idx] = cloned[idx] + 0x20;
-                                changed = true;
-                            }
+                if (modSectionNames.checked) {
+                    var num = cloned[e + 0x06] | (cloned[e + 0x07] << 8);
+                    var optSize = cloned[e + 0x10] | (cloned[e + 0x11] << 8);
+                    var off = e + 0x18 + optSize;
+                    var changed = false;
+                    for (var s = 0; s < num && s < 20; s++) {
+                        var ptr = off + s * 0x28;
+                        if (ptr + 8 > cloned.length) break;
+                        for (var ch = 0; ch < 8; ch++) {
+                            var idx = ptr + ch;
+                            if (cloned[idx] >= 0x61 && cloned[idx] <= 0x7A) { cloned[idx] -= 0x20;
+                                changed = true; } else if (cloned[idx] >= 0x41 && cloned[idx] <= 0x5A) { cloned[idx] +=
+                                    0x20;
+                                changed = true; }
                         }
                     }
-                    if (changed) modsList.push('Sections toggled');
+                    if (changed) mods.push('Sections');
                 }
 
-                if (options.checksum && e_lfanew + 0x5C < cloned.length) {
-                    cloned[e_lfanew + 0x58] = 0;
-                    cloned[e_lfanew + 0x59] = 0;
-                    cloned[e_lfanew + 0x5A] = 0;
-                    cloned[e_lfanew + 0x5B] = 0;
-                    modsList.push('Checksum cleared');
+                if (modChecksum.checked && e + 0x5C < cloned.length) {
+                    cloned[e + 0x58] = 0;
+                    cloned[e + 0x59] = 0;
+                    cloned[e + 0x5A] = 0;
+                    cloned[e + 0x5B] = 0;
+                    mods.push('Checksum');
                 }
 
-                if (options.richHeader) {
-                    for (let i = 0x80; i < Math.min(0x300, cloned.length - 4); i++) {
-                        if (cloned[i] === 0x52 && cloned[i + 1] === 0x69 && cloned[i + 2] === 0x63 && cloned[i + 3] ===
+                if (modRichHeader.checked) {
+                    for (var rh = 0x80; rh < Math.min(0x300, cloned.length - 4); rh++) {
+                        if (cloned[rh] === 0x52 && cloned[rh + 1] === 0x69 && cloned[rh + 2] === 0x63 && cloned[rh + 3] ===
                             0x68) {
-                            let end = i + 4;
+                            var end = rh + 4;
                             while (end < cloned.length - 4 && !(cloned[end] === 0x00 && cloned[end + 1] === 0x00 &&
-                                    cloned[end + 2] === 0x00 && cloned[end + 3] === 0x00)) {
-                                end += 4;
-                            }
-                            if (end < cloned.length) {
-                                for (let j = i; j < end; j++) {
-                                    cloned[j] = 0x00;
-                                }
-                                modsList.push('Rich Header removed');
-                            }
+                                    cloned[end + 2] === 0x00 && cloned[end + 3] === 0x00)) end += 4;
+                            if (end < cloned.length) { for (var z = rh; z < end; z++) cloned[z] = 0x00; }
+                            mods.push('Rich Header');
                             break;
                         }
                     }
                 }
 
-                if (options.strings) {
-                    const pad = options.stringPadding || 2;
-                    let count = 0;
-                    for (let i = 0; i < cloned.length - 10 && count < 5; i++) {
-                        if (cloned[i] >= 0x20 && cloned[i] <= 0x7E) {
-                            let start = i;
-                            let len = 0;
-                            while (i + len < cloned.length && cloned[i + len] >= 0x20 && cloned[i + len] <= 0x7E) {
-                                len++;
-                            }
+                if (modStrings.checked) {
+                    var count = 0;
+                    for (var str = 0; str < cloned.length - 10 && count < 5; str++) {
+                        if (cloned[str] >= 0x20 && cloned[str] <= 0x7E) {
+                            var start = str,
+                                len = 0;
+                            while (str + len < cloned.length && cloned[str + len] >= 0x20 && cloned[str + len] <= 0x7E)
+                            len++;
                             if (len >= 4 && len < 30) {
-                                for (let j = 0; j < pad && start + j < cloned.length; j++) {
-                                    cloned[start + j] = (cloned[start + j] + 1) & 0x7F;
-                                    if (cloned[start + j] < 0x20) cloned[start + j] = 0x20;
+                                for (var p = 0; p < 2 && start + p < cloned.length; p++) {
+                                    cloned[start + p] = (cloned[start + p] + 1) & 0x7F;
+                                    if (cloned[start + p] < 0x20) cloned[start + p] = 0x20;
                                 }
                                 count++;
-                                modsList.push('Strings padded');
+                                mods.push('Strings');
                             }
-                            i += len;
+                            str += len;
                         }
                     }
                 }
-
-                if (options.versionInfo) {
-                    let found = false;
-                    for (let i = 0; i < cloned.length - 20; i++) {
-                        if (cloned[i] === 0x56 && cloned[i + 1] === 0x53 &&
-                            cloned[i + 2] === 0x5F && cloned[i + 3] === 0x56) {
-                            for (let j = 0; j < 8 && i + j < cloned.length; j++) {
-                                cloned[i + j] = (cloned[i + j] + seed) & 0xFF;
-                            }
-                            found = true;
-                            modsList.push('VersionInfo modifié');
-                            break;
-                        }
-                    }
-                    if (!found) modsList.push('VersionInfo: non trouvé');
-                }
-
-                if (options.manifest) {
-                    let found = false;
-                    const manifestStart = '<?xml';
-                    const mBytes = manifestStart.split('').map(c => c.charCodeAt(0));
-                    for (let i = 0; i < cloned.length - mBytes.length - 10; i++) {
-                        let match = true;
-                        for (let j = 0; j < mBytes.length; j++) {
-                            if (cloned[i + j] !== mBytes[j]) { match = false; break; }
-                        }
-                        if (match) {
-                            for (let j = 0; j < 10 && i + j < cloned.length; j++) {
-                                cloned[i + j] = (cloned[i + j] + 1) & 0xFF;
-                            }
-                            found = true;
-                            modsList.push('Manifest modifié');
-                            break;
-                        }
-                    }
-                    if (!found) modsList.push('Manifest: non trouvé');
-                }
-
-                if (options.icons && options.iconData) {
-                    const iconBytes = new Uint8Array(options.iconData);
-                    let replaced = false;
-                    for (let i = 0; i < cloned.length - iconBytes.length - 10 && !replaced; i++) {
-                        if (cloned[i] === 0x00 && cloned[i + 1] === 0x00 &&
-                            cloned[i + 2] === 0x00 && cloned[i + 3] === 0x00) {
-                            for (let j = 0; j < Math.min(iconBytes.length, 500); j++) {
-                                cloned[i + j] = iconBytes[j] || 0x00;
-                            }
-                            replaced = true;
-                            modsList.push('Icône remplacée');
-                        }
-                    }
-                    if (!replaced) modsList.push('Icône: non remplacée');
-                }
-
-                if (options.stringsAdvanced) {
-                    modsList.push('Strings avancé appliqué');
-                }
-
-                const uniqueMods = [...new Set(modsList)];
 
                 return {
                     buffer: cloned.buffer,
-                    modifications: uniqueMods.length > 0 ? uniqueMods.join(', ') : 'Aucune modification'
+                    modifications: mods.length > 0 ? mods.join(', ') : 'Aucune modification'
                 };
             }
 
             // ============================================================
-            // VIRUSTOTAL API (RÉEL)
+            // VIRUSTOTAL API
             // ============================================================
-            async function submitToVirusTotal(apiKey, fileBuffer, fileName) {
-                const formData = new FormData();
-                const blob = new Blob([fileBuffer], { type: 'application/octet-stream' });
+            async function submitToVT(apiKey, buffer, fileName) {
+                var formData = new FormData();
+                var blob = new Blob([buffer], { type: 'application/octet-stream' });
                 formData.append('file', blob, fileName);
 
-                const uploadRes = await fetch('https://www.virustotal.com/api/v3/files', {
+                var uploadRes = await fetch('https://www.virustotal.com/api/v3/files', {
                     method: 'POST',
                     headers: { 'x-apikey': apiKey },
                     body: formData
                 });
 
                 if (!uploadRes.ok) {
-                    const errText = await uploadRes.text();
-                    let errorMsg = `Upload failed: ${uploadRes.status}`;
+                    var errorMsg = 'Erreur ' + uploadRes.status;
                     try {
-                        const errJson = JSON.parse(errText);
+                        var errJson = await uploadRes.json();
                         if (errJson.error && errJson.error.message) {
                             errorMsg = errJson.error.message;
                         }
-                    } catch (e) {}
+                    } catch (e) {
+                        var text = await uploadRes.text();
+                        if (text.indexOf('Load failed') !== -1) {
+                            errorMsg = 'Load failed — Vérifiez votre clé API ou la taille du fichier';
+                        } else {
+                            errorMsg = text.substring(0, 100);
+                        }
+                    }
                     throw new Error(errorMsg);
                 }
 
-                const uploadJson = await uploadRes.json();
-                const analysisId = uploadJson.data.id;
+                var uploadJson = await uploadRes.json();
+                var analysisId = uploadJson.data.id;
 
-                let attempts = 0;
-                const maxAttempts = 35;
-                while (attempts < maxAttempts) {
-                    await new Promise(r => setTimeout(r, 2500));
-                    const resultRes = await fetch(`https://www.virustotal.com/api/v3/analyses/${analysisId}`, {
+                var attempts = 0;
+                while (attempts < 35) {
+                    await new Promise(function(r) { setTimeout(r, 2500); });
+                    var res = await fetch('https://www.virustotal.com/api/v3/analyses/' + analysisId, {
                         headers: { 'x-apikey': apiKey }
                     });
-                    if (!resultRes.ok) {
-                        throw new Error(`Analysis fetch failed: ${resultRes.status}`);
-                    }
-                    const resultJson = await resultRes.json();
-                    const status = resultJson.data.attributes.status;
-                    if (status === 'completed') {
-                        const stats = resultJson.data.attributes.stats;
-                        const malicious = stats.malicious || 0;
-                        const total = (stats.malicious || 0) + (stats.undetected || 0) +
+                    if (!res.ok) throw new Error('Fetch failed: ' + res.status);
+                    var json = await res.json();
+                    if (json.data.attributes.status === 'completed') {
+                        var stats = json.data.attributes.stats;
+                        var malicious = stats.malicious || 0;
+                        var total = (stats.malicious || 0) + (stats.undetected || 0) +
                             (stats.suspicious || 0) + (stats.harmless || 0) + (stats.timeout || 0);
                         return {
-                            malicious,
-                            total,
-                            stats,
+                            malicious: malicious,
+                            total: total,
                             analysisId: analysisId,
-                            link: `https://www.virustotal.com/gui/file/${uploadJson.data.attributes.sha256}`
+                            link: 'https://www.virustotal.com/gui/file/' + uploadJson.data.attributes.sha256
                         };
-                    } else if (status === 'failed') {
-                        throw new Error('Analysis failed on VirusTotal');
                     }
                     attempts++;
                 }
@@ -1658,32 +1557,24 @@
             }
 
             // ============================================================
-            // CORE : RUN CAMPAIGN
+            // RUN CAMPAIGN
             // ============================================================
             async function runCampaign() {
                 if (isRunning) return;
-
                 if (!currentFile) {
-                    showToast('Veuillez téléverser un fichier EXE ou APK.', 'error');
+                    showToast('Veuillez sélectionner un fichier.', 'error');
                     return;
                 }
 
-                // MODIFICATION: taille max = 2 MB
-                const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
-                if (currentFile.size > MAX_SIZE) {
-                    showToast(`Fichier trop volumineux (max 2 MB). Taille: ${(currentFile.size/1024/1024).toFixed(2)} MB`, 'error');
-                    return;
-                }
-
-                const apiKey = vtApiKeyInput.value.trim();
+                var apiKey = vtApiKeyInput.value.trim();
                 if (!apiKey) {
-                    showToast('Veuillez entrer une clé API VirusTotal.', 'error');
+                    showToast('Entrez votre clé API VirusTotal.', 'error');
                     return;
                 }
 
-                const numIterations = parseInt(iterationsInput.value) || 3;
+                var numIterations = parseInt(iterationsInput.value) || 3;
                 if (numIterations < 1 || numIterations > 5) {
-                    showToast('Nombre d\'itérations entre 1 et 5 (limite API).', 'error');
+                    showToast('Itérations entre 1 et 5.', 'error');
                     return;
                 }
 
@@ -1694,315 +1585,150 @@
                 startTime = Date.now();
 
                 if (timerInterval) clearInterval(timerInterval);
-                timerInterval = setInterval(updateElapsedTimer, 1000);
+                timerInterval = setInterval(updateElapsed, 1000);
 
-                updateStatus('Démarrage de la campagne...', 'running');
-                iterationCounter.textContent = `Itération: 0 / ${numIterations}`;
+                updateStatus('Démarrage...', 'running', 0);
+                iterationDisplay.textContent = '0 / ' + numIterations;
+                addLog('🚀 Campagne démarrée — ' + numIterations + ' itérations', 'info');
 
                 try {
-                    const buffer = await currentFile.arrayBuffer();
-                    originalBuffer = buffer;
-
-                    // Détection du type de fichier
-                    const ext = currentFile.name.split('.').pop().toLowerCase();
+                    var buffer = await currentFile.arrayBuffer();
+                    var ext = currentFile.name.split('.').pop().toLowerCase();
                     isApkFile = (ext === 'apk');
 
-                    // Valider le fichier selon son type
-                    let isValid = false;
-                    if (isApkFile) {
-                        isValid = validateAPK(buffer);
-                        if (!isValid) {
-                            showToast('Fichier APK invalide (signature ZIP incorrecte).', 'warning');
-                            addLog('⚠️ Fichier APK invalide', 'warning');
-                        } else {
-                            addLog('✅ Fichier APK valide', 'success');
-                        }
-                    } else {
-                        isValid = validatePE(buffer);
-                        if (!isValid) {
-                            showToast('Fichier EXE invalide (structure PE incorrecte).', 'warning');
-                            addLog('⚠️ Fichier EXE invalide', 'warning');
-                        } else {
-                            addLog('✅ Fichier EXE valide', 'success');
-                        }
-                    }
+                    var currentBuffer = buffer;
 
-                    let iconData = null;
-                    if (modIcons.checked && iconInput.files && iconInput.files.length > 0) {
-                        iconData = await iconInput.files[0].arrayBuffer();
-                    }
+                    for (var i = 0; i < numIterations; i++) {
+                        var seed = i + 1;
+                        var progress = ((i + 1) / numIterations) * 100;
+                        updateStatus('Itération ' + (i + 1) + '/' + numIterations + '...', 'running', progress);
+                        iterationDisplay.textContent = (i + 1) + ' / ' + numIterations;
 
-                    const options = {
-                        timestamp: modTimestamp.checked,
-                        linkerVersion: modLinkerVersion.checked,
-                        linkerVersionVal: linkerVersion.value,
-                        osVersion: modOSVersion.checked,
-                        osVersionVal: osVersion.value,
-                        imageVersion: modImageVersion.checked,
-                        imageVersionVal: imageVersion.value,
-                        dllFlags: modDllFlags.checked,
-                        dllFlagsVal: dllFlags.value,
-                        sectionNames: modSectionNames.checked,
-                        checksum: modChecksum.checked,
-                        richHeader: modRichHeader.checked,
-                        strings: modStrings.checked,
-                        stringPadding: parseInt(stringPadding.value) || 2,
-                        versionInfo: modVersionInfo.checked,
-                        manifest: modManifest.checked,
-                        manifestPreset: manifestPreset.value,
-                        icons: modIcons.checked,
-                        iconData: iconData,
-                        stringsAdvanced: modStringsAdvanced.checked
-                    };
+                        addLog('🔄 Itération ' + (i + 1) + ' (seed=' + seed + ')', 'info');
 
-                    let currentBuffer = buffer;
-                    let zeroReachedFlag = false;
+                        var modResult = applyModifications(currentBuffer, seed);
+                        currentBuffer = modResult.buffer;
 
-                    const fileType = isApkFile ? 'APK' : 'EXE';
-                    addLog(`🚀 Campagne démarrée : ${numIterations} itérations`, 'info');
-                    addLog(`📁 Fichier : ${currentFile.name} (${(currentFile.size/1024).toFixed(1)} KB) - Type: ${fileType}`, 'info');
+                        var isValid = isApkFile ? validateAPK(currentBuffer) : validatePE(currentBuffer);
+                        var hash = await computeSHA256(currentBuffer);
+                        var size = currentBuffer.byteLength;
 
-                    for (let i = 0; i < numIterations; i++) {
-                        const seed = i + 1;
-                        updateStatus(`Itération ${i+1}/${numIterations}...`, 'running');
-                        iterationCounter.textContent = `Itération: ${i+1} / ${numIterations}`;
+                        addLog('📤 Envoi à VirusTotal...', 'info');
 
-                        addLog(`🔄 Itération ${i+1}/${numIterations} - seed=${seed}`, 'info');
-
-                        const result = applyAllModifications(currentBuffer, options, seed);
-                        currentBuffer = result.buffer;
-                        const modSummary = result.modifications || 'Aucune modification';
-
-                        // Validation selon le type
-                        let peValid = false;
-                        if (isApkFile) {
-                            peValid = validateAPK(currentBuffer);
-                        } else {
-                            peValid = validatePE(currentBuffer);
-                        }
-
-                        const hash = await computeSHA256(currentBuffer);
-                        const size = currentBuffer.byteLength;
-
-                        addLog(`📤 Envoi à VirusTotal...`, 'info');
-
-                        let vtResult;
+                        var vtResult;
                         try {
-                            const fileName = `iter_${i+1}_${currentFile.name}`;
-                            vtResult = await submitToVirusTotal(apiKey, currentBuffer, fileName);
+                            var fname = 'iter_' + (i + 1) + '_' + currentFile.name;
+                            vtResult = await submitToVT(apiKey, currentBuffer, fname);
                             currentAnalysisId = vtResult.analysisId;
-                            addLog(`✅ Analyse terminée: ${vtResult.malicious}/${vtResult.total} détections`, vtResult
+                            addLog('✅ ' + vtResult.malicious + '/' + vtResult.total + ' détections', vtResult
                                 .malicious === 0 ? 'success' : 'warning');
                         } catch (e) {
-                            vtResult = { malicious: 'Erreur', total: 'Erreur', stats: {} };
-                            addLog(`❌ Erreur VT: ${e.message}`, 'error');
-                            showToast(`Erreur VT itération ${i+1}: ${e.message}`, 'error');
+                            vtResult = { malicious: 'Erreur', total: 'Erreur' };
+                            addLog('❌ Erreur: ' + e.message, 'error');
+                            showToast('Erreur itération ' + (i + 1) + ': ' + e.message, 'error');
                         }
-
-                        const detections = vtResult.malicious;
-                        const total = vtResult.total;
 
                         results.push({
-                            id: analysisId++,
                             iteration: i + 1,
-                            version: `Itération ${i+1}`,
-                            modifications: modSummary,
+                            version: 'Itération ' + (i + 1),
+                            modifications: modResult.modifications,
                             sha256: hash,
                             size: size,
-                            peValid: peValid,
-                            detections: detections,
-                            total: total,
+                            peValid: isValid,
+                            detections: vtResult.malicious,
+                            total: vtResult.total,
                             buffer: currentBuffer,
-                            filename: `iter_${i+1}_${currentFile.name}`,
-                            isZero: (typeof detections === 'number' && detections === 0),
-                            link: vtResult.link || null,
-                            fileType: fileType
+                            filename: 'iter_' + (i + 1) + '_' + currentFile.name,
+                            isZero: (typeof vtResult.malicious === 'number' && vtResult.malicious === 0),
+                            fileType: isApkFile ? 'APK' : 'EXE',
+                            link: vtResult.link || null
                         });
-
-                        if (typeof detections === 'number' && detections === 0) {
-                            zeroReachedFlag = true;
-                            addLog(`⭐ 0 détection atteint à l'itération ${i+1}!`, 'success');
-                        }
 
                         renderResults();
                         updateSummary();
 
-                        if (typeof detections === 'number') {
-                            updateDetections(detections, total);
+                        if (typeof vtResult.malicious === 'number') {
+                            updateDetections(vtResult.malicious, vtResult.total);
                         }
-                        dateDisplay.textContent = new Date().toLocaleString();
-                        analysisIdDisplay.textContent = currentAnalysisId || '—';
+                        resultDate.textContent = new Date().toLocaleString();
+                        resultId.textContent = currentAnalysisId || '—';
 
                         if (i < numIterations - 1) {
-                            addLog(`⏳ Pause de 3s avant la prochaine itération...`, 'info');
-                            await new Promise(r => setTimeout(r, 3000));
+                            addLog('⏳ Pause 3s...', 'info');
+                            await new Promise(function(r) { setTimeout(r, 3000); });
                         }
                     }
 
-                    updateStatus(`Campagne terminée ✅ (${numIterations} itérations)`, 'ready');
-                    iterationCounter.textContent = `Itération: ${numIterations} / ${numIterations}`;
-                    addLog(`🏁 Campagne terminée. ${numIterations} analyses effectuées.`, 'success');
-
-                    if (timerInterval) {
-                        clearInterval(timerInterval);
-                        timerInterval = null;
-                    }
-
+                    updateStatus('✅ Terminé (' + numIterations + ' itérations)', 'ready', 100);
+                    iterationDisplay.textContent = numIterations + ' / ' + numIterations;
+                    addLog('🏁 Campagne terminée — ' + numIterations + ' analyses', 'success');
                     viewDetailsBtn.disabled = false;
                     openBrowserBtn.disabled = false;
-
-                    showToast(`Campagne terminée. ${numIterations} analyses.`, 'success');
+                    showToast('Analyse terminée. ' + numIterations + ' itérations.', 'success');
 
                 } catch (err) {
                     updateStatus('Erreur: ' + err.message, 'error');
-                    addLog(`❌ Erreur: ${err.message}`, 'error');
+                    addLog('❌ ' + err.message, 'error');
                     showToast('Erreur: ' + err.message, 'error');
                 } finally {
                     isRunning = false;
                     startBtn.disabled = false;
+                    if (timerInterval) {
+                        clearInterval(timerInterval);
+                        timerInterval = null;
+                    }
                 }
-            }
-
-            // ============================================================
-            // RENDER RESULTS
-            // ============================================================
-            function renderResults() {
-                if (results.length === 0) {
-                    resultsBody.innerHTML =
-                        `<tr><td colspan="8" class="empty-state">Aucune analyse. Téléversez un EXE ou un APK et lancez une campagne.</td></tr>`;
-                    return;
-                }
-
-                let html = '';
-                results.forEach((r, idx) => {
-                    const detStr = typeof r.detections === 'number' ? `${r.detections}` : r.detections;
-                    const totalStr = typeof r.total === 'number' ? `${r.total}` : r.total;
-                    const validBadge = r.peValid ? '<span class="badge badge-success">✅</span>' :
-                        '<span class="badge badge-danger">❌</span>';
-                    const sizeStr = r.size < 1024 ? `${r.size} B` : `${(r.size / 1024).toFixed(1)} KB`;
-                    const zeroBadge = r.isZero ? '<span class="badge badge-zero">⭐ 0</span>' : '';
-                    const rowClass = r.isZero ? 'highlight-row' : '';
-                    const typeBadge = r.fileType === 'APK' ?
-                        '<span class="badge badge-apk">📱 APK</span>' :
-                        '<span class="badge badge-info">🖥️ EXE</span>';
-
-                    const downloadBtn = r.buffer ?
-                        `<button class="download-btn" data-idx="${idx}">💾</button>` :
-                        '<span style="color:#a0aec0;">N/A</span>';
-
-                    html += `<tr class="${rowClass}">
-                        <td><span class="iteration-badge">#${r.iteration}</span></td>
-                        <td><strong>${r.version}</strong> ${zeroBadge} ${typeBadge}</td>
-                        <td><span class="mod-summary">${r.modifications || 'Aucune'}</span></td>
-                        <td class="hash-cell">${r.sha256}</td>
-                        <td>${sizeStr}</td>
-                        <td>${validBadge}</td>
-                        <td class="detection-cell">${detStr}/${totalStr}</td>
-                        <td>${downloadBtn}</td>
-                    </tr>`;
-                });
-                resultsBody.innerHTML = html;
-
-                document.querySelectorAll('.download-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const idx = parseInt(this.dataset.idx);
-                        downloadFile(idx);
-                    });
-                });
-            }
-
-            function downloadFile(idx) {
-                const r = results[idx];
-                if (!r || !r.buffer) {
-                    showToast('Fichier non disponible.', 'error');
-                    return;
-                }
-                const blob = new Blob([r.buffer], { type: 'application/octet-stream' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = r.filename || `iter_${r.iteration}.${r.fileType === 'APK' ? 'apk' : 'exe'}`;
-                a.click();
-                URL.revokeObjectURL(url);
-                showToast(`Téléchargement: ${a.download}`, 'success');
             }
 
             // ============================================================
             // EXPORT
             // ============================================================
             function exportCSV() {
-                if (results.length === 0) { showToast('Aucune donnée à exporter.', 'error'); return; }
-                let csv =
-                    'Itération,Version,Type,Modifications,SHA-256,Taille,Valide,Détections,Total,0 Detection\n';
-                results.forEach(r => {
-                    const detStr = typeof r.detections === 'number' ? r.detections : r.detections;
-                    const totalStr = typeof r.total === 'number' ? r.total : r.total;
-                    csv +=
-                        `${r.iteration},"${r.version}","${r.fileType || 'EXE'}","${r.modifications || 'Aucune'}",${r.sha256},${r.size},${r.peValid ? 'Oui' : 'Non'},${detStr},${totalStr},${r.isZero ? 'Oui' : 'Non'}\n`;
-                });
-                const blob = new Blob([csv], { type: 'text/csv' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
+                if (results.length === 0) { showToast('Aucune donnée', 'error'); return; }
+                var csv = 'Itération,Version,Type,Modifications,SHA-256,Taille,Valide,Détections,Total,0Detection\n';
+                for (var i = 0; i < results.length; i++) {
+                    var r = results[i];
+                    csv += r.iteration + ',"' + r.version + '","' + r.fileType + '","' + r.modifications + '",' + r
+                    .sha256 + ',' + r.size + ',' + (r.peValid ? 'Oui' : 'Non') + ',' + r.detections + ',' + r.total +
+                        ',' + (r.isZero ? 'Oui' : 'Non') + '\n';
+                }
+                var blob = new Blob([csv], { type: 'text/csv' });
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
                 a.href = url;
-                a.download = `campaign_${campaignId}_${Date.now()}.csv`;
+                a.download = 'campaign_' + campaignId + '.csv';
                 a.click();
                 URL.revokeObjectURL(url);
-                showToast('CSV exporté.', 'success');
+                showToast('CSV exporté', 'success');
             }
 
             function exportJSON() {
-                if (results.length === 0) { showToast('Aucune donnée à exporter.', 'error'); return; }
-                const exportData = results.map(r => ({
-                    iteration: r.iteration,
-                    version: r.version,
-                    type: r.fileType || 'EXE',
-                    modifications: r.modifications || 'Aucune',
-                    sha256: r.sha256,
-                    size: r.size,
-                    peValid: r.peValid,
-                    detections: r.detections,
-                    total: r.total,
-                    zeroDetection: r.isZero
-                }));
-                const json = JSON.stringify(exportData, null, 2);
-                const blob = new Blob([json], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
+                if (results.length === 0) { showToast('Aucune donnée', 'error'); return; }
+                var data = [];
+                for (var i = 0; i < results.length; i++) {
+                    var r = results[i];
+                    data.push({
+                        iteration: r.iteration,
+                        version: r.version,
+                        type: r.fileType,
+                        modifications: r.modifications,
+                        sha256: r.sha256,
+                        size: r.size,
+                        valid: r.peValid,
+                        detections: r.detections,
+                        total: r.total,
+                        zeroDetection: r.isZero
+                    });
+                }
+                var json = JSON.stringify(data, null, 2);
+                var blob = new Blob([json], { type: 'application/json' });
+                var url = URL.createObjectURL(blob);
+                var a = document.createElement('a');
                 a.href = url;
-                a.download = `campaign_${campaignId}_${Date.now()}.json`;
+                a.download = 'campaign_' + campaignId + '.json';
                 a.click();
                 URL.revokeObjectURL(url);
-                showToast('JSON exporté.', 'success');
-            }
-
-            // ============================================================
-            // VIEW DETAILS / OPEN BROWSER
-            // ============================================================
-            function viewDetails() {
-                if (results.length === 0) {
-                    showToast('Aucune analyse à afficher.', 'warning');
-                    return;
-                }
-                const last = results[results.length - 1];
-                const detStr = typeof last.detections === 'number' ? `${last.detections}/${last.total}` : last.detections;
-                showToast(`📋 Dernière analyse: ${detStr} détections, SHA: ${last.sha256.substring(0, 16)}...`, 'info');
-                addLog(`📋 Détails de la dernière analyse: ${detStr} détections`, 'info');
-            }
-
-            function openInBrowser() {
-                if (results.length === 0) {
-                    showToast('Aucune analyse à ouvrir.', 'warning');
-                    return;
-                }
-                const last = results[results.length - 1];
-                if (last.link) {
-                    window.open(last.link, '_blank');
-                    addLog(`🌐 Ouverture dans le navigateur: ${last.link}`, 'info');
-                } else {
-                    const id = currentAnalysisId || 'unknown';
-                    window.open(`https://www.virustotal.com/gui/file/${id}`, '_blank');
-                    addLog(`🌐 Ouverture dans le navigateur: ${id}`, 'info');
-                }
+                showToast('JSON exporté', 'success');
             }
 
             // ============================================================
@@ -2010,32 +1736,28 @@
             // ============================================================
             function resetAll() {
                 if (isRunning) {
-                    if (!confirm('Une campagne est en cours. Arrêter et réinitialiser ?')) return;
+                    if (!confirm('Arrêter la campagne en cours ?')) return;
                     isRunning = false;
                 }
                 results = [];
-                originalBuffer = null;
                 renderResults();
                 updateSummary();
-                updateStatus('Prêt', 'ready');
+                updateStatus('Prêt', 'ready', 0);
                 updateDetections(null);
-                dateDisplay.textContent = '—';
-                analysisIdDisplay.textContent = '—';
-                iterationCounter.textContent = 'Itération: 0 / 0';
+                resultDate.textContent = '—';
+                resultId.textContent = '—';
+                iterationDisplay.textContent = '—';
+                elapsedTimeDisplay.textContent = '00:00:00';
+                viewDetailsBtn.disabled = true;
+                openBrowserBtn.disabled = true;
                 currentFile = null;
                 fileInput.value = '';
                 updateFileInfo(null);
                 startBtn.disabled = false;
-                viewDetailsBtn.disabled = true;
-                openBrowserBtn.disabled = true;
-                isApkFile = false;
-                if (timerInterval) {
-                    clearInterval(timerInterval);
-                    timerInterval = null;
-                    elapsedTime.textContent = '00:00:00';
-                }
-                showToast('Réinitialisé.', 'info');
-                addLog('🔄 Réinitialisation complète', 'info');
+                if (timerInterval) { clearInterval(timerInterval);
+                    timerInterval = null; }
+                showToast('Réinitialisé', 'info');
+                addLog('🔄 Réinitialisé', 'info');
             }
 
             // ============================================================
@@ -2043,110 +1765,94 @@
             // ============================================================
             function handleFile(file) {
                 if (!file) return;
-
-                const ext = file.name.split('.').pop().toLowerCase();
-
-                // Vérification des extensions autorisées
+                var ext = file.name.split('.').pop().toLowerCase();
                 if (ext !== 'exe' && ext !== 'apk') {
-                    showToast('Veuillez sélectionner un fichier .exe ou .apk', 'error');
+                    showToast('Fichier .exe ou .apk uniquement', 'error');
                     return;
                 }
-
-                // MODIFICATION: taille max = 2 MB
-                const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
-                if (file.size > MAX_SIZE) {
-                    showToast(`Fichier trop volumineux (max 2 MB). Taille: ${(file.size/1024/1024).toFixed(2)} MB`, 'error');
+                if (file.size > 2 * 1024 * 1024) {
+                    showToast('Fichier > 2 MB (' + (file.size / 1024 / 1024).toFixed(2) + ' MB)', 'error');
                     return;
                 }
-
                 currentFile = file;
                 isApkFile = (ext === 'apk');
                 updateFileInfo(file);
                 results = [];
-                originalBuffer = null;
                 renderResults();
-                summaryBox.style.display = 'none';
-                updateStatus('Fichier chargé. Prêt.', 'ready');
+                updateSummary();
+                updateStatus('Fichier chargé', 'ready', 0);
                 updateDetections(null);
-                dateDisplay.textContent = '—';
-                analysisIdDisplay.textContent = '—';
-                viewDetailsBtn.disabled = true;
-                openBrowserBtn.disabled = true;
-                if (timerInterval) {
-                    clearInterval(timerInterval);
-                    timerInterval = null;
-                    elapsedTime.textContent = '00:00:00';
-                }
-                addLog(`📁 Fichier chargé: ${file.name} (${(file.size/1024).toFixed(1)} KB) - Type: ${isApkFile ? 'APK' : 'EXE'}`, 'success');
-                showToast(`Fichier chargé: ${file.name}`, 'success');
+                addLog('📁 ' + file.name + ' — ' + (file.size / 1024).toFixed(1) + ' KB (' + (isApkFile ? 'APK' : 'EXE') +
+                    ')', 'success');
+                showToast('Fichier chargé: ' + file.name, 'success');
             }
 
             // ============================================================
             // EVENTS
             // ============================================================
-            fileInput.addEventListener('change', (e) => {
-                if (e.target.files.length) {
-                    handleFile(e.target.files[0]);
-                }
+            fileInput.addEventListener('change', function(e) {
+                if (e.target.files.length) handleFile(e.target.files[0]);
             });
 
-            const container = document.querySelector('.container');
-            container.addEventListener('dragover', (e) => {
+            dropZone.addEventListener('dragover', function(e) { e.preventDefault();
+                dropZone.style.borderColor = '#4299e1'; });
+            dropZone.addEventListener('dragleave', function() { dropZone.style.borderColor = '#e2e8f0'; });
+            dropZone.addEventListener('drop', function(e) {
                 e.preventDefault();
-                container.style.borderColor = '#4299e1';
-                container.style.boxShadow = '0 0 0 3px rgba(66,153,225,0.2)';
+                dropZone.style.borderColor = '#e2e8f0';
+                if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
             });
-
-            container.addEventListener('dragleave', () => {
-                container.style.borderColor = '#d0d7de';
-                container.style.boxShadow = 'none';
-            });
-
-            container.addEventListener('drop', (e) => {
-                e.preventDefault();
-                container.style.borderColor = '#d0d7de';
-                container.style.boxShadow = 'none';
-                if (e.dataTransfer.files.length) {
-                    handleFile(e.dataTransfer.files[0]);
-                }
-            });
+            dropZone.addEventListener('click', function() { fileInput.click(); });
 
             startBtn.addEventListener('click', runCampaign);
             resetBtn.addEventListener('click', resetAll);
             exportCsvBtn.addEventListener('click', exportCSV);
             exportJsonBtn.addEventListener('click', exportJSON);
-            clearHistoryBtn.addEventListener('click', () => {
-                if (isRunning) { showToast('Campagne en cours.', 'error'); return; }
+            clearHistoryBtn.addEventListener('click', function() {
                 if (results.length === 0) return;
                 if (confirm('Effacer tous les résultats ?')) {
                     results = [];
-                    originalBuffer = null;
                     renderResults();
-                    summaryBox.style.display = 'none';
-                    showToast('Historique effacé.', 'info');
+                    updateSummary();
+                    showToast('Historique effacé', 'info');
                     addLog('🗑️ Historique effacé', 'info');
                 }
             });
-            viewDetailsBtn.addEventListener('click', viewDetails);
-            openBrowserBtn.addEventListener('click', openInBrowser);
+
+            viewDetailsBtn.addEventListener('click', function() {
+                if (results.length) {
+                    var last = results[results.length - 1];
+                    showToast('Dernière analyse: ' + last.detections + '/' + last.total + ' détections', 'info');
+                    addLog('📋 Détails: ' + last.detections + '/' + last.total + ' détections', 'info');
+                }
+            });
+
+            openBrowserBtn.addEventListener('click', function() {
+                if (results.length) {
+                    var last = results[results.length - 1];
+                    if (last.link) { window.open(last.link, '_blank');
+                        addLog('🌐 Ouverture VirusTotal', 'info'); } else {
+                        showToast('Lien non disponible', 'warning'); }
+                }
+            });
 
             // ============================================================
             // INIT
             // ============================================================
-            addLog('🛡️ VB6 VirusTotal Scanner Pro prêt', 'info');
-            addLog('📦 Support : EXE (Windows) et APK (Android) - Taille max: 2 MB', 'info');
-            addLog('🔑 Veuillez entrer votre clé API VirusTotal', 'info');
-            updateStatus('Prêt', 'ready');
-            updateDetections(null);
-            renderResults();
-            summaryBox.style.display = 'none';
+            addLog('🛡️ Security Lab Scanner prêt', 'info');
+            addLog('📦 Support: EXE + APK (max 2 MB)', 'info');
+            addLog('🔑 Entrez votre clé API pour commencer', 'info');
 
             if (localStorage.getItem('vt_key')) {
                 vtApiKeyInput.value = localStorage.getItem('vt_key');
             }
-            vtApiKeyInput.addEventListener('change', () => {
+            vtApiKeyInput.addEventListener('change', function() {
                 localStorage.setItem('vt_key', vtApiKeyInput.value);
             });
+
+            updateStatus('Prêt', 'ready', 0);
+            updateDetections(null);
+            renderResults();
 
         })();
     </script>
