@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>VB6 VirusTotal Scanner Pro</title>
     <style>
+        /* ============================================================
+           STYLES - IDENTIQUES À AVANT
+           ============================================================ */
         * {
             margin: 0;
             padding: 0;
@@ -66,6 +69,15 @@
 
         .header .badge-real {
             background: #38a169;
+            color: white;
+            font-size: 0.6rem;
+            padding: 2px 10px;
+            border-radius: 12px;
+            font-weight: 600;
+        }
+
+        .header .badge-multi {
+            background: #9f7aea;
             color: white;
             font-size: 0.6rem;
             padding: 2px 10px;
@@ -605,6 +617,11 @@
             font-weight: 700;
         }
 
+        .badge-apk {
+            background: #9f7aea;
+            color: white;
+        }
+
         .mod-summary {
             font-size: 0.6rem;
             color: #4a5568;
@@ -739,7 +756,8 @@
                 font-size: 1.1rem;
             }
             .header .badge-version,
-            .header .badge-real {
+            .header .badge-real,
+            .header .badge-multi {
                 display: none;
             }
             .status-bar {
@@ -781,6 +799,7 @@
             <span class="icon">🛡️</span>
             <h1>VB6 VirusTotal Scanner Pro</h1>
             <span class="badge-real">🔴 RÉEL</span>
+            <span class="badge-multi">📦 EXE + APK</span>
             <span class="badge-version">v3.0</span>
         </div>
 
@@ -802,7 +821,8 @@
                     </div>
                     <label class="btn-browse">
                         📂 Parcourir...
-                        <input type="file" id="fileInput" accept=".exe">
+                        <!-- MODIFICATION: accepte .exe et .apk -->
+                        <input type="file" id="fileInput" accept=".exe,.apk">
                     </label>
                 </div>
 
@@ -810,6 +830,10 @@
                     <span>📄 Aucun fichier chargé</span>
                     <span>📏 Taille : —</span>
                     <span>🔐 SHA-256 : —</span>
+                </div>
+                <!-- MODIFICATION: nouveau message d'aide -->
+                <div class="help-text" style="margin-top:6px; font-size:0.65rem; color:#718096;">
+                    Formats supportés : .exe (Windows) et .apk (Android) — Taille max : 2 MB
                 </div>
             </div>
 
@@ -841,10 +865,13 @@
         </div>
 
         <!-- ============================================================
-        SECTION 2 : MODIFICATIONS PE
+        SECTION 2 : MODIFICATIONS PE (pour EXE)
         ============================================================ -->
         <div class="section mod-section">
-            <div class="mod-title">✏️ Modifications PE (13 options)</div>
+            <div class="mod-title">✏️ Modifications PE (13 options — pour fichiers EXE uniquement)</div>
+            <div style="font-size:0.65rem; color:#718096; margin-bottom:8px;">
+                ⚠️ Pour les fichiers APK, les modifications PE ne sont pas appliquées (fichier Android)
+            </div>
             <div class="grid-3col">
                 <!-- Timestamp -->
                 <div class="form-group">
@@ -955,9 +982,6 @@
                     </div>
                 </div>
             </div>
-            <div style="font-size:0.65rem; color:#718096; margin-top:4px;">
-                ⚠️ Modifications sur les métadonnées uniquement — aucune modification du code exécutable
-            </div>
         </div>
 
         <!-- ============================================================
@@ -1041,7 +1065,7 @@
                         </tr>
                     </thead>
                     <tbody id="resultsBody">
-                        <tr><td colspan="8" class="empty-state">Aucune analyse. Téléversez un EXE et lancez une campagne.</td></tr>
+                        <tr><td colspan="8" class="empty-state">Aucune analyse. Téléversez un EXE ou un APK et lancez une campagne.</td></tr>
                     </tbody>
                 </table>
             </div>
@@ -1169,6 +1193,7 @@
             let logEntries = [];
             let currentAnalysisId = null;
             let iconBuffer = null;
+            let isApkFile = false; // <-- NOUVEAU : détection du type de fichier
 
             // ============================================================
             // HELPERS
@@ -1212,6 +1237,7 @@
                 return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
             }
 
+            // Fonction de validation PE (uniquement pour EXE)
             function validatePE(buffer) {
                 try {
                     const view = new Uint8Array(buffer);
@@ -1222,6 +1248,19 @@
                     if (view[e_lfanew] !== 0x50 || view[e_lfanew + 1] !== 0x45 ||
                         view[e_lfanew + 2] !== 0x00 || view[e_lfanew + 3] !== 0x00) return false;
                     return true;
+                } catch (e) { return false; }
+            }
+
+            // Validation APK (vérification du magic number ZIP)
+            function validateAPK(buffer) {
+                try {
+                    const view = new Uint8Array(buffer);
+                    if (view.length < 4) return false;
+                    // Un APK commence par un fichier ZIP (PK)
+                    if (view[0] === 0x50 && view[1] === 0x4B && view[2] === 0x03 && view[3] === 0x04) {
+                        return true;
+                    }
+                    return false;
                 } catch (e) { return false; }
             }
 
@@ -1304,19 +1343,26 @@
                 const sizeMB = (file.size / (1024 * 1024)).toFixed(2);
                 const sizeStr = file.size > 1024 * 1024 ? `${sizeMB} MB` : `${sizeKB} KB`;
 
+                // Détection du type
+                const ext = file.name.split('.').pop().toLowerCase();
+                const typeIcon = ext === 'apk' ? '📱' : '🖥️';
+                const typeName = ext === 'apk' ? 'APK (Android)' : 'EXE (Windows)';
+
                 fileExtraInfo.innerHTML = `
-                    <span>📄 ${file.name}</span>
+                    <span>${typeIcon} ${file.name}</span>
                     <span>📏 Taille : ${sizeStr}</span>
                     <span>🔐 SHA-256 : Calcul en cours...</span>
+                    <span>📦 Type : ${typeName}</span>
                 `;
 
                 file.arrayBuffer().then(buffer => {
                     computeSHA256(buffer).then(hash => {
                         const shortHash = hash.substring(0, 16) + '...';
                         fileExtraInfo.innerHTML = `
-                            <span>📄 ${file.name}</span>
+                            <span>${typeIcon} ${file.name}</span>
                             <span>📏 Taille : ${sizeStr}</span>
                             <span>🔐 SHA-256 : ${shortHash}</span>
+                            <span>📦 Type : ${typeName}</span>
                         `;
                     });
                 });
@@ -1343,9 +1389,17 @@
             }
 
             // ============================================================
-            // MODIFICATION ENGINE
+            // MODIFICATION ENGINE (uniquement pour EXE)
             // ============================================================
             function applyAllModifications(buffer, options, seed) {
+                // Si c'est un APK, on ne modifie pas
+                if (isApkFile) {
+                    return {
+                        buffer: buffer,
+                        modifications: 'APK - aucune modification PE'
+                    };
+                }
+
                 const arr = new Uint8Array(buffer);
                 const cloned = new Uint8Array(arr);
                 let modsList = [];
@@ -1610,7 +1664,14 @@
                 if (isRunning) return;
 
                 if (!currentFile) {
-                    showToast('Veuillez téléverser un fichier EXE.', 'error');
+                    showToast('Veuillez téléverser un fichier EXE ou APK.', 'error');
+                    return;
+                }
+
+                // MODIFICATION: taille max = 2 MB
+                const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
+                if (currentFile.size > MAX_SIZE) {
+                    showToast(`Fichier trop volumineux (max 2 MB). Taille: ${(currentFile.size/1024/1024).toFixed(2)} MB`, 'error');
                     return;
                 }
 
@@ -1641,6 +1702,30 @@
                 try {
                     const buffer = await currentFile.arrayBuffer();
                     originalBuffer = buffer;
+
+                    // Détection du type de fichier
+                    const ext = currentFile.name.split('.').pop().toLowerCase();
+                    isApkFile = (ext === 'apk');
+
+                    // Valider le fichier selon son type
+                    let isValid = false;
+                    if (isApkFile) {
+                        isValid = validateAPK(buffer);
+                        if (!isValid) {
+                            showToast('Fichier APK invalide (signature ZIP incorrecte).', 'warning');
+                            addLog('⚠️ Fichier APK invalide', 'warning');
+                        } else {
+                            addLog('✅ Fichier APK valide', 'success');
+                        }
+                    } else {
+                        isValid = validatePE(buffer);
+                        if (!isValid) {
+                            showToast('Fichier EXE invalide (structure PE incorrecte).', 'warning');
+                            addLog('⚠️ Fichier EXE invalide', 'warning');
+                        } else {
+                            addLog('✅ Fichier EXE valide', 'success');
+                        }
+                    }
 
                     let iconData = null;
                     if (modIcons.checked && iconInput.files && iconInput.files.length > 0) {
@@ -1673,8 +1758,9 @@
                     let currentBuffer = buffer;
                     let zeroReachedFlag = false;
 
+                    const fileType = isApkFile ? 'APK' : 'EXE';
                     addLog(`🚀 Campagne démarrée : ${numIterations} itérations`, 'info');
-                    addLog(`📁 Fichier : ${currentFile.name} (${(currentFile.size/1024).toFixed(1)} KB)`, 'info');
+                    addLog(`📁 Fichier : ${currentFile.name} (${(currentFile.size/1024).toFixed(1)} KB) - Type: ${fileType}`, 'info');
 
                     for (let i = 0; i < numIterations; i++) {
                         const seed = i + 1;
@@ -1687,7 +1773,14 @@
                         currentBuffer = result.buffer;
                         const modSummary = result.modifications || 'Aucune modification';
 
-                        const isValidPE = validatePE(currentBuffer);
+                        // Validation selon le type
+                        let peValid = false;
+                        if (isApkFile) {
+                            peValid = validateAPK(currentBuffer);
+                        } else {
+                            peValid = validatePE(currentBuffer);
+                        }
+
                         const hash = await computeSHA256(currentBuffer);
                         const size = currentBuffer.byteLength;
 
@@ -1716,13 +1809,14 @@
                             modifications: modSummary,
                             sha256: hash,
                             size: size,
-                            peValid: isValidPE,
+                            peValid: peValid,
                             detections: detections,
                             total: total,
                             buffer: currentBuffer,
                             filename: `iter_${i+1}_${currentFile.name}`,
                             isZero: (typeof detections === 'number' && detections === 0),
-                            link: vtResult.link || null
+                            link: vtResult.link || null,
+                            fileType: fileType
                         });
 
                         if (typeof detections === 'number' && detections === 0) {
@@ -1775,7 +1869,7 @@
             function renderResults() {
                 if (results.length === 0) {
                     resultsBody.innerHTML =
-                        `<tr><td colspan="8" class="empty-state">Aucune analyse. Téléversez un EXE et lancez une campagne.</td></tr>`;
+                        `<tr><td colspan="8" class="empty-state">Aucune analyse. Téléversez un EXE ou un APK et lancez une campagne.</td></tr>`;
                     return;
                 }
 
@@ -1788,6 +1882,9 @@
                     const sizeStr = r.size < 1024 ? `${r.size} B` : `${(r.size / 1024).toFixed(1)} KB`;
                     const zeroBadge = r.isZero ? '<span class="badge badge-zero">⭐ 0</span>' : '';
                     const rowClass = r.isZero ? 'highlight-row' : '';
+                    const typeBadge = r.fileType === 'APK' ?
+                        '<span class="badge badge-apk">📱 APK</span>' :
+                        '<span class="badge badge-info">🖥️ EXE</span>';
 
                     const downloadBtn = r.buffer ?
                         `<button class="download-btn" data-idx="${idx}">💾</button>` :
@@ -1795,7 +1892,7 @@
 
                     html += `<tr class="${rowClass}">
                         <td><span class="iteration-badge">#${r.iteration}</span></td>
-                        <td><strong>${r.version}</strong> ${zeroBadge}</td>
+                        <td><strong>${r.version}</strong> ${zeroBadge} ${typeBadge}</td>
                         <td><span class="mod-summary">${r.modifications || 'Aucune'}</span></td>
                         <td class="hash-cell">${r.sha256}</td>
                         <td>${sizeStr}</td>
@@ -1824,7 +1921,7 @@
                 const url = URL.createObjectURL(blob);
                 const a = document.createElement('a');
                 a.href = url;
-                a.download = r.filename || `iter_${r.iteration}.exe`;
+                a.download = r.filename || `iter_${r.iteration}.${r.fileType === 'APK' ? 'apk' : 'exe'}`;
                 a.click();
                 URL.revokeObjectURL(url);
                 showToast(`Téléchargement: ${a.download}`, 'success');
@@ -1836,12 +1933,12 @@
             function exportCSV() {
                 if (results.length === 0) { showToast('Aucune donnée à exporter.', 'error'); return; }
                 let csv =
-                    'Itération,Version,Modifications,SHA-256,Taille,PE Valide,Détections,Total,0 Detection\n';
+                    'Itération,Version,Type,Modifications,SHA-256,Taille,Valide,Détections,Total,0 Detection\n';
                 results.forEach(r => {
                     const detStr = typeof r.detections === 'number' ? r.detections : r.detections;
                     const totalStr = typeof r.total === 'number' ? r.total : r.total;
                     csv +=
-                        `${r.iteration},"${r.version}","${r.modifications || 'Aucune'}",${r.sha256},${r.size},${r.peValid ? 'Oui' : 'Non'},${detStr},${totalStr},${r.isZero ? 'Oui' : 'Non'}\n`;
+                        `${r.iteration},"${r.version}","${r.fileType || 'EXE'}","${r.modifications || 'Aucune'}",${r.sha256},${r.size},${r.peValid ? 'Oui' : 'Non'},${detStr},${totalStr},${r.isZero ? 'Oui' : 'Non'}\n`;
                 });
                 const blob = new Blob([csv], { type: 'text/csv' });
                 const url = URL.createObjectURL(blob);
@@ -1858,6 +1955,7 @@
                 const exportData = results.map(r => ({
                     iteration: r.iteration,
                     version: r.version,
+                    type: r.fileType || 'EXE',
                     modifications: r.modifications || 'Aucune',
                     sha256: r.sha256,
                     size: r.size,
@@ -1930,6 +2028,7 @@
                 startBtn.disabled = false;
                 viewDetailsBtn.disabled = true;
                 openBrowserBtn.disabled = true;
+                isApkFile = false;
                 if (timerInterval) {
                     clearInterval(timerInterval);
                     timerInterval = null;
@@ -1944,16 +2043,24 @@
             // ============================================================
             function handleFile(file) {
                 if (!file) return;
-                if (!file.name.toLowerCase().endsWith('.exe')) {
-                    showToast('Veuillez sélectionner un fichier .exe', 'error');
+
+                const ext = file.name.split('.').pop().toLowerCase();
+
+                // Vérification des extensions autorisées
+                if (ext !== 'exe' && ext !== 'apk') {
+                    showToast('Veuillez sélectionner un fichier .exe ou .apk', 'error');
                     return;
                 }
-                if (file.size > 30000) {
-                    showToast('Fichier trop volumineux (max 30 KB).', 'error');
+
+                // MODIFICATION: taille max = 2 MB
+                const MAX_SIZE = 2 * 1024 * 1024; // 2 MB
+                if (file.size > MAX_SIZE) {
+                    showToast(`Fichier trop volumineux (max 2 MB). Taille: ${(file.size/1024/1024).toFixed(2)} MB`, 'error');
                     return;
                 }
 
                 currentFile = file;
+                isApkFile = (ext === 'apk');
                 updateFileInfo(file);
                 results = [];
                 originalBuffer = null;
@@ -1970,7 +2077,7 @@
                     timerInterval = null;
                     elapsedTime.textContent = '00:00:00';
                 }
-                addLog(`📁 Fichier chargé: ${file.name} (${(file.size/1024).toFixed(1)} KB)`, 'success');
+                addLog(`📁 Fichier chargé: ${file.name} (${(file.size/1024).toFixed(1)} KB) - Type: ${isApkFile ? 'APK' : 'EXE'}`, 'success');
                 showToast(`Fichier chargé: ${file.name}`, 'success');
             }
 
@@ -2027,6 +2134,7 @@
             // INIT
             // ============================================================
             addLog('🛡️ VB6 VirusTotal Scanner Pro prêt', 'info');
+            addLog('📦 Support : EXE (Windows) et APK (Android) - Taille max: 2 MB', 'info');
             addLog('🔑 Veuillez entrer votre clé API VirusTotal', 'info');
             updateStatus('Prêt', 'ready');
             updateDetections(null);
